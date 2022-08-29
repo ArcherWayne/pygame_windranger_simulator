@@ -1,54 +1,68 @@
 import pygame, sys, time
-import setting
+from setting import *
 from debug import debug
+from me_camera_base_camera import CameraGroup
+from hero import HERO
 
-# general setup --------------------------------------------------------------------------------------------- #
-## pygame setup
-pygame.init()
-screen = pygame.display.set_mode(setting.window_size)
-pygame.display.set_caption('windranger_simluator')
+class MAINGAME:
+	def __init__(self):
+		## pygame setup
 
-# pygame.display.set_icon(pygame.image.load('assets/blade game.png'))
-# background_surface = pygame.transform.scale(
-#     pygame.image.load('assets/background/ground.png').convert(), (setting.WIN_WIDTH, setting.WIN_HEIGTH))
-# background_rect = background_surface.get_rect(center=(setting.WIN_WIDTH / 2, setting.WIN_HEIGTH / 2))
-# clock = pygame.time.Clock()
-# font = pygame.font.Font('assets/font/Pixeltype.ttf', 50)
-
-## varibles setup
-game_active = True
-
-# class setup
-# class = Class()
+		pygame.init()
+		self.screen = pygame.display.set_mode(window_size)
+		pygame.display.set_caption('windranger_simulator')
+		pygame.display.set_icon(pygame.image.load('assets/dota2.png'))
+		# background_surface = pygame.transform.scale(
+		#     pygame.image.load('assets/background/ground.png').convert(), (setting.WIN_WIDTH, setting.WIN_HEIGTH))
+		# background_rect = background_surface.get_rect(center=(setting.WIN_WIDTH / 2, setting.WIN_HEIGTH / 2))
+		self.clock = pygame.time.Clock()
+		# font = pygame.font.Font('assets/font/Pixeltype.ttf', 50)
 
 # group setup ----------------------------------------------------------------------------------------------- #
-all_sprites = pygame.sprite.Group()
-collision_sprites = pygame.sprite.Group()
+		self.camera_group = CameraGroup()
+		# self.all_sprites = pygame.sprite.Group()
+		# self.collision_sprites = pygame.sprite.Group()
 
-# main ------------------------------------------------------------------------------------------------------ #
-def main():
-    last_time = time.time()
-    while True:
+# class setup
+		# class = Class()
+		self.hero = HERO(self.camera_group)
 
-        # delta time    ------------------------------------------------------------------------------------- #
-        dt = time.time() - last_time
-        last_time = time.time()
+# attribute setup
+		self.last_time = time.time()
+		self.game_active = True
 
-        # event loop    ------------------------------------------------------------------------------------- #
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE):
-                pygame.quit()
-                sys.exit()
+	def game_loop(self):
+		while True:
+			self.clock.tick(FPS)
+			# delta time    ------------------------------------------------------------------------------------- #
+			last_time = time.time()
+			dt = time.time() - last_time
 
-        if game_active:
-            screen.fill(setting.WHITE)
-            # screen.blit(background_surface, background_rect)
-            all_sprites.update()
-            all_sprites.draw(screen)
+			# event loop    ------------------------------------------------------------------------------------- #
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE):
+					pygame.quit()
+					sys.exit()
 
+			if self.game_active:
+				self.screen.fill(WHITE)
+				# screen.blit(background_surface, background_rect)
+				# self.all_sprites.update()
+				# self.all_sprites.draw(self.screen)
 
-        pygame.display.update()
+			self.hero.update(dt)
 
+			self.camera_group.custom_draw(self.hero)
+			debug(self.hero.rect)
+			debug(self.hero.direction, y = 30)
+			pygame.display.update()
+
+	def update(self):
+		self.game_loop()
 
 if __name__ == "__main__":
-    main()
+	main_game = MAINGAME()
+
+	# game loop
+	main_game.update()
+

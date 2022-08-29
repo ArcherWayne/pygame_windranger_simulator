@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__(groups)
 
         # image
-        self.image = pygame.Surface(player_size)
+        self.image = pygame.Surface()
         self.image.fill('#345678')
 
         # position
