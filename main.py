@@ -3,6 +3,7 @@ from setting import *
 from debug import debug
 from me_camera_base_camera import CameraGroup
 from hero import HERO
+from hero import PLAYER # debug use
 
 class MAINGAME:
 	def __init__(self):
@@ -26,6 +27,7 @@ class MAINGAME:
 # class setup
 		# class = Class()
 		self.hero = HERO(self.camera_group)
+		# self.hero = PLAYER((window_size[0]/2, window_size[1]/2), CameraGroup)
 
 # attribute setup
 		self.last_time = time.time()
@@ -35,8 +37,8 @@ class MAINGAME:
 		while True:
 			self.clock.tick(FPS)
 			# delta time    ------------------------------------------------------------------------------------- #
-			last_time = time.time()
-			dt = time.time() - last_time
+			dt = time.time() - self.last_time
+			self.last_time = time.time()
 
 			# event loop    ------------------------------------------------------------------------------------- #
 			for event in pygame.event.get():
@@ -44,18 +46,16 @@ class MAINGAME:
 					pygame.quit()
 					sys.exit()
 
+			# mechanic loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
 				self.screen.fill(WHITE)
 				# screen.blit(background_surface, background_rect)
 				# self.all_sprites.update()
 				# self.all_sprites.draw(self.screen)
-
-			self.hero.update(dt)
-
-			self.camera_group.custom_draw(self.hero)
-			debug(self.hero.rect)
-			debug(self.hero.direction, y = 30)
-			pygame.display.update()
+				# self.hero.update(dt)
+				self.camera_group.update(dt)
+				self.camera_group.custom_draw(self.hero)
+				pygame.display.update()
 
 	def update(self):
 		self.game_loop()

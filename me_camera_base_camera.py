@@ -1,16 +1,20 @@
-import pygame
-# # from random import randint
 
-# # class Tree(pygame.sprite.Sprite):
-# # 	def __init__(self,pos,group):
-# # 		super().__init__(group)
-# # 		self.image = pygame.image.load('graphics/tree.png').convert_alpha()
-# # 		self.rect = self.image.get_rect(topleft = pos)
+import pygame, sys
+# from random import randint
+# from debug import debug
 
-# # class Player(pygame.sprite.Sprite):
+# active = 0
+
+# class Tree(pygame.sprite.Sprite):
 # 	def __init__(self,pos,group):
 # 		super().__init__(group)
-# 		self.image = pygame.image.load('graphics/player.png').convert_alpha()
+# 		self.image = pygame.image.load('assets/graphics/map/tree.png').convert_alpha()
+# 		self.rect = self.image.get_rect(topleft = pos)
+
+# class Player(pygame.sprite.Sprite):
+# 	def __init__(self,pos,group):
+# 		super().__init__(group)
+# 		self.image = pygame.image.load('assets/graphics/windranger/windranger_idle_animation1.png').convert_alpha()
 # 		self.rect = self.image.get_rect(center = pos)
 # 		self.direction = pygame.math.Vector2()
 # 		self.speed = 5
@@ -67,38 +71,41 @@ class CameraGroup(pygame.sprite.Group):
 			offsef_pos = sprite.rect.topleft - self.offset
 			self.display_surf.blit(sprite.image, offsef_pos)
 
-# pygame.init()
-# screen = pygame.display.set_mode((1280,720))
-# clock = pygame.time.Clock()
-# pygame.event.set_grab(True)
 
-# # setup 
-# camera_group = CameraGroup()
-# player = Player((640,360),camera_group)
+# if active:
+# 	pygame.init()
+# 	screen = pygame.display.set_mode((1280,720))
+# 	clock = pygame.time.Clock()
+# 	pygame.event.set_grab(True)
 
-# for i in range(20):
-# 	random_x = randint(1000,2000)
-# 	random_y = randint(1000,2000)
-# 	Tree((random_x,random_y),camera_group)
+# 	# setup 
+# 	camera_group = CameraGroup()
+# 	player = Player((640,360),camera_group)
 
-# while True:
-# 	for event in pygame.event.get():
-# 		if event.type == pygame.QUIT:
-# 			pygame.quit()
-# 			sys.exit()
-# 		if event.type == pygame.KEYDOWN:
-# 			if event.key == pygame.K_ESCAPE:
+# 	for i in range(20):
+# 		random_x = randint(1000,2000)
+# 		random_y = randint(1000,2000)
+# 		Tree((random_x,random_y),camera_group)
+
+# 	while True:
+# 		for event in pygame.event.get():
+# 			if event.type == pygame.QUIT:
 # 				pygame.quit()
 # 				sys.exit()
+# 			if event.type == pygame.KEYDOWN:
+# 				if event.key == pygame.K_ESCAPE:
+# 					pygame.quit()
+# 					sys.exit()
 
-# 		if event.type == pygame.MOUSEWHEEL:
-# 			camera_group.zoom_scale += event.y * 0.03
+# 			if event.type == pygame.MOUSEWHEEL:
+# 				camera_group.zoom_scale += event.y * 0.03
 
-# 	screen.fill('#71ddee')
+# 		screen.fill('#71ddee')
 
-# 	camera_group.update()
-# 	camera_group.custom_draw(player)
-# 	# camera_group.custom_draw()
+# 		camera_group.update()
+# 		camera_group.custom_draw(player)
+# 		debug(player.direction)
+# 		# camera_group.custom_draw()
 
-# 	pygame.display.update()
-# 	clock.tick(60)
+# 		pygame.display.update()
+# 		clock.tick(60)
