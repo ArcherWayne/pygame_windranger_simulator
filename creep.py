@@ -2,21 +2,32 @@ import pygame
 from setting import *
 
 class CREEP(pygame.sprite.Sprite):
-	def __init__(self, *groups) -> None:
+	def __init__(self, *groups, hero) -> None:
 		super().__init__(*groups)
+
+		# init stat
+		self.hero = hero
 
 		# position
 		self.pos = pygame.math.Vector2()
-		self.pos.x = window_size[0]/2 
-		self.pos.y = window_size[1]/2 
+		# FIXME: 添加随机位置生成: 在屏幕外面
 
 		# graphics
-		self.image = pygame.transform.scale(pygame.image.load("assets/graphics/windranger/windranger_idle_animation1.png").convert_alpha(), (HERO_WIDTH, HERO_HEIGHT))
-		self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
+		self.surf = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
+		self.surf.fill(RED)
+		self.rect = self.surf.get_rect(topleft=self.pos)
+		self.old_rect = self.rect.copy()
 
 		# movement
 		self.direction = pygame.math.Vector2()
 		self.movement_speed = 150
 
-	def update(self):
+	def move_to_hero(self):
+		pass
+		# FIXME: 从剑圣模拟器粘贴过来
+
+
+	def update(self, dt):
+		self.dt = dt
+		self.old_rect = self.rect.copy()
 		pass

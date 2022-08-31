@@ -66,10 +66,10 @@ class CameraGroup(pygame.sprite.Group):
 		ground_offset = self.ground_rect.topleft - self.offset # move everything in the opposite direction of the target, so thats a negative sign
 		self.display_surf.blit(self.ground_surf, ground_offset)
 
-		# active elements
+		# tree elements
 		for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
-			offsef_pos = sprite.rect.topleft - self.offset
-			self.display_surf.blit(sprite.image, offsef_pos)
+			offset_pos = sprite.rect.topleft - self.offset
+			self.display_surf.blit(sprite.image, offset_pos)
 
 
 # if active:

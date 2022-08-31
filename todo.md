@@ -1,10 +1,22 @@
 # 待完成
-1. 学习clear code camera系统 首先用最简单的美术资源完成camera系统
-2. 更新template, 包括dt和fps
+1. 更新template, 包括dt和fps
+2. 将jugg simulator里面的可以复用的代码拿过来, 一边写一边思考, 考虑下那些是符合这个游戏的, 如何修改比较合适. 多花一点时间, 这个不着急
 
 
 #  笔记
+1. centered_camera: 
+	
+	对于玩家来说, player_pos = offset + 1/2 windows_size
+		所以offset的计算公式是
+		offset = player.rect.pos - 1/2 windows_size
+	
+	这样只要玩家移动自己的pos, 程序就会自动计算出对应的offset
 
+	对于地面surface来说, 左上角永远是(0, 0), 但是绘制的时候相机的左上角是offset对应的坐标. 看起来就好像是相机的移动
+
+	对于creep来说, 首先要求出相对于player的位置, 要有个Vector2来处理
+	
+	creep_pos = offset + player.rect.pos + Vector2
 
 # 程序构思
 

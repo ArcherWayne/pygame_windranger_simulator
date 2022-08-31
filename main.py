@@ -26,7 +26,7 @@ class MAINGAME:
 		self.creep_group = pygame.sprite.Group()
 		self.tree_group = pygame.sprite.Group()
 		# self.all_sprites = pygame.sprite.Group()
-		# self.collision_sprites = pygame.sprite.Group()
+		self.collision_sprites = pygame.sprite.Group()
 
 # class setup
 		# class = Class()
@@ -36,6 +36,9 @@ class MAINGAME:
 # attribute setup
 		self.last_time = time.time()
 		self.game_active = True
+
+	def generate_creep(self):
+		pass
 
 	def game_loop(self):
 		while True:
@@ -59,6 +62,12 @@ class MAINGAME:
 				# self.hero.update(dt)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
+
+				# debug 专用空间
+				debug(self.hero.pos, info_name="self.hero.pos")
+				debug(self.camera_group.ground_rect.topleft, y = 30, info_name="self.camera_group.ground_rect.topleft")
+				debug(self.camera_group.offset, y = 50, info_name="self.camera_group.offset")
+
 				pygame.display.update()
 
 	def update(self):
