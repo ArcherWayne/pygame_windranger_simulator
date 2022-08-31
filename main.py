@@ -3,7 +3,8 @@ from setting import *
 from debug import debug
 from me_camera_base_camera import CameraGroup
 from hero import HERO
-from hero import PLAYER # debug use
+from tree import TREE
+# from hero import PLAYER # debug use
 
 class MAINGAME:
 	def __init__(self):
@@ -21,13 +22,16 @@ class MAINGAME:
 
 # group setup ----------------------------------------------------------------------------------------------- #
 		self.camera_group = CameraGroup()
+		self.hero_group = pygame.sprite.GroupSingle()
+		self.creep_group = pygame.sprite.Group()
+		self.tree_group = pygame.sprite.Group()
 		# self.all_sprites = pygame.sprite.Group()
 		# self.collision_sprites = pygame.sprite.Group()
 
 # class setup
 		# class = Class()
 		self.hero = HERO(self.camera_group)
-		# self.hero = PLAYER((window_size[0]/2, window_size[1]/2), CameraGroup)
+		# self.hero = PLAYER((window_size[0]/2, window_size[1]/2), CameraGroup) # debug use
 
 # attribute setup
 		self.last_time = time.time()
@@ -39,7 +43,7 @@ class MAINGAME:
 			# delta time    ------------------------------------------------------------------------------------- #
 			dt = time.time() - self.last_time
 			self.last_time = time.time()
-
+			
 			# event loop    ------------------------------------------------------------------------------------- #
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE):
