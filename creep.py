@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from setting import *
 
 class CREEP(pygame.sprite.Sprite):
@@ -10,6 +11,9 @@ class CREEP(pygame.sprite.Sprite):
 
 		# position
 		self.pos = pygame.math.Vector2()
+		self.pos.x = 
+		self.pos.y = 
+		self.pos_relto_hero = pygame.math.Vector2()
 		# FIXME: 添加随机位置生成: 在屏幕外面
 
 		# graphics
@@ -26,8 +30,14 @@ class CREEP(pygame.sprite.Sprite):
 		pass
 		# FIXME: 从剑圣模拟器粘贴过来
 
-
 	def update(self, dt):
+
+		# dt and old_rect -------------------------------------------------------------------- #
 		self.dt = dt
 		self.old_rect = self.rect.copy()
+
+		# update the pos relative to self.hero ----------------------------------------------- #
+		self.pos_relto_hero.x = self.pos.x - self.hero.pos.x
+		self.pos_relto_hero.y = self.pos.y - self.hero.pos.y
+
 		pass
