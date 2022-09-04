@@ -1,9 +1,16 @@
+# module importing
+from calendar import c
 import pygame, sys, time
 from setting import *
+
+# function importing
 from debug import debug
 from me_camera_base_camera import CameraGroup
+
+# entity importing
 from hero import HERO
 from tree import TREE
+from creep import CREEP
 # from hero import PLAYER # debug use
 
 class MAINGAME:
@@ -33,6 +40,10 @@ class MAINGAME:
 		self.hero = HERO(self.camera_group)
 		# self.hero = PLAYER((window_size[0]/2, window_size[1]/2), CameraGroup) # debug use
 
+# user event setting
+		self.creep_enemy_timer = pygame.USEREVENT + 1
+		pygame.time.set_timer(self.creep_enemy_timer, 100)
+
 # attribute setup
 		self.last_time = time.time()
 		self.game_active = True
@@ -52,6 +63,9 @@ class MAINGAME:
 				if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE):
 					pygame.quit()
 					sys.exit()
+
+				if event.type == self.creep_enemy_timer:
+					self.camera_group.add(CREEP([self.camera_group], self.hero))
 
 			# mechanic loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
