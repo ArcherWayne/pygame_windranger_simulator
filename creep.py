@@ -28,12 +28,23 @@ class CREEP(pygame.sprite.Sprite):
 		self.old_rect = self.rect.copy()
 
 		# movement
+		# self.vector_to_hero = pygame.math.Vector2()
 		self.direction = pygame.math.Vector2()
-		self.movement_speed = 150
+		self.movement_speed = CREEP_MOVEMENT_SPEED
 
 	def move_to_hero(self):
-		pass
-		# FIXME: 从剑圣模拟器粘贴过来
+		self.direction.x = self.hero.pos.x - self.pos.x
+		self.direction.y = self.hero.pos.y - self.pos.y
+
+		if self.direction.magnitude() != 0:
+			self.direction = self.direction.normalize()
+
+		self.pos.x += self.direction.x * self.movement_speed * self.dt
+		self.rect.x = round(self.pos.x)
+		self.pos.y += self.direction.y * self.movement_speed * self.dt
+		self.rect.y = round(self.pos.y)
+
+		
 
 	def update(self, dt):
 
@@ -41,8 +52,7 @@ class CREEP(pygame.sprite.Sprite):
 		self.dt = dt
 		self.old_rect = self.rect.copy()
 
-		# # update the pos relative to self.hero ----------------------------------------------- #
-		# self.pos_relative_to_hero.x = self.pos.x - self.hero.pos.x
-		# self.pos_relative_to_hero.y = self.pos.y - self.hero.pos.y
+		# movement --------------------------------------------------------------------------- #
+		self.move_to_hero()
 
 		pass

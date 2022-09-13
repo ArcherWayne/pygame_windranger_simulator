@@ -1,11 +1,11 @@
 # module importing
-from calendar import c
 import pygame, sys, time
 from setting import *
 
 # function importing
 from debug import debug
 from me_camera_base_camera import CameraGroup
+from random import randint
 
 # entity importing
 from hero import HERO
@@ -42,14 +42,17 @@ class MAINGAME:
 
 # user event setting
 		self.creep_enemy_timer = pygame.USEREVENT + 1
-		pygame.time.set_timer(self.creep_enemy_timer, 100)
+		pygame.time.set_timer(self.creep_enemy_timer, 1000)
 
 # attribute setup
 		self.last_time = time.time()
 		self.game_active = True
 
-	def generate_creep(self):
-		pass
+	def generate_trees(self):
+		for i in range(20):
+			random_x = randint(1000,2000)
+			random_y = randint(1000,2000)
+			TREE((random_x,random_y),self.camera_group)
 
 	def game_loop(self):
 		while True:
@@ -69,7 +72,7 @@ class MAINGAME:
 
 			# mechanic loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
-				self.screen.fill(WHITE)
+				self.screen.fill(BLACK)
 				# screen.blit(background_surface, background_rect)
 				# self.all_sprites.update()
 				# self.all_sprites.draw(self.screen)
@@ -84,12 +87,13 @@ class MAINGAME:
 
 				pygame.display.update()
 
-	def update(self):
-		self.game_loop()
 
 if __name__ == "__main__":
 	main_game = MAINGAME()
 
+	# init functions
+	main_game.generate_trees()
+
 	# game loop
-	main_game.update()
+	main_game.game_loop()
 

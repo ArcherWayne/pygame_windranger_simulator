@@ -17,7 +17,7 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# movement
 		self.direction = pygame.math.Vector2()
-		self.movement_speed = 200
+		self.movement_speed = HERO_MOVEMENT_SPEED
 
 	def keyboard_movement(self):
 		keys = pygame.key.get_pressed()
