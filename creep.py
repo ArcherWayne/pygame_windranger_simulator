@@ -24,7 +24,7 @@ class CREEP(pygame.sprite.Sprite):
 		# graphics
 		self.image = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
 		self.image.fill(RED)
-		self.rect = self.image.get_rect(topleft=self.pos)
+		self.rect = self.image.get_rect(center=self.pos)
 		self.old_rect = self.rect.copy()
 
 		# movement

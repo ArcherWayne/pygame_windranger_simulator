@@ -51,7 +51,7 @@ class CameraGroup(pygame.sprite.Group):
 		self.half_h = self.display_surf.get_size()[1] // 2
 
 		# ground
-		self.ground_surf = pygame.image.load('assets/graphics/map/exa-map.png').convert_alpha()
+		self.ground_surf = pygame.image.load('assets/graphics/map/map.png').convert_alpha()
 		self.ground_rect = self.ground_surf.get_rect(topleft = (0,0))
 
 	def center_target_camera(self, target):

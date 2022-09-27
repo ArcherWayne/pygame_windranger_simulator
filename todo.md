@@ -6,8 +6,9 @@
 	2. 向英雄移动系统(完成)
 	3. 碰撞系统
       	1. 设置一个碰撞父类, 然后不同的游戏实体生产不同的碰撞子类, 然后碰撞类和sprite类相互同步位置
+      	2. 主体master时时矫正collision_box的位置, 但是当碰撞发生时, collision_box才能矫正master的位置, 进而矫正自己的位置. 
 	以上三个系统都参考jugg simulator
-4. 添加树: 
+4. 添加树: (完成)
 
 #  笔记
 1. centered_camera: 
