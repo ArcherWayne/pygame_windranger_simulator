@@ -33,7 +33,7 @@ class MAINGAME:
 		self.creep_group = pygame.sprite.Group()
 		self.tree_group = pygame.sprite.Group()
 		# self.all_sprites = pygame.sprite.Group()
-		self.collision_sprites = pygame.sprite.Group()
+		self.enemies_collision_group = pygame.sprite.Group()
 
 # class setup
 		# class = Class()
@@ -68,7 +68,7 @@ class MAINGAME:
 					sys.exit()
 
 				if event.type == self.creep_enemy_timer:
-					self.camera_group.add(CREEP([self.camera_group], self.hero))
+					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, self.hero))
 
 			# mechanic loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
@@ -80,16 +80,27 @@ class MAINGAME:
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
 
-				# debug 专用空间
-				debug(self.hero.pos, info_name="self.hero.pos")
-				debug(self.camera_group.ground_rect.topleft, y = 30, info_name="self.camera_group.ground_rect.topleft")
-				debug(self.camera_group.offset, y = 50, info_name="self.camera_group.offset")
-
+				# debug space
+				# debug(self.hero.pos, info_name="self.hero.pos")
+				# debug(self.camera_group.ground_rect.topleft, y = 30, info_name="self.camera_group.ground_rect.topleft")
+				# debug(self.camera_group.offset, y = 50, info_name="self.camera_group.offset")
+				# debug(self.creep_group.Sprites.rect)
+				debug(self.creep_group.sprites())
+				debug(self.camera_group.sprites(), y = 30, info_name='camera_group')
 				pygame.display.update()
+
+
+class GAMEMANAGER:
+	def __init__(self):
+		pass
+
+	def update(self):
+		pass
 
 
 if __name__ == "__main__":
 	main_game = MAINGAME()
+	game_manager = GAMEMANAGER()
 
 	# init functions
 	main_game.generate_trees()

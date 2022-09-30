@@ -18,6 +18,8 @@ map_size = (MAP_WIDTH, MAP_HEIGHT)
 # __init__(self, name, health, movement_speed, damage, forswing, backswing, flag_moving)
 HERO_HEIGHT = 60
 HERO_WIDTH = 60
+HERO_COLLISON_HEIGHT = 20
+HERO_COLLISON_WIDTH = 20
 HERO_HEALTH = 120
 HERO_MOVEMENT_SPEED = 200
 HERO_DAMAGE = 16
@@ -29,6 +31,8 @@ HERO_BACKSWING = 0.2
 # __init__(self, health, movement_speed, damage, forswing, backswing)
 CREEP_HEIGHT = 60
 CREEP_WIDTH = 60
+CREEP_COLLISION_HEIGHT = 40
+CREEP_COLLISION_WIDTH = 40
 CREEP_HEALTH = 50
 CREEP_CIT_HEALTH = HERO_DAMAGE - 1
 CREEP_MOVEMENT_SPEED = 120
