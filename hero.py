@@ -5,6 +5,9 @@ from debug import debug
 class HERO(pygame.sprite.Sprite): # my code
 	def __init__(self, *groups) -> None:
 		super().__init__(*groups)
+		# type
+		self.type = 'hero'
+
 		# position
 		self.pos = pygame.math.Vector2()
 		self.pos.x = window_size[0]/2 

@@ -33,7 +33,7 @@ class MAINGAME:
 		self.creep_group = pygame.sprite.Group()
 		self.tree_group = pygame.sprite.Group()
 		# self.all_sprites = pygame.sprite.Group()
-		self.enemies_collision_group = pygame.sprite.Group()
+		self.collision_box_group = pygame.sprite.Group()
 
 # class setup
 		# class = Class()

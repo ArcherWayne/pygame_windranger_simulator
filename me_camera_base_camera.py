@@ -1,5 +1,6 @@
 
 import pygame, sys
+from setting import *
 # from random import randint
 # from debug import debug
 
@@ -66,10 +67,23 @@ class CameraGroup(pygame.sprite.Group):
 		ground_offset = self.ground_rect.topleft - self.offset # move everything in the opposite direction of the target, so thats a negative sign
 		self.display_surf.blit(self.ground_surf, ground_offset)
 
-		# tree elements
+		# elements
 		for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
 			offset_pos = sprite.rect.topleft - self.offset
 			self.display_surf.blit(sprite.image, offset_pos)
+
+		# show collision area
+		# pygame.draw.rect
+		if show_collision_area:
+			# draw a rectangle
+			# rect(surface, color, rect) -> Rect
+			# rect(surface, color, rect, width=0, border_radius=0, border_top_left_radius=-1, border_top_right_radius=-1, border_bottom_left_radius=-1, border_bottom_right_radius=-1) -> Rect
+			for sprite in self.sprites():
+				if sprite.type == 'creep':
+					print('creeps')
+					# collision_surf = sprite.surface
+					pygame.draw.rect(self.display_surf, BLUE, sprite.rect)
+
 
 
 # if active:

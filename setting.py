@@ -14,6 +14,10 @@ MAP_WIDTH = map.width       #图片的宽
 MAP_HEIGHT = map.height      #图片的高
 map_size = (MAP_WIDTH, MAP_HEIGHT)
 
+
+# game setting 
+show_collision_area = 1
+
 # hero stats
 # __init__(self, name, health, movement_speed, damage, forswing, backswing, flag_moving)
 HERO_HEIGHT = 60
@@ -45,7 +49,7 @@ CREEP_BACKSWING = 0.2
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
-BLUE = (0, 255, 0)
-GREEN = (0, 0, 255)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
 COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 
