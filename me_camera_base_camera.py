@@ -69,7 +69,7 @@ class CameraGroup(pygame.sprite.Group):
 
 		# elements
 		for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
-			offset_pos = sprite.rect.topleft - self.offset
+			offset_pos = sprite.rect.center - self.offset
 			self.display_surf.blit(sprite.image, offset_pos)
 
 		# show collision area
@@ -80,11 +80,18 @@ class CameraGroup(pygame.sprite.Group):
 			# rect(surface, color, rect, width=0, border_radius=0, border_top_left_radius=-1, border_top_right_radius=-1, border_bottom_left_radius=-1, border_bottom_right_radius=-1) -> Rect
 			for sprite in self.sprites():
 				if sprite.type == 'creep':
-					print('creeps')
-					# collision_surf = sprite.surface
-					pygame.draw.rect(self.display_surf, BLUE, sprite.rect)
+					collision_area_surf = pygame.Surface((CREEP_COLLISION_WIDTH, CREEP_COLLISION_HEIGHT)).convert_alpha()
+					collision_area_surf.fill(BLUE)
+					collision_area_rect = collision_area_surf.get_rect(center = sprite.rect.center)
 
+					offset_pos = collision_area_rect.bottomright - self.offset
 
+					self.display_surf.blit(collision_area_surf, offset_pos)
+					# pygame.draw.rect(self.display_surf, BLUE, sprite.rect)
+
+		# self.image = pygame.Surface(
+		# 	(CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
+		# self.image.fill(RED)
 
 # if active:
 # 	pygame.init()

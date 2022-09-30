@@ -22,6 +22,9 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.direction = pygame.math.Vector2()
 		self.movement_speed = HERO_MOVEMENT_SPEED
 
+		# stat
+		self.health = 3
+
 	def keyboard_movement(self):
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_w]:

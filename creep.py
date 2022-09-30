@@ -28,11 +28,10 @@ class CREEP(pygame.sprite.Sprite):
 		self.pos.y = self.hero.pos.y + self.pos_relative_to_hero.y
 
 		# graphics
-		self.image = pygame.Surface(
-			(CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
+		self.image = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
 		self.image.fill(RED)
 		self.rect = pygame.Rect(
-			0, 0, HERO_COLLISON_WIDTH, HERO_COLLISON_HEIGHT)
+			0, 0, CREEP_COLLISION_WIDTH, CREEP_COLLISION_HEIGHT)
 		self.rect.center = self.pos
 		self.old_rect = self.rect.copy()
 
@@ -98,5 +97,7 @@ class CREEP(pygame.sprite.Sprite):
 		self.pos.y += self.direction.y * self.movement_speed * self.dt
 		self.rect.y = round(self.pos.y)
 		self.collision('vertical')
+
+		# self.rect.center = self.pos
 
 		pass
