@@ -55,7 +55,7 @@ class CameraGroup(pygame.sprite.Group):
 		self.ground_surf = pygame.image.load('assets/graphics/map/map.png').convert_alpha()
 		self.ground_rect = self.ground_surf.get_rect(topleft = (0,0))
 
-	def center_target_camera(self, target):
+	def center_target_camera(self, target): # 以target作为camera的中心， 求解offset距离
 		self.offset.x = target.rect.centerx - self.half_w
 		self.offset.y = target.rect.centery - self.half_h
 
