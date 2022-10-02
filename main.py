@@ -79,6 +79,7 @@ class MAINGAME:
 				# self.hero.update(dt)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
+				self.camera_group.draw_absolute_vector()
 
 				# debug space
 				# debug(self.hero.pos, info_name="self.hero.pos")

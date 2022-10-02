@@ -4,7 +4,9 @@
 
 #  笔记
 1. centered_camera: 
-	
+   
+	camera类的工作方式：首先根据给与的中心目标target计算出offset，这个offset实际上是camera的左上坐标
+
 	对于玩家来说, player_pos = offset + 1/2 windows_size
 		所以offset的计算公式是
 		offset = player.rect.pos - 1/2 windows_size
@@ -15,7 +17,9 @@
 
 	对于creep来说, 首先要求出相对于player的位置, 要有个Vector2来处理
 	
-	creep_pos = offset + player.rect.pos + Vector2
+	creep_pos = offset + player.rect.pos + Vector2 # Vector2就是creep相对于玩家的位置。
+
+
 
 # 程序构思
 

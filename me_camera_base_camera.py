@@ -79,6 +79,7 @@ class CameraGroup(pygame.sprite.Group):
 			# rect(surface, color, rect) -> Rect
 			# rect(surface, color, rect, width=0, border_radius=0, border_top_left_radius=-1, border_top_right_radius=-1, border_bottom_left_radius=-1, border_bottom_right_radius=-1) -> Rect
 			for sprite in self.sprites():
+				# FIXME： 这段逻辑一点都不好，还是要去显示实际的creep rect
 				if sprite.type == 'creep':
 					collision_area_surf = pygame.Surface((CREEP_COLLISION_WIDTH, CREEP_COLLISION_HEIGHT)).convert_alpha()
 					collision_area_surf.fill(BLUE)
@@ -92,6 +93,13 @@ class CameraGroup(pygame.sprite.Group):
 		# self.image = pygame.Surface(
 		# 	(CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
 		# self.image.fill(RED)
+
+	def draw_absolute_vector(self):
+		if show_absolute_vector:
+			for sprite in self.sprites():
+				# pygame.draw.line(屏幕，颜色，起点，终点，宽度)
+				pygame.draw.line(self.display_surf, ORANGE, (0, 0), sprite.rect.topleft, 2)
+				# FIXME: (0, 0)这种坐标永远指的是实际观察窗口中的左上角
 
 # if active:
 # 	pygame.init()
