@@ -1,1 +1,2 @@
-(10, 10, 10, 10))
+
+		self.pos.y = WIN_HEIGTH/2 

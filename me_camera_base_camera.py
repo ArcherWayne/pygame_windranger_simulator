@@ -70,10 +70,20 @@ class CameraGroup(pygame.sprite.Group):
 
 		# elements
 		for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
-			offset_pos = sprite.rect.topleft - self.offset
-			# self.display_surf.blit(sprite.image, offset_pos)
-			self.display_surf.blit(sprite.image, (offset_pos[0]-sprite.rect.size[0]+0.5*sprite.image.get_width(), \
-				offset_pos[1]-sprite.rect.size[1]+0.5*sprite.image.get_height()))
+			if sprite.type == 'hero':
+					# hero_offset = self.offset 
+					offset_pos = sprite.rect.topleft - self.offset
+					self.display_surf.blit(sprite.image, (offset_pos[0]-0.5*(sprite.image.get_width()-sprite.rect.size[0]), \
+						offset_pos[1]-0.5*(sprite.image.get_height()-sprite.rect.size[1])))
+					# self.display_surf.blit(sprite.image, (offset_pos[0]-sprite.rect.size[0]+0.5*sprite.image.get_width(), \
+					# 	offset_pos[1]-sprite.rect.size[1]+0.5*sprite.image.get_height()))
+
+
+			else:
+					offset_pos = sprite.rect.topleft - self.offset
+					# self.display_surf.blit(sprite.image, offset_pos)
+					self.display_surf.blit(sprite.image, (offset_pos[0]-sprite.rect.size[0]+0.5*sprite.image.get_width(), \
+						offset_pos[1]-sprite.rect.size[1]+0.5*sprite.image.get_height()))
 
 
 	def show_collision_area(self):
@@ -110,6 +120,7 @@ class CameraGroup(pygame.sprite.Group):
 					pygame.draw.line(self.display_surf, ORANGE, (-player.rect.topleft[0], -player.rect.topleft[1]), sprite.rect.topleft - self.offset, 2)
 					# NOTE: 实现方法: 向量起始坐标是绝对位置, 终点坐标是相机的相对位置
 					# 指向的是实际的rect的位置, image只是显示图像的, 没有实际逻辑功能
+					# 绝对位置和相对位置的转换关系: 相对位置 = 绝对位置 - offset
 
 			for sprite in self.sprites():
 				if sprite.type == 'hero':
