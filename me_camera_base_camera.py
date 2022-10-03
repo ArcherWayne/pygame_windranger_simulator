@@ -1,4 +1,5 @@
 
+from tkinter import Spinbox
 import pygame, sys
 from setting import *
 # from random import randint
@@ -69,11 +70,13 @@ class CameraGroup(pygame.sprite.Group):
 
 		# elements
 		for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
-			offset_pos = sprite.rect.center - self.offset
-			self.display_surf.blit(sprite.image, offset_pos)
+			offset_pos = sprite.rect.topleft - self.offset
+			# self.display_surf.blit(sprite.image, offset_pos)
+			self.display_surf.blit(sprite.image, (offset_pos[0]-sprite.rect.size[0]+0.5*sprite.image.get_width(), \
+				offset_pos[1]-sprite.rect.size[1]+0.5*sprite.image.get_height()))
 
-		# show collision area
-		# pygame.draw.rect
+
+	def show_collision_area(self):
 		if show_collision_area:
 			# draw a rectangle
 			# rect(surface, color, rect) -> Rect
@@ -83,25 +86,39 @@ class CameraGroup(pygame.sprite.Group):
 				if sprite.type == 'creep':
 					collision_area_surf = pygame.Surface((CREEP_COLLISION_WIDTH, CREEP_COLLISION_HEIGHT)).convert_alpha()
 					collision_area_surf.fill(BLUE)
-					collision_area_rect = collision_area_surf.get_rect(center = sprite.rect.center)
-
-					offset_pos = collision_area_rect.bottomright - self.offset
-
+					collision_area_rect = collision_area_surf.get_rect(topleft = sprite.rect.topleft)
+					offset_pos = collision_area_rect.topleft - self.offset
 					self.display_surf.blit(collision_area_surf, offset_pos)
-					# pygame.draw.rect(self.display_surf, BLUE, sprite.rect)
 
-		# self.image = pygame.Surface(
-		# 	(CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
-		# self.image.fill(RED)
+				if sprite.type == 'hero':
+					collision_area_surf = pygame.Surface((HERO_COLLISION_WIDTH, HERO_COLLISION_HEIGHT)).convert_alpha()
+					collision_area_surf.fill(BLUE)
+					collision_area_rect = collision_area_surf.get_rect(topleft = sprite.rect.topleft)
+					offset_pos = collision_area_rect.topleft - self.offset
+					self.display_surf.blit(collision_area_surf, offset_pos)
 
-	def draw_absolute_vector(self):
+			# self.image = pygame.Surface(
+			# 	(CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
+			# self.image.fill(RED)
+
+
+	def show_absolute_vector(self, player):
 		if show_absolute_vector:
 			for sprite in self.sprites():
-				# pygame.draw.line(屏幕，颜色，起点，终点，宽度)
-				pygame.draw.line(self.display_surf, ORANGE, (0, 0), sprite.rect.topleft, 2)
-				# FIXME: (0, 0)这种坐标永远指的是实际观察窗口中的左上角
+				if sprite.type == 'creep':
+					# pygame.draw.line(屏幕，颜色，起点，终点，宽度)
+					pygame.draw.line(self.display_surf, ORANGE, (-player.rect.topleft[0], -player.rect.topleft[1]), sprite.rect.topleft - self.offset, 2)
+					# NOTE: 实现方法: 向量起始坐标是绝对位置, 终点坐标是相机的相对位置
+					# 指向的是实际的rect的位置, image只是显示图像的, 没有实际逻辑功能
 
-# if active:
+			for sprite in self.sprites():
+				if sprite.type == 'hero':
+					# pygame.draw.line(屏幕，颜色，起点，终点，宽度)
+					pygame.draw.line(self.display_surf, ORANGE, (-player.rect.topleft[0], -player.rect.topleft[1]), sprite.rect.topleft - self.offset, 2)
+					
+
+	def show_debug_info(self):
+		pass
 # 	pygame.init()
 # 	screen = pygame.display.set_mode((1280,720))
 # 	clock = pygame.time.Clock()

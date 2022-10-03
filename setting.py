@@ -16,15 +16,15 @@ map_size = (MAP_WIDTH, MAP_HEIGHT)
 
 
 # game setting 
-show_collision_area = 0
+show_collision_area = 1
 show_absolute_vector = 1
 
 # hero stats
 # __init__(self, name, health, movement_speed, damage, forswing, backswing, flag_moving)
 HERO_HEIGHT = 60
 HERO_WIDTH = 60
-HERO_COLLISON_HEIGHT = 20
-HERO_COLLISON_WIDTH = 20
+HERO_COLLISION_HEIGHT = 20
+HERO_COLLISION_WIDTH = 20
 HERO_HEALTH = 120
 HERO_MOVEMENT_SPEED = 200
 HERO_DAMAGE = 16
@@ -52,6 +52,6 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
-ORANGE = (245, 61, 88)
+ORANGE = (255, 165, 0)
 COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 

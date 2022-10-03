@@ -79,7 +79,8 @@ class MAINGAME:
 				# self.hero.update(dt)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
-				self.camera_group.draw_absolute_vector()
+				self.camera_group.show_absolute_vector(self.hero)
+				self.camera_group.show_collision_area()
 
 				# debug space
 				# debug(self.hero.pos, info_name="self.hero.pos")
@@ -88,6 +89,7 @@ class MAINGAME:
 				# debug(self.creep_group.Sprites.rect)
 				debug(self.creep_group.sprites())
 				debug(self.camera_group.sprites(), y = 30, info_name='camera_group')
+				# debug(self.hero.rect.topleft, x=self.hero.rect.topleft[0], y=self.hero.rect.topleft[1])
 				pygame.display.update()
 
 

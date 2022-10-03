@@ -1,3 +1,5 @@
+# 重要: 全部使用topleft作为实际坐标, 然后用sprite的大小补偿到中心
+
 # 待完成
 1. 更新template, 包括dt和fps
 2. 碰撞debug系统
