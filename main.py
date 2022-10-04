@@ -11,6 +11,7 @@ from random import randint
 from hero import HERO
 from tree import TREE
 from creep import CREEP
+from cursor import CURSOR
 # from hero import PLAYER # debug use
 
 class MAINGAME:
@@ -21,6 +22,7 @@ class MAINGAME:
 		self.screen = pygame.display.set_mode(window_size)
 		pygame.display.set_caption('windranger_simulator')
 		pygame.display.set_icon(pygame.image.load('assets/dota2.png'))
+		pygame.mouse.set_visible(False)
 		# background_surface = pygame.transform.scale(
 		#     pygame.image.load('assets/background/ground.png').convert(), (setting.WIN_WIDTH, setting.WIN_HEIGTH))
 		# background_rect = background_surface.get_rect(center=(setting.WIN_WIDTH / 2, setting.WIN_HEIGTH / 2))
@@ -45,6 +47,8 @@ class MAINGAME:
 		pygame.time.set_timer(self.creep_enemy_timer, 1000)
 
 # attribute setup
+		self.cursor = CURSOR()
+		self.mouse_pos = (0, 0)
 		self.last_time = time.time()
 		self.game_active = True
 
@@ -70,7 +74,10 @@ class MAINGAME:
 				if event.type == self.creep_enemy_timer:
 					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, self.hero))
 
-			# mechanic loop    ---------------------------------------------------------------------------------- #
+			if event.type == pygame.MOUSEMOTION:
+				self.mouse_pos = event.pos
+			
+			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
 				self.screen.fill(BLACK)
 				# screen.blit(background_surface, background_rect)
@@ -81,6 +88,9 @@ class MAINGAME:
 				self.camera_group.custom_draw(self.hero)
 				self.camera_group.show_absolute_vector(self.hero)
 				self.camera_group.show_collision_area()
+
+				self.cursor.update(self.mouse_pos)
+				self.cursor.draw()
 
 				# debug space
 				# debug(self.hero.pos, info_name="self.hero.pos")

@@ -11,7 +11,7 @@ class HERO(pygame.sprite.Sprite): # my code
 		# position
 		self.pos = pygame.math.Vector2()
 		self.pos.x = WIN_WIDTH/2 
-		self.pos.y = WIN_HEIGTH/2 
+		self.pos.y = WIN_HEIGHT/2 
 
 		# graphics
 		# self.image = pygame.transform.scale(pygame.image.load("assets/graphics/windranger/windranger_idle_animation1.png").convert_alpha(), (HERO_WIDTH, HERO_HEIGHT))

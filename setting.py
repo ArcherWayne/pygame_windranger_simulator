@@ -4,10 +4,10 @@ from PIL import Image
 
 window_size = (1400, 800)
 WIN_WIDTH = window_size[0]
-WIN_HEIGTH = window_size[1]
+WIN_HEIGHT = window_size[1]
 screen = pygame.display.set_mode(window_size)
 
-FPS = 60
+FPS = 120
 
 map = Image.open('assets/graphics/map/map.png')
 MAP_WIDTH = map.width       #图片的宽
@@ -18,6 +18,11 @@ map_size = (MAP_WIDTH, MAP_HEIGHT)
 # game setting 
 show_collision_area = 1
 show_absolute_vector = 1
+
+# game stats
+CURSOR_WIDTH = 32
+CURSOR_HEIGHT = 32
+
 
 # hero stats
 # __init__(self, name, health, movement_speed, damage, forswing, backswing, flag_moving)
