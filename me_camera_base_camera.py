@@ -5,43 +5,6 @@ from setting import *
 # from random import randint
 # from debug import debug
 
-# active = 0
-
-# class Tree(pygame.sprite.Sprite):
-# 	def __init__(self,pos,group):
-# 		super().__init__(group)
-# 		self.image = pygame.image.load('assets/graphics/map/tree.png').convert_alpha()
-# 		self.rect = self.image.get_rect(topleft = pos)
-
-# class Player(pygame.sprite.Sprite):
-# 	def __init__(self,pos,group):
-# 		super().__init__(group)
-# 		self.image = pygame.image.load('assets/graphics/windranger/windranger_idle_animation1.png').convert_alpha()
-# 		self.rect = self.image.get_rect(center = pos)
-# 		self.direction = pygame.math.Vector2()
-# 		self.speed = 5
-
-# 	def input(self):
-# 		keys = pygame.key.get_pressed()
-
-# 		if keys[pygame.K_UP]:
-# 			self.direction.y = -1
-# 		elif keys[pygame.K_DOWN]:
-# 			self.direction.y = 1
-# 		else:
-# 			self.direction.y = 0
-
-# 		if keys[pygame.K_RIGHT]:
-# 			self.direction.x = 1
-# 		elif keys[pygame.K_LEFT]:
-# 			self.direction.x = -1
-# 		else:
-# 			self.direction.x = 0
-
-# 	def update(self):
-# 		self.input()
-# 		self.rect.center += self.direction * self.speed
-
 class CameraGroup(pygame.sprite.Group):
 	def __init__(self):
 		super().__init__()
@@ -107,26 +70,16 @@ class CameraGroup(pygame.sprite.Group):
 					offset_pos = collision_area_rect.topleft - self.offset
 					self.display_surf.blit(collision_area_surf, offset_pos)
 
-			# self.image = pygame.Surface(
-			# 	(CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
-			# self.image.fill(RED)
-
 
 	def show_absolute_vector(self, player):
 		if show_absolute_vector:
 			for sprite in self.sprites():
-				if sprite.type == 'creep':
+				if sprite.type == 'creep' or sprite.type == 'hero' or sprite.type == 'arrow':
 					# pygame.draw.line(屏幕，颜色，起点，终点，宽度)
 					pygame.draw.line(self.display_surf, ORANGE, (-player.rect.topleft[0], -player.rect.topleft[1]), sprite.rect.topleft - self.offset, 2)
 					# NOTE: 实现方法: 向量起始坐标是绝对位置, 终点坐标是相机的相对位置
 					# 指向的是实际的rect的位置, image只是显示图像的, 没有实际逻辑功能
 					# 绝对位置和相对位置的转换关系: 相对位置 = 绝对位置 - offset
-
-			for sprite in self.sprites():
-				if sprite.type == 'hero':
-					# pygame.draw.line(屏幕，颜色，起点，终点，宽度)
-					pygame.draw.line(self.display_surf, ORANGE, (-player.rect.topleft[0], -player.rect.topleft[1]), sprite.rect.topleft - self.offset, 2)
-					
 
 	def show_debug_info(self):
 		pass

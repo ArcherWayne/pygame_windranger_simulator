@@ -11,7 +11,7 @@ class CURSOR(pygame.sprite.Sprite):
         self.rect.topleft = mouse_pos
 
     def draw(self):
-        screen.blit(self.image, self.rect)
+        screen.blit(self.image, (self.rect.topleft[0]-0.5*CURSOR_WIDTH, self.rect.topleft[1]-0.5*CURSOR_HEIGHT))
 
     def update(self, mouse_pos):
         self.get_pos(mouse_pos)

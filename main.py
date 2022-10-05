@@ -12,6 +12,7 @@ from hero import HERO
 from tree import TREE
 from creep import CREEP
 from cursor import CURSOR
+from arrow import ARROW
 # from hero import PLAYER # debug use
 
 class MAINGAME:
@@ -31,11 +32,12 @@ class MAINGAME:
 
 # group setup ----------------------------------------------------------------------------------------------- #
 		self.camera_group = CameraGroup()
+
 		self.hero_group = pygame.sprite.GroupSingle()
 		self.creep_group = pygame.sprite.Group()
 		self.tree_group = pygame.sprite.Group()
-		# self.all_sprites = pygame.sprite.Group()
-		self.collision_box_group = pygame.sprite.Group()
+
+		self.arrow_group = pygame.sprite.Group()
 
 # class setup
 		# class = Class()
@@ -46,10 +48,14 @@ class MAINGAME:
 		self.creep_enemy_timer = pygame.USEREVENT + 1
 		pygame.time.set_timer(self.creep_enemy_timer, 1000)
 
+		# self.shoot_arrow = pygame.USEREVENT + 1
+
 # attribute setup
 		self.cursor = CURSOR()
 		self.mouse_pos = (0, 0)
 		self.last_time = time.time()
+		self.start_time = time.time()
+		self.frames = 0
 		self.game_active = True
 
 	def generate_trees(self):
@@ -74,8 +80,26 @@ class MAINGAME:
 				if event.type == self.creep_enemy_timer:
 					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, self.hero))
 
-			if event.type == pygame.MOUSEMOTION:
-				self.mouse_pos = event.pos
+				if event.type == pygame.MOUSEMOTION:
+					self.mouse_pos = event.pos
+
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					self.mouse_click_pos = event.pos
+					self.mouse_click_button = event.button
+					# mouse_action(self.mouse_pos, self.mouse_click_pos, self.mouse_click_button)
+					if self.mouse_click_button == 1:
+						aim_direction = pygame.math.Vector2()
+						aim_direction.x = self.mouse_click_pos[0] - WIN_WIDTH/2
+						aim_direction.y = self.mouse_click_pos[1] - WIN_HEIGHT/2
+						ARROW([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.hero.pos, self.creep_group)
+
+					# FIXME : 方向计算有问题
+
+					if self.mouse_click_button == 2:
+						pass
+
+					if self.mouse_click_button == 3:
+						pass
 			
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
@@ -99,6 +123,10 @@ class MAINGAME:
 				# debug(self.creep_group.Sprites.rect)
 				debug(self.creep_group.sprites())
 				debug(self.camera_group.sprites(), y = 30, info_name='camera_group')
+				debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
+				debug(str(time.time()-self.start_time), y = 70)
+				self.frames += 1
+				debug(str(self.frames), y = 90)
 				# debug(self.hero.rect.topleft, x=self.hero.rect.topleft[0], y=self.hero.rect.topleft[1])
 				pygame.display.update()
 
