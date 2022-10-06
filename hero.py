@@ -3,10 +3,12 @@ from setting import *
 from debug import debug
 
 class HERO(pygame.sprite.Sprite): # my code
-	def __init__(self, *groups) -> None:
-		super().__init__(*groups)
+	def __init__(self, groups, creep_group) -> None:
+		super().__init__(groups)
 		# type
 		self.type = 'hero'
+
+		self.creep_group = creep_group
 
 		# position
 		self.pos = pygame.math.Vector2()
@@ -26,7 +28,8 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.movement_speed = HERO_MOVEMENT_SPEED
 
 		# stat
-		self.health = 3
+		self.health = HERO_HEALTH
+		self.hit_frame = CREEP_ATTACK_INTERVAL - 1 # 英雄接触到小兵的帧读数
 
 	def keyboard_movement(self):
 		keys = pygame.key.get_pressed()
@@ -52,9 +55,37 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.pos.y += self.direction.y * self.movement_speed * self.dt
 		self.rect.y = round(self.pos.y)
 
+
+	def check_collision_with_creeps(self):
+		creep_sprites = pygame.sprite.spritecollide(self, self.creep_group, False) # dokill = False
+
+		if creep_sprites:
+			self.got_hit()
+		
+		else: 
+			self.hit_frame = CREEP_ATTACK_INTERVAL - 1
+			# for creeps in creep_sprites:
+				
+	
+	def got_hit(self):
+		print(self.health)
+		self.hit_frame += 1
+		if self.hit_frame == CREEP_ATTACK_INTERVAL:
+			self.health -= CREEP_DAMAGE
+
+			if self.hit_frame > CREEP_ATTACK_INTERVAL:
+				self.hit_frame = 0
+
+
+	def check_health(self):
+		if self.health <= 0:
+			self.kill()
+
 	def update(self, dt):
 		self.dt = dt
 		self.old_rect = self.rect.copy()
 
 		self.keyboard_movement()
+		self.check_collision_with_creeps()
+		self.check_health()
 

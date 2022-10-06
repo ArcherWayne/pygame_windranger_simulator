@@ -15,6 +15,9 @@ class CREEP(pygame.sprite.Sprite):
 		self.hero = hero
 		self.creep_group = creep_group
 
+		# stats
+		self.health = CREEP_HEALTH
+
 		# position
 		init_distance_with_hero = 500
 		starting_aug = 2*3.14*random()
@@ -77,6 +80,13 @@ class CREEP(pygame.sprite.Sprite):
 						self.pos.y = self.rect.y
 						self.direction.y *= -1
 
+	def got_hit(self, arrow_damage):
+		self.health -= arrow_damage
+
+	def check_health(self):
+		if self.health <= 0:
+			self.kill()
+
 	def update(self, dt):
 		# dt and old_rect -------------------------------------------------------------------- #
 		self.dt = dt
@@ -97,6 +107,4 @@ class CREEP(pygame.sprite.Sprite):
 		self.rect.y = round(self.pos.y)
 		self.collision('vertical')
 
-		# self.rect.center = self.pos
-
-		pass
+		self.check_health()

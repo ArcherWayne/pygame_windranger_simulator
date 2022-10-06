@@ -1,4 +1,5 @@
 # module importing
+from ctypes.wintypes import HMODULE
 import pygame, sys, time
 from setting import *
 
@@ -41,7 +42,7 @@ class MAINGAME:
 
 # class setup
 		# class = Class()
-		self.hero = HERO(self.camera_group)
+		self.hero = HERO(self.camera_group, self.creep_group)
 		# self.hero = PLAYER((window_size[0]/2, window_size[1]/2), CameraGroup) # debug use
 
 # user event setting
@@ -58,11 +59,31 @@ class MAINGAME:
 		self.frames = 0
 		self.game_active = True
 
+		# hold to shoot mechanics
+		self.isshooting = 0
+		self.holding_frame = HERO_ATTACK_INTERVAL - 1
+
 	def generate_trees(self):
 		for i in range(20):
 			random_x = randint(1000,2000)
 			random_y = randint(1000,2000)
 			TREE((random_x,random_y),self.camera_group)
+
+	def hold_to_shoot_arrow(self):
+		if self.isshooting:
+			self.holding_frame += 1
+			if self.holding_frame == HERO_ATTACK_INTERVAL:
+				aim_direction = pygame.math.Vector2()
+				aim_direction.x = self.mouse_pos[0] - WIN_WIDTH/2
+				aim_direction.y = self.mouse_pos[1] - WIN_HEIGHT/2
+				ARROW([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.hero.pos, self.creep_group)
+
+			if self.holding_frame > HERO_ATTACK_INTERVAL:
+				self.holding_frame = 0
+
+		else: 
+			self.holding_frame = HERO_ATTACK_INTERVAL - 1
+
 
 	def game_loop(self):
 		while True:
@@ -80,34 +101,45 @@ class MAINGAME:
 				if event.type == self.creep_enemy_timer:
 					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, self.hero))
 
+
+				# mouse action ------------------------------------------------------------------ #
 				if event.type == pygame.MOUSEMOTION:
 					self.mouse_pos = event.pos
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
-					self.mouse_click_pos = event.pos
-					self.mouse_click_button = event.button
-					# mouse_action(self.mouse_pos, self.mouse_click_pos, self.mouse_click_button)
-					if self.mouse_click_button == 1:
-						aim_direction = pygame.math.Vector2()
-						aim_direction.x = self.mouse_click_pos[0] - WIN_WIDTH/2
-						aim_direction.y = self.mouse_click_pos[1] - WIN_HEIGHT/2
-						ARROW([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.hero.pos, self.creep_group)
+					self.mouse_down_pos = event.pos
+					self.mouse_down_button = event.button
+					if self.mouse_down_button == 1:
+						self.isshooting = 1
 
-					# FIXME : 方向计算有问题
-
-					if self.mouse_click_button == 2:
+					if self.mouse_down_button == 2:
 						pass
 
-					if self.mouse_click_button == 3:
+					if self.mouse_down_button == 3:
 						pass
+
+				if event.type == pygame.MOUSEBUTTONUP:
+					self.mouse_up_pos = event.pos
+					self.mouse_up_button = event.button
+
+					if self.mouse_up_button == 1:
+						self.isshooting = 0
+
+					if self.mouse_up_button == 2:
+						pass
+
+					if self.mouse_up_button == 3:
+						pass
+
+
+
+				# mouse action ------------------------------------------------------------------ #
 			
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
+				self.hold_to_shoot_arrow()
+
 				self.screen.fill(BLACK)
-				# screen.blit(background_surface, background_rect)
-				# self.all_sprites.update()
-				# self.all_sprites.draw(self.screen)
-				# self.hero.update(dt)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
 				self.camera_group.show_absolute_vector(self.hero)

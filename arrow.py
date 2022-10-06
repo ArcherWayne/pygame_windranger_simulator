@@ -38,9 +38,11 @@ class ARROW(pygame.sprite.Sprite):
 		# 1. 检查是否rect之间有碰撞, 这个会检查rect在图像上是否重叠
 		# 2. 检查是否pos之间有碰撞, 这个会检查坐标上是否有重叠
 		# 在bullet中, 依旧要使用camera_group
-		hit_creeps = pygame.sprite.spritecollide(self, self.creep_group, True)
-		if hit_creeps:
+		hit_creeps_list = pygame.sprite.spritecollide(self, self.creep_group, False)
+		if hit_creeps_list:
 			self.kill()
+			for creep in hit_creeps_list:
+				creep.got_hit(self.damage)
 
 	def kill_when_more_than_10s(self):
 		self.time_10s += 1
