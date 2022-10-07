@@ -1,11 +1,17 @@
-from cgi import print_arguments
+
 import pygame, sys
+from test2 import HERO
+from tree import TREE
 from setting import *
 
 pygame.init()
 screen = pygame.display.set_mode(window_size)
 display_surf = pygame.display.get_surface()
 
+camera_group = pygame.sprite.Group()
+hero = HERO(camera_group, camera_group)
+
+camera_group.add(TREE((1,1),camera_group))
 
 while True:
 
@@ -14,19 +20,13 @@ while True:
 			pygame.quit()
 			sys.exit()
 
-
-
-
-
 	# test area ----------------------------------------------------------------------------------------------------- #
-	# pygame.draw.rect(display_surf, (123,132, 53), (10, 10, 10, 10))
-	# rect_1 = pygame.Rect(10, 10, 32, 64)
-	# print(rect_1.size)
+	print(camera_group)
+	print(hero.camera_group)
 
-	image = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
-	image.fill(RED)
 
-	print(image.get_width())
+
+
 	# test area ----------------------------------------------------------------------------------------------------- #
 
 

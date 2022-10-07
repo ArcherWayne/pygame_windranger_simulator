@@ -13,7 +13,7 @@ from hero import HERO
 from tree import TREE
 from creep import CREEP
 from cursor import CURSOR
-from arrow import ARROW
+
 # from hero import PLAYER # debug use
 
 class MAINGAME:
@@ -42,14 +42,12 @@ class MAINGAME:
 
 # class setup
 		# class = Class()
-		self.hero = HERO(self.camera_group, self.creep_group)
+		self.hero = HERO(self.camera_group, self.creep_group, self.camera_group, self.arrow_group)
 		# self.hero = PLAYER((window_size[0]/2, window_size[1]/2), CameraGroup) # debug use
 
 # user event setting
 		self.creep_enemy_timer = pygame.USEREVENT + 1
 		pygame.time.set_timer(self.creep_enemy_timer, 1000)
-
-		# self.shoot_arrow = pygame.USEREVENT + 1
 
 # attribute setup
 		self.cursor = CURSOR()
@@ -60,29 +58,17 @@ class MAINGAME:
 		self.game_active = True
 
 		# hold to shoot mechanics
-		self.isshooting = 0
-		self.holding_frame = HERO_ATTACK_INTERVAL - 1
+		# self.isshooting = 0
+		# self.holding_frame = HERO_ATTACK_INTERVAL - 1
+
+
+	# init finish ---------------------------------------------------------------------------------------- # 
 
 	def generate_trees(self):
 		for i in range(20):
 			random_x = randint(1000,2000)
 			random_y = randint(1000,2000)
 			TREE((random_x,random_y),self.camera_group)
-
-	def hold_to_shoot_arrow(self):
-		if self.isshooting:
-			self.holding_frame += 1
-			if self.holding_frame == HERO_ATTACK_INTERVAL:
-				aim_direction = pygame.math.Vector2()
-				aim_direction.x = self.mouse_pos[0] - WIN_WIDTH/2
-				aim_direction.y = self.mouse_pos[1] - WIN_HEIGHT/2
-				ARROW([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.hero.pos, self.creep_group)
-
-			if self.holding_frame > HERO_ATTACK_INTERVAL:
-				self.holding_frame = 0
-
-		else: 
-			self.holding_frame = HERO_ATTACK_INTERVAL - 1
 
 
 	def game_loop(self):
@@ -107,10 +93,12 @@ class MAINGAME:
 					self.mouse_pos = event.pos
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
+					# 这个只管down的一瞬间
 					self.mouse_down_pos = event.pos
 					self.mouse_down_button = event.button
+
 					if self.mouse_down_button == 1:
-						self.isshooting = 1
+						pass
 
 					if self.mouse_down_button == 2:
 						pass
@@ -123,7 +111,7 @@ class MAINGAME:
 					self.mouse_up_button = event.button
 
 					if self.mouse_up_button == 1:
-						self.isshooting = 0
+						pass
 
 					if self.mouse_up_button == 2:
 						pass
@@ -133,11 +121,14 @@ class MAINGAME:
 
 
 
-				# mouse action ------------------------------------------------------------------ #
-			
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
-				self.hold_to_shoot_arrow()
+
+				# 按键长按管理部分 ----------------------------- #
+				mouse_pressed_list = pygame.mouse.get_pressed(num_buttons=3)
+				if mouse_pressed_list[0]:
+					self.hero.shoot_arrow(self.mouse_pos)
+
 
 				self.screen.fill(BLACK)
 				self.camera_group.update(dt)

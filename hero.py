@@ -1,14 +1,19 @@
 import pygame
+from arrow import ARROW
 from setting import *
 from debug import debug
 
 class HERO(pygame.sprite.Sprite): # my code
-	def __init__(self, groups, creep_group) -> None:
+	def __init__(self, groups, creep_group, camera_group, arrow_group) -> None:
 		super().__init__(groups)
 		# type
 		self.type = 'hero'
 
+		# group setting, the imported group is the same reference as the outside group, not the copy of it 
+
 		self.creep_group = creep_group
+		self.camera_group = camera_group
+		self.arrow_group = arrow_group
 
 		# position
 		self.pos = pygame.math.Vector2()
@@ -29,7 +34,11 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# stat
 		self.health = HERO_HEALTH
-		self.hit_frame = CREEP_ATTACK_INTERVAL - 1 # 英雄接触到小兵的帧读数
+
+		# cooldown frames
+		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
+		self.shoot_arrow_cooldown_frame = 0
+
 
 	def keyboard_movement(self):
 		keys = pygame.key.get_pressed()
@@ -56,6 +65,16 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.rect.y = round(self.pos.y)
 
 
+	def shoot_arrow(self, mouse_pos):
+		if self.shoot_arrow_cooldown_frame == 0:
+			aim_direction = pygame.math.Vector2()
+			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
+			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
+			ARROW([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.pos, self.creep_group)
+
+			self.shoot_arrow_cooldown_frame += 1
+
+
 	def check_collision_with_creeps(self):
 		creep_sprites = pygame.sprite.spritecollide(self, self.creep_group, False) # dokill = False
 
@@ -65,21 +84,29 @@ class HERO(pygame.sprite.Sprite): # my code
 		else: 
 			self.hit_frame = CREEP_ATTACK_INTERVAL - 1
 			# for creeps in creep_sprites:
-				
+
 	
 	def got_hit(self):
-		print(self.health)
 		self.hit_frame += 1
 		if self.hit_frame == CREEP_ATTACK_INTERVAL:
 			self.health -= CREEP_DAMAGE
 
-			if self.hit_frame > CREEP_ATTACK_INTERVAL:
-				self.hit_frame = 0
+		if self.hit_frame > CREEP_ATTACK_INTERVAL:
+			self.hit_frame = 0
 
 
 	def check_health(self):
 		if self.health <= 0:
 			self.kill()
+
+
+	def update_cooldowns(self, cooldown_frame, cooldown_interval):
+		if cooldown_frame > 0:
+			cooldown_frame += 1
+		if cooldown_frame > cooldown_interval:
+			cooldown_frame = 0
+
+		return cooldown_frame
 
 	def update(self, dt):
 		self.dt = dt
@@ -88,4 +115,8 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.keyboard_movement()
 		self.check_collision_with_creeps()
 		self.check_health()
+
+		# update cooldowns
+		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, HERO_ATTACK_INTERVAL)
+		print(self.shoot_arrow_cooldown_frame)
 

@@ -1,2 +1,1 @@
-
-		self.pos.y = WIN_HEIGTH/2 
+camera_group.add(TREE((1,1),camera_group))
