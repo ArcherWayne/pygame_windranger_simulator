@@ -32,16 +32,45 @@ class UIGroup(pygame.sprite.Group):
 
 		# skills
 		self.update_skill_number(self.skill_number)
-		# self.skill_background_length = (self.hp_mn_bar_size[0]/self.skill_number)*0.98
-		# self.skill_slot_length = (self.hp_mn_bar_size[0]/self.skill_number)*0.95
-		# self.skill_background_topleft_1 = (self.hp_mn_bar_background_rect.topleft[0], self.hp_mn_bar_background_rect.topleft[1] - self.hp_mn_bar_size[0]/self.skill_number)
 
-		# self.sklll_background_surf = pygame.Surface((self.skill_background_length, self.skill_background_length))
+		# items
+		# 绘制九个放置道具的黑色背景
+		self.item_background_ratio = 131/96
+		self.item_background_topleft_1 = (self.skill_background_topleft_1[0] + self.hp_mn_bar_size[0] + self.windows_size[0]/100, self.skill_background_topleft_1[1])
+		self.item_background_height = round((self.windows_size[1] - self.item_background_topleft_1[1])/3 - (self.windows_size[1] - self.hp_mn_bar_background_rect.bottomleft[1])/3)
+		self.item_background_width = round(self.item_background_ratio * self.item_background_height)
+		self.item_background_surf_size = (round(0.95*self.item_background_width), round(0.95*self.item_background_height))
 
-		# self.skill_background_rect_list = []
+		self.item_background_surf = pygame.Surface(self.item_background_surf_size)
+		self.item_background_surf.fill(BLACK)
 
-		# for i in range(self.skill_number): # i = 0, 1, 2, ... self.skill_number - 1
-		# 	self.skill_background_rect_list.add(self.sklll_background_surf.get_rect(topleft = self.skill_background_topleft_1 + i*(self.hp_mn_bar_size[0]/self.skill_number)))
+		# self.item_background_topleft_list = []
+		self.item_background_rect_list = []
+
+		for i in range(3):
+			for ii in range(3):
+				self.item_background_rect_list.append(self.item_background_surf.get_rect(topleft = \
+					(self.item_background_topleft_1[0]+ii*self.item_background_width, self.item_background_topleft_1[1]+i*self.item_background_height)))
+
+
+	def update_skill_number(self, skill_number):
+		# 每次更新了技能数量， 就会重新计算各个技能的位置
+		self.skill_background_rect_list = []
+		self.skill_number = skill_number
+
+		self.hp_bar_length_dived_by_skill_number = round(self.hp_mn_bar_size[0]/self.skill_number)
+
+		self.skill_background_length = round((self.hp_bar_length_dived_by_skill_number)*0.98)
+		self.skill_slot_length = round((self.hp_bar_length_dived_by_skill_number)*0.95)
+		self.skill_background_topleft_1 = (self.hp_mn_bar_background_rect.topleft[0], self.hp_mn_bar_background_rect.topleft[1] - self.hp_bar_length_dived_by_skill_number)
+
+		self.sklll_background_surf = pygame.Surface((self.skill_background_length, self.skill_background_length))
+
+
+		for i in range(self.skill_number): # i = 0, 1, 2, ... self.skill_number - 1
+			self.skill_background_rect_list.append(self.sklll_background_surf.get_rect(topleft = \
+				(self.skill_background_topleft_1[0] + i*(self.hp_bar_length_dived_by_skill_number), self.skill_background_topleft_1[1])))
+
 
 
 	def draw_health_mana_bar(self):
@@ -59,27 +88,18 @@ class UIGroup(pygame.sprite.Group):
 			(self.hp_mn_bar_background_rect.topleft[0] - 2, self.hp_mn_bar_background_rect.topleft[1] + 0.5*self.hp_mn_bar_size[1] - 2))
 		self.display_surf.blit(self.mn_bar_surf, self.mn_bar_rect)
 
-	def update_skill_number(self, skill_number):
-		self.skill_number = skill_number
-
-		self.hp_bar_length_dived_by_skill_number = round(self.hp_mn_bar_size[0]/self.skill_number)
-
-		self.skill_background_length = round((self.hp_bar_length_dived_by_skill_number)*0.98)
-		self.skill_slot_length = round((self.hp_bar_length_dived_by_skill_number)*0.95)
-		self.skill_background_topleft_1 = (self.hp_mn_bar_background_rect.topleft[0], self.hp_mn_bar_background_rect.topleft[1] - self.hp_bar_length_dived_by_skill_number)
-
-		self.sklll_background_surf = pygame.Surface((self.skill_background_length, self.skill_background_length))
-
-		self.skill_background_rect_list = []
-
-		for i in range(self.skill_number): # i = 0, 1, 2, ... self.skill_number - 1
-			self.skill_background_rect_list.append(self.sklll_background_surf.get_rect(topleft = \
-				(self.skill_background_topleft_1[0] + i*(self.hp_bar_length_dived_by_skill_number), self.skill_background_topleft_1[1])))
 
 
 	def draw_skills(self):
+		# 目前只画了background
 		for i in range(self.skill_number):
 			self.display_surf.blit(self.sklll_background_surf, self.skill_background_rect_list[i])
+
+	def draw_items(self):
+		# 目前只画了background
+		for rect in self.item_background_rect_list:
+			self.display_surf.blit(self.item_background_surf, rect)
+
 
 	def update(self): 
 		if self.hero.current_health > 0 and self.hero.current_mana > 0:
@@ -92,3 +112,4 @@ class UIGroup(pygame.sprite.Group):
 	def ui_draw(self):
 		self.draw_health_mana_bar()
 		self.draw_skills()
+		self.draw_items()

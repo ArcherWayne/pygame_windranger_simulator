@@ -123,6 +123,11 @@ class MAINGAME:
 					if self.mouse_up_button == 3:
 						pass
 
+				# keyboard action --------------------------------------------------------------------------- #
+				if event.type == pygame.KEYDOWN:
+					pass
+					# if event.key == pygame.K_SPACE:
+					# 	self.ui_group.update_skill_number(randint(3, 9))
 
 
 			# game loop    ---------------------------------------------------------------------------------- #
@@ -146,33 +151,21 @@ class MAINGAME:
 				self.cursor.draw()
 
 				# debug space
-				# debug(self.hero.pos, info_name="self.hero.pos")
-				# debug(self.camera_group.ground_rect.topleft, y = 30, info_name="self.camera_group.ground_rect.topleft")
-				# debug(self.camera_group.offset, y = 50, info_name="self.camera_group.offset")
-				# debug(self.creep_group.Sprites.rect)
 				debug(self.creep_group.sprites())
 				debug(self.camera_group.sprites(), y = 30, info_name='camera_group')
 				debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
 				debug(str(time.time()-self.start_time), y = 70)
+
 				self.frames += 1
 				debug(str(self.frames), y = 90)
-				# debug(self.hero.rect.topleft, x=self.hero.rect.topleft[0], y=self.hero.rect.topleft[1])
-				# print(self.hero_group.sprite)
-				# print(self.hero)
+
 				pygame.display.update()
 
-
-class GAMEMANAGER:
-	def __init__(self):
-		pass
-
-	def update(self):
-		pass
 
 
 if __name__ == "__main__":
 	main_game = MAINGAME()
-	game_manager = GAMEMANAGER()
+
 
 	# init functions
 	main_game.generate_trees()
