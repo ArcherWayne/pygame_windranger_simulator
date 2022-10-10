@@ -6,6 +6,7 @@ from setting import *
 # function importing
 from debug import debug
 from me_camera_base_camera import CameraGroup
+from UIgroup import UIGroup
 from random import randint
 
 # entity importing
@@ -21,7 +22,7 @@ class MAINGAME:
 		## pygame setup
 
 		pygame.init()
-		self.screen = pygame.display.set_mode(window_size)
+		self.screen = pygame.display.set_mode(WINDOW_SIZE)
 		pygame.display.set_caption('windranger_simulator')
 		pygame.display.set_icon(pygame.image.load('assets/dota2.png'))
 		pygame.mouse.set_visible(False)
@@ -42,8 +43,11 @@ class MAINGAME:
 
 # class setup
 		# class = Class()
-		self.hero = HERO(self.camera_group, self.creep_group, self.camera_group, self.arrow_group)
-		# self.hero = PLAYER((window_size[0]/2, window_size[1]/2), CameraGroup) # debug use
+		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group)
+
+
+		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group)
+
 
 # user event setting
 		self.creep_enemy_timer = pygame.USEREVENT + 1
@@ -85,7 +89,7 @@ class MAINGAME:
 					sys.exit()
 
 				if event.type == self.creep_enemy_timer:
-					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, self.hero))
+					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, self.hero, self.hero.arrow_group))
 
 
 				# mouse action ------------------------------------------------------------------ #
@@ -135,6 +139,8 @@ class MAINGAME:
 				self.camera_group.custom_draw(self.hero)
 				self.camera_group.show_absolute_vector(self.hero)
 				self.camera_group.show_collision_area()
+				self.ui_group.update()
+				self.ui_group.ui_draw()
 
 				self.cursor.update(self.mouse_pos)
 				self.cursor.draw()
@@ -151,6 +157,8 @@ class MAINGAME:
 				self.frames += 1
 				debug(str(self.frames), y = 90)
 				# debug(self.hero.rect.topleft, x=self.hero.rect.topleft[0], y=self.hero.rect.topleft[1])
+				# print(self.hero_group.sprite)
+				# print(self.hero)
 				pygame.display.update()
 
 

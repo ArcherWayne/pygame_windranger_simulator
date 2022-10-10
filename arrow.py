@@ -16,6 +16,7 @@ class ARROW(pygame.sprite.Sprite):
 
 		self.movement_speed = speed
 		self.damage = damage
+		self.knockback = ARROW_KNOCKBACK
 		self.start_pos = hero_pos
 
 		self.pos = pygame.math.Vector2()
@@ -42,7 +43,7 @@ class ARROW(pygame.sprite.Sprite):
 		if hit_creeps_list:
 			self.kill()
 			for creep in hit_creeps_list:
-				creep.got_hit(self.damage)
+				creep.got_hit(self.damage, self)
 
 	def kill_when_more_than_10s(self):
 		self.time_10s += 1

@@ -33,7 +33,10 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.movement_speed = HERO_MOVEMENT_SPEED
 
 		# stat
-		self.health = HERO_HEALTH
+		self.max_health = HERO_HEALTH
+		self.current_health = HERO_HEALTH
+		self.max_mana = HERO_MANA
+		self.current_mana = HERO_MANA
 
 		# cooldown frames
 		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
@@ -80,23 +83,17 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		if creep_sprites:
 			self.got_hit()
-		
-		else: 
-			self.hit_frame = CREEP_ATTACK_INTERVAL - 1
-			# for creeps in creep_sprites:
 
 	
 	def got_hit(self):
-		self.hit_frame += 1
-		if self.hit_frame == CREEP_ATTACK_INTERVAL:
-			self.health -= CREEP_DAMAGE
-
-		if self.hit_frame > CREEP_ATTACK_INTERVAL:
-			self.hit_frame = 0
+		if self.hit_cooldown_frame == 0:
+			self.current_health -= CREEP_DAMAGE
+			
+			self.hit_cooldown_frame += 1
 
 
 	def check_health(self):
-		if self.health <= 0:
+		if self.current_health <= 0:
 			self.kill()
 
 
@@ -118,5 +115,5 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# update cooldowns
 		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, HERO_ATTACK_INTERVAL)
-		print(self.shoot_arrow_cooldown_frame)
+		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, CREEP_ATTACK_INTERVAL)
 
