@@ -6,8 +6,10 @@ from setting import *
 # function importing
 from debug import debug
 from me_camera_base_camera import CameraGroup
+# from special_effects import DAMAGE_NUMBERS
 from UIgroup import UIGroup
 from random import randint
+
 
 # entity importing
 from hero import HERO
@@ -162,6 +164,9 @@ class MAINGAME:
 				pygame.display.update()
 
 
+class STATS_MANAGER:
+	def __init__(self) -> None:
+		pass
 
 if __name__ == "__main__":
 	main_game = MAINGAME()

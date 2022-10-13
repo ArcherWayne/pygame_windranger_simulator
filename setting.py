@@ -13,6 +13,7 @@ FPS = 120
 map = Image.open('assets/graphics/map/map.png')
 MAP_WIDTH = map.width       #图片的宽
 MAP_HEIGHT = map.height      #图片的高
+map.close()
 
 dota2_actual_map_size = (11000, 11000)
 # MAP_WIDTH = dota2_actual_map_size[0]      #图片的宽

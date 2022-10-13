@@ -1,5 +1,6 @@
 import pygame, sys
 from setting import *
+from PIL import Image
 
 
 
@@ -44,13 +45,25 @@ class UIGroup(pygame.sprite.Group):
 		self.item_background_surf = pygame.Surface(self.item_background_surf_size)
 		self.item_background_surf.fill(BLACK)
 
-		# self.item_background_topleft_list = []
 		self.item_background_rect_list = []
 
 		for i in range(3):
 			for ii in range(3):
 				self.item_background_rect_list.append(self.item_background_surf.get_rect(topleft = \
 					(self.item_background_topleft_1[0]+ii*self.item_background_width, self.item_background_topleft_1[1]+i*self.item_background_height)))
+
+		# mugshot
+		mugshot = Image.open('assets/graphics/windranger/windranger_mugshot.png')
+		# mugshot_width = mugshot.width       #图片的宽
+		# mughsot_height = mugshot.height      #图片的高
+		mugshot_ratio = mugshot.width/mugshot.height
+		mugshot.close()
+		mugshot_height = self.windows_size[1] - self.item_background_topleft_1[1]
+		mugshot_width = round(mugshot_ratio * mugshot_height)
+		self.wr_mugshot_surf = pygame.transform.scale(pygame.image.load('assets/graphics/windranger/windranger_mugshot.png').convert_alpha(), (mugshot_width, mugshot_height))
+		self.wr_mugshot_rect = self.wr_mugshot_surf.get_rect(bottomright = \
+			(self.hp_mn_bar_background_rect.bottomleft[0] - self.windows_size[0]/100, self.hp_mn_bar_background_rect.bottomleft[1]))
+
 
 
 	def update_skill_number(self, skill_number):
@@ -65,7 +78,6 @@ class UIGroup(pygame.sprite.Group):
 		self.skill_background_topleft_1 = (self.hp_mn_bar_background_rect.topleft[0], self.hp_mn_bar_background_rect.topleft[1] - self.hp_bar_length_dived_by_skill_number)
 
 		self.sklll_background_surf = pygame.Surface((self.skill_background_length, self.skill_background_length))
-
 
 		for i in range(self.skill_number): # i = 0, 1, 2, ... self.skill_number - 1
 			self.skill_background_rect_list.append(self.sklll_background_surf.get_rect(topleft = \
@@ -100,6 +112,9 @@ class UIGroup(pygame.sprite.Group):
 		for rect in self.item_background_rect_list:
 			self.display_surf.blit(self.item_background_surf, rect)
 
+	def draw_mugshot(self):
+		self.display_surf.blit(self.wr_mugshot_surf, self.wr_mugshot_rect)
+
 
 	def update(self): 
 		if self.hero.current_health > 0 and self.hero.current_mana > 0:
@@ -113,3 +128,4 @@ class UIGroup(pygame.sprite.Group):
 		self.draw_health_mana_bar()
 		self.draw_skills()
 		self.draw_items()
+		self.draw_mugshot()
