@@ -17,6 +17,7 @@ class ARROW(pygame.sprite.Sprite):
 		self.movement_speed = speed
 		self.damage = damage
 		self.knockback = ARROW_KNOCKBACK
+		self.penetration = ARROW_PENETRATION
 		self.start_pos = hero_pos
 
 		self.pos = pygame.math.Vector2()
@@ -34,6 +35,8 @@ class ARROW(pygame.sprite.Sprite):
 		self.time_10s = 0
 		self.creep_group = creep_group
 
+		self.penetrated_creeps = []
+
 	def check_collision(self):
 		# 存在两种碰撞: 
 		# 1. 检查是否rect之间有碰撞, 这个会检查rect在图像上是否重叠
@@ -41,13 +44,19 @@ class ARROW(pygame.sprite.Sprite):
 		# 在bullet中, 依旧要使用camera_group
 		hit_creeps_list = pygame.sprite.spritecollide(self, self.creep_group, False)
 		if hit_creeps_list:
-			self.kill()
 			for creep in hit_creeps_list:
-				creep.got_hit(self.damage, self)
+				if creep not in self.penetrated_creeps:
+					creep.got_hit(self.damage, self)
+					self.penetrated_creeps.append(creep)
+					self.penetration -= 1
 
 	def kill_when_more_than_10s(self):
 		self.time_10s += 1
 		if self.time_10s >= FPS*10:
+			self.kill()
+
+	def kill_when_penetrated(self):
+		if self.penetration <= 0:
 			self.kill()
 
 
@@ -58,4 +67,5 @@ class ARROW(pygame.sprite.Sprite):
 		self.rect.y = round(self.pos.y)
 
 		self.kill_when_more_than_10s()
+		self.kill_when_penetrated()
 		self.check_collision()

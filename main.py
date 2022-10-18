@@ -52,7 +52,7 @@ class MAINGAME:
 
 # user event setting
 		self.creep_enemy_timer = pygame.USEREVENT + 1
-		pygame.time.set_timer(self.creep_enemy_timer, 3000)
+		pygame.time.set_timer(self.creep_enemy_timer, 1000)
 
 # attribute setup
 		self.cursor = CURSOR()

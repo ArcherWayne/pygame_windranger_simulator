@@ -150,15 +150,16 @@ class SKILL_POWERSHOT(ARROW):
 			self.direction = self.direction.normalize()
 
 		self.movement_speed = speed * 3
-		self.damage = damage * 3
+		self.damage = damage * 10
 		self.knockback = ARROW_KNOCKBACK * 3
+		self.penetration = ARROW_PENETRATION * 10
 		self.start_pos = hero_pos
 
 		self.pos = pygame.math.Vector2()
 		self.pos.x = hero_pos.x
 		self.pos.y = hero_pos.y
 
-		self.image = pygame.Surface((ARROW_WIDTH, ARROW_HEIGHT)).convert_alpha()
+		self.image = pygame.Surface((ARROW_WIDTH * 3, ARROW_HEIGHT * 3)).convert_alpha()
 		self.image.fill(RED)
 		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
 		self.rect = pygame.Rect(0, 0, ARROW_COLLISION_WIDTH, ARROW_COLLISION_HEIGHT)
@@ -169,20 +170,5 @@ class SKILL_POWERSHOT(ARROW):
 		self.time_10s = 0
 		self.creep_group = creep_group
 
-
-	def check_collision(self):
-		hit_creeps_list = pygame.sprite.spritecollide(self, self.creep_group, False)
-		if hit_creeps_list:
-			for creep in hit_creeps_list:
-				creep.got_hit(self.damage, self)
-
-	def update(self, dt):
-		self.pos.x += self.direction.x * self.movement_speed * dt
-		self.rect.x = round(self.pos.x)
-		self.pos.y += self.direction.y * self.movement_speed * dt
-		self.rect.y = round(self.pos.y)
-
-		self.kill_when_more_than_10s()
-		self.check_collision()
 
 
