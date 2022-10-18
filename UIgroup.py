@@ -34,6 +34,19 @@ class UIGroup(pygame.sprite.Group):
 		# skills
 		self.update_skill_number(self.skill_number)
 
+		self.skill_shackleshot_icon_image = pygame.transform.scale(pygame.image.load('assets/graphics/icons/skills/skill_shackleshot.png').convert_alpha(), \
+			(self.skill_slot_length, self.skill_slot_length))
+		self.skill_powershot_icon_image = pygame.transform.scale(pygame.image.load('assets/graphics/icons/skills/skill_powershot.png').convert_alpha(), \
+			(self.skill_slot_length, self.skill_slot_length))
+		self.skill_windrun_icon_image = pygame.transform.scale(pygame.image.load('assets/graphics/icons/skills/skill_windrun.png').convert_alpha(), \
+			(self.skill_slot_length, self.skill_slot_length))
+		self.skill_galeforce_icon_image = pygame.transform.scale(pygame.image.load('assets/graphics/icons/skills/skill_galeforce.png').convert_alpha(), \
+			(self.skill_slot_length, self.skill_slot_length))
+		self.skill_focusfire_icon_image = pygame.transform.scale(pygame.image.load('assets/graphics/icons/skills/skill_focusfire.png').convert_alpha(), \
+			(self.skill_slot_length, self.skill_slot_length))
+
+		self.skill_icon_list = [self.skill_shackleshot_icon_image, self.skill_powershot_icon_image, self.skill_windrun_icon_image, self.skill_galeforce_icon_image, self.skill_focusfire_icon_image]
+
 		# items
 		# 绘制九个放置道具的黑色背景
 		self.item_background_ratio = 131/96
@@ -103,9 +116,23 @@ class UIGroup(pygame.sprite.Group):
 
 
 	def draw_skills(self):
-		# 目前只画了background
 		for i in range(self.skill_number):
 			self.display_surf.blit(self.sklll_background_surf, self.skill_background_rect_list[i])
+
+		# skill icons
+		if self.skill_number == 4:
+			self.display_surf.blit(self.skill_shackleshot_icon_image, self.skill_background_rect_list[0])
+			self.display_surf.blit(self.skill_powershot_icon_image, self.skill_background_rect_list[1])
+			self.display_surf.blit(self.skill_windrun_icon_image, self.skill_background_rect_list[2])
+			self.display_surf.blit(self.skill_focusfire_icon_image, self.skill_background_rect_list[3])
+
+		elif self.skill_number == 5:
+			self.display_surf.blit(self.skill_shackleshot_icon_image, self.skill_background_rect_list[0])
+			self.display_surf.blit(self.skill_powershot_icon_image, self.skill_background_rect_list[1])
+			self.display_surf.blit(self.skill_windrun_icon_image, self.skill_background_rect_list[2])
+			self.display_surf.blit(self.skill_galeforce_icon_image, self.skill_background_rect_list[3])
+			self.display_surf.blit(self.skill_focusfire_icon_image, self.skill_background_rect_list[4])
+
 
 	def draw_items(self):
 		# 目前只画了background

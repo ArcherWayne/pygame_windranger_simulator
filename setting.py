@@ -53,6 +53,7 @@ ARROW_SPEED = 600
 ARROW_DAMAGE = 42
 ARROW_KNOCKBACK = 200
 
+POWERSHOT_CD = FPS * 3
 
 # creep stats --------------------------------------------------- #
 # __init__(self, health, movement_speed, damage, forswing, backswing)
@@ -61,7 +62,7 @@ CREEP_HEIGHT = 60
 CREEP_COLLISION_WIDTH = 40
 CREEP_COLLISION_HEIGHT = 40
 CREEP_HEALTH = 550
-CREEP_MOVEMENT_SPEED = 0 # 315
+CREEP_MOVEMENT_SPEED = 315 # 315
 CREEP_DAMAGE = 19
 CREEP_ATTACK_INTERVAL = FPS/10
 

@@ -40,7 +40,8 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# cooldown frames
 		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
-		self.shoot_arrow_cooldown_frame = 0
+		self.shoot_arrow_cooldown_frame = 0 # attack cd
+		self.skill_powershot_cooldown_frame = 0 # powershot cd
 
 
 	def keyboard_movement(self):
@@ -77,6 +78,17 @@ class HERO(pygame.sprite.Sprite): # my code
 
 			self.shoot_arrow_cooldown_frame += 1
 
+	# use skills ---------------------------------------------- # 
+	def use_skill_powershot(self, mouse_pos):
+		if self.skill_powershot_cooldown_frame == 0:
+			aim_direction = pygame.math.Vector2()
+			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
+			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
+			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.pos, self.creep_group)
+
+			self.skill_powershot_cooldown_frame += 1
+
+	# use skills end ------------------------------------------ # 
 
 	def check_collision_with_creeps(self):
 		creep_sprites = pygame.sprite.spritecollide(self, self.creep_group, False) # dokill = False
@@ -116,18 +128,61 @@ class HERO(pygame.sprite.Sprite): # my code
 		# update cooldowns
 		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, HERO_ATTACK_INTERVAL)
 		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, CREEP_ATTACK_INTERVAL)
+		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, POWERSHOT_CD)
 
-class SKILL_SHACKLE(pygame.sprite.Sprite):
+class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
 	def __init__(self, groups):
 		super().__init__(groups)
 
-		self.type = 'skill_shackle'
+		self.type = 'skill_shackleshot'
 
 
-class SKILL_POWER(pygame.sprite.Sprite):
-	def __init__(self, groups):
-		super().__init__(groups)
+class SKILL_POWERSHOT(ARROW):
+	def __init__(self, groups, direction, speed, damage, hero_pos, creep_group):
+		super().__init__(groups, direction, speed, damage, hero_pos, creep_group)
 
-		self.type = 'skill_power'
+		self.type = 'arrow'
 
-		
+		# movement 
+		self.direction = direction
+
+		if self.direction.magnitude() != 0:
+			self.direction = self.direction.normalize()
+
+		self.movement_speed = speed
+		self.damage = damage * 100
+		self.knockback = ARROW_KNOCKBACK * 100
+		self.start_pos = hero_pos
+
+		self.pos = pygame.math.Vector2()
+		self.pos.x = hero_pos.x
+		self.pos.y = hero_pos.y
+
+		self.image = pygame.Surface((ARROW_WIDTH, ARROW_HEIGHT)).convert_alpha()
+		self.image.fill(RED)
+		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
+		self.rect = pygame.Rect(0, 0, ARROW_COLLISION_WIDTH, ARROW_COLLISION_HEIGHT)
+
+		self.old_rect = self.rect.copy()
+
+		# stats
+		self.time_10s = 0
+		self.creep_group = creep_group
+
+
+		def check_collision(self):
+			hit_creeps_list = pygame.sprite.spritecollide(self, self.creep_group, False)
+			if hit_creeps_list:
+				for creep in hit_creeps_list:
+					creep.got_hit(self.damage, self)
+
+		def update(self, dt):
+			self.pos.x += self.direction.x * self.movement_speed * dt
+			self.rect.x = round(self.pos.x)
+			self.pos.y += self.direction.y * self.movement_speed * dt
+			self.rect.y = round(self.pos.y)
+
+			self.kill_when_more_than_10s()
+			self.check_collision()
+
+

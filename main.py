@@ -52,7 +52,7 @@ class MAINGAME:
 
 # user event setting
 		self.creep_enemy_timer = pygame.USEREVENT + 1
-		pygame.time.set_timer(self.creep_enemy_timer, 1000)
+		pygame.time.set_timer(self.creep_enemy_timer, 3000)
 
 # attribute setup
 		self.cursor = CURSOR()
@@ -126,15 +126,15 @@ class MAINGAME:
 
 				# keyboard action --------------------------------------------------------------------------- #
 				if event.type == pygame.KEYDOWN:
-					pass
-
+					if event.key == pygame.K_2:
+						self.hero.use_skill_powershot(self.mouse_pos)
 
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
 
 				# 按键长按管理部分 ----------------------------- #
 				mouse_pressed_list = pygame.mouse.get_pressed(num_buttons=3)
-				if mouse_pressed_list[0]:
+				if mouse_pressed_list[2]:
 					self.hero.shoot_arrow(self.mouse_pos)
 
 
