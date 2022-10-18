@@ -5,7 +5,11 @@ from PIL import Image
 WINDOW_SIZE = (1400, 800)
 WIN_WIDTH = WINDOW_SIZE[0]
 WIN_HEIGHT = WINDOW_SIZE[1]
+
+pygame.init()
+
 screen = pygame.display.set_mode(WINDOW_SIZE)
+FONT = pygame.font.Font('assets/font/HuaGuangGangTieZhiHei-KeBianTi-2.ttf', 30)
 
 FPS = 120
 
@@ -57,7 +61,7 @@ CREEP_HEIGHT = 60
 CREEP_COLLISION_WIDTH = 40
 CREEP_COLLISION_HEIGHT = 40
 CREEP_HEALTH = 550
-CREEP_MOVEMENT_SPEED = 315
+CREEP_MOVEMENT_SPEED = 0 # 315
 CREEP_DAMAGE = 19
 CREEP_ATTACK_INTERVAL = FPS/10
 
@@ -71,4 +75,9 @@ BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 ORANGE = (255, 165, 0)
 COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
+
+
+class STAT_MANAGER:
+	def __init__(self) -> None:
+		pass
 

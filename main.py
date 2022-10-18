@@ -32,7 +32,6 @@ class MAINGAME:
 		#     pygame.image.load('assets/background/ground.png').convert(), (setting.WIN_WIDTH, setting.WIN_HEIGTH))
 		# background_rect = background_surface.get_rect(center=(setting.WIN_WIDTH / 2, setting.WIN_HEIGTH / 2))
 		self.clock = pygame.time.Clock()
-		# font = pygame.font.Font('assets/font/Pixeltype.ttf', 50)
 
 # group setup ----------------------------------------------------------------------------------------------- #
 		self.camera_group = CameraGroup()
@@ -91,8 +90,8 @@ class MAINGAME:
 					sys.exit()
 
 				if event.type == self.creep_enemy_timer:
-					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, self.hero, self.hero.arrow_group))
-
+					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, \
+						self.hero, self.hero.arrow_group, self.camera_group))
 
 				# mouse action ------------------------------------------------------------------ #
 				if event.type == pygame.MOUSEMOTION:
@@ -128,8 +127,6 @@ class MAINGAME:
 				# keyboard action --------------------------------------------------------------------------- #
 				if event.type == pygame.KEYDOWN:
 					pass
-					# if event.key == pygame.K_SPACE:
-					# 	self.ui_group.update_skill_number(randint(3, 9))
 
 
 			# game loop    ---------------------------------------------------------------------------------- #
@@ -163,10 +160,6 @@ class MAINGAME:
 
 				pygame.display.update()
 
-
-class STATS_MANAGER:
-	def __init__(self) -> None:
-		pass
 
 if __name__ == "__main__":
 	main_game = MAINGAME()

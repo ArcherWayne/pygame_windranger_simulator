@@ -117,3 +117,17 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, HERO_ATTACK_INTERVAL)
 		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, CREEP_ATTACK_INTERVAL)
 
+class SKILL_SHACKLE(pygame.sprite.Sprite):
+	def __init__(self, groups):
+		super().__init__(groups)
+
+		self.type = 'skill_shackle'
+
+
+class SKILL_POWER(pygame.sprite.Sprite):
+	def __init__(self, groups):
+		super().__init__(groups)
+
+		self.type = 'skill_power'
+
+		

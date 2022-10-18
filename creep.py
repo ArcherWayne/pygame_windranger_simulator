@@ -4,9 +4,10 @@ from random import random
 from setting import *
 from debug import debug
 
+from special_effects import DAMAGE_NUMBERS
 
 class CREEP(pygame.sprite.Sprite):
-	def __init__(self, groups, creep_group, hero, arrow_group) -> None:
+	def __init__(self, groups, creep_group, hero, arrow_group, camera_group) -> None:
 		super().__init__(groups)
 		# type
 		self.type = 'creep'
@@ -15,6 +16,7 @@ class CREEP(pygame.sprite.Sprite):
 		self.hero = hero
 		self.creep_group = creep_group
 		self.arrow_group = arrow_group
+		self.camera_group = camera_group
 
 		# stats
 		self.health = CREEP_HEALTH
@@ -92,6 +94,8 @@ class CREEP(pygame.sprite.Sprite):
 
 		self.knockback_direction = self.hit_arrow.direction
 		self.knockback_acceleration = self.hit_arrow.knockback
+
+		self.camera_group.add(DAMAGE_NUMBERS(self.camera_group, arrow_damage, self.pos, 0))
 
 	def KNOCKBACK(self):
 		if self.knockback_acceleration < 0:
