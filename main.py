@@ -150,8 +150,8 @@ class MAINGAME:
 				self.cursor.draw()
 
 				# debug space
-				debug(self.creep_group.sprites())
-				debug(self.camera_group.sprites(), y = 30, info_name='camera_group')
+				# debug(self.creep_group.sprites())
+				debug(len(self.camera_group.sprites()), y = 30, info_name='camera_group')
 				debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
 				debug(str(time.time()-self.start_time), y = 70)
 

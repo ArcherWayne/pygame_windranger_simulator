@@ -85,7 +85,7 @@ class HERO(pygame.sprite.Sprite): # my code
 			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
 			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
 			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.pos, self.creep_group)
-
+			
 			self.skill_powershot_cooldown_frame += 1
 
 	# use skills end ------------------------------------------ # 
@@ -149,9 +149,9 @@ class SKILL_POWERSHOT(ARROW):
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
 
-		self.movement_speed = speed
-		self.damage = damage * 100
-		self.knockback = ARROW_KNOCKBACK * 100
+		self.movement_speed = speed * 3
+		self.damage = damage * 3
+		self.knockback = ARROW_KNOCKBACK * 3
 		self.start_pos = hero_pos
 
 		self.pos = pygame.math.Vector2()
@@ -170,19 +170,19 @@ class SKILL_POWERSHOT(ARROW):
 		self.creep_group = creep_group
 
 
-		def check_collision(self):
-			hit_creeps_list = pygame.sprite.spritecollide(self, self.creep_group, False)
-			if hit_creeps_list:
-				for creep in hit_creeps_list:
-					creep.got_hit(self.damage, self)
+	def check_collision(self):
+		hit_creeps_list = pygame.sprite.spritecollide(self, self.creep_group, False)
+		if hit_creeps_list:
+			for creep in hit_creeps_list:
+				creep.got_hit(self.damage, self)
 
-		def update(self, dt):
-			self.pos.x += self.direction.x * self.movement_speed * dt
-			self.rect.x = round(self.pos.x)
-			self.pos.y += self.direction.y * self.movement_speed * dt
-			self.rect.y = round(self.pos.y)
+	def update(self, dt):
+		self.pos.x += self.direction.x * self.movement_speed * dt
+		self.rect.x = round(self.pos.x)
+		self.pos.y += self.direction.y * self.movement_speed * dt
+		self.rect.y = round(self.pos.y)
 
-			self.kill_when_more_than_10s()
-			self.check_collision()
+		self.kill_when_more_than_10s()
+		self.check_collision()
 
 
