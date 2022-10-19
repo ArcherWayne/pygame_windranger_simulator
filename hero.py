@@ -22,8 +22,9 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# graphics
 		# self.image = pygame.transform.scale(pygame.image.load("assets/graphics/windranger/windranger_idle_animation1.png").convert_alpha(), (HERO_WIDTH, HERO_HEIGHT))
-		self.image = pygame.Surface((HERO_WIDTH, HERO_HEIGHT)).convert_alpha()
-		self.image.fill(GREEN)
+		windranger_idle_animation1 = pygame.image.load('assets/graphics/windranger/windranger_idle_animation1.png').convert_alpha()
+		self.image = pygame.transform.scale(windranger_idle_animation1\
+			, (HERO_WIDTH, HERO_HEIGHT))
 		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
 		self.rect = pygame.Rect(0, 0, HERO_COLLISION_WIDTH, HERO_COLLISION_HEIGHT)
 		self.old_rect = self.rect.copy()
@@ -38,10 +39,16 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.max_mana = HERO_MANA
 		self.current_mana = HERO_MANA
 
+		self.attack_interval = HERO_ATTACK_INTERVAL
+
 		# cooldown frames
 		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
 		self.shoot_arrow_cooldown_frame = 0 # attack cd
+
+		self.skill_shackleshot_cooldown_frame = 0 # shackleshot cd
 		self.skill_powershot_cooldown_frame = 0 # powershot cd
+		self.skill_windrun_cooldown_frame = 0
+		self.skill_focusfire_cooldown_frame = 0
 
 
 	def keyboard_movement(self):
@@ -79,14 +86,36 @@ class HERO(pygame.sprite.Sprite): # my code
 			self.shoot_arrow_cooldown_frame += 1
 
 	# use skills ---------------------------------------------- # 
+	def use_skill_shackleshot(self):
+		print("use_skill_shackleshot")
+
+
 	def use_skill_powershot(self, mouse_pos):
 		if self.skill_powershot_cooldown_frame == 0:
+			print("use_skill_powershot")
+
 			aim_direction = pygame.math.Vector2()
 			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
 			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
 			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.pos, self.creep_group)
 			
 			self.skill_powershot_cooldown_frame += 1
+
+	def use_skill_windrun(self):
+		if self.skill_windrun_cooldown_frame == 0:
+			print("use_skill_windrun")
+
+			self.movement_speed = self.movement_speed * 3
+
+			self.skill_windrun_cooldown_frame += 1
+
+	def use_skill_focusfire(self):
+		if self.skill_focusfire_cooldown_frame == 0:
+			print("use_skill_focusfire")
+
+			self.attack_interval = round(self.attack_interval / 3)
+
+			self.skill_focusfire_cooldown_frame += 1
 
 	# use skills end ------------------------------------------ # 
 
@@ -126,9 +155,12 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.check_health()
 
 		# update cooldowns
-		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, HERO_ATTACK_INTERVAL)
+		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, self.attack_interval)
 		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, CREEP_ATTACK_INTERVAL)
+		self.skill_shackleshot_cooldown_frame = self.update_cooldowns(self.skill_shackleshot_cooldown_frame, SHACKLESHOT_CD)
 		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, POWERSHOT_CD)
+		self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, WINDRUN_CD)
+		self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, FOCUSFIRE_CD)
 
 class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
 	def __init__(self, groups):

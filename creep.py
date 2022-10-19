@@ -1,6 +1,7 @@
 import pygame
 import math
 from random import random
+from clip import clip
 from setting import *
 from debug import debug
 
@@ -42,8 +43,13 @@ class CREEP(pygame.sprite.Sprite):
 		self.knockback_acceleration = 0
 
 		# graphics
-		self.image = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
-		self.image.fill(RED)
+		# self.image = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
+		# self.image.fill(RED)
+
+		creep_idle_animation = pygame.image.load('assets/graphics/creeps/creep_idle_animation.png').convert_alpha()
+		self.image = pygame.transform.scale(clip(creep_idle_animation, 0, 0, 96, 96)\
+			, (CREEP_WIDTH, CREEP_HEIGHT))
+
 		self.rect = pygame.Rect(0, 0, CREEP_COLLISION_WIDTH, CREEP_COLLISION_HEIGHT)
 		self.rect.center = self.pos
 		self.old_rect = self.rect.copy()

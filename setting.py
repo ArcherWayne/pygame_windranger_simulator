@@ -25,9 +25,9 @@ dota2_actual_map_size = (11000, 11000)
 
 map_size = (MAP_WIDTH, MAP_HEIGHT)
 
-# game setting  ----------------------------------------------- #
-show_collision_area = 1
-show_absolute_vector = 1
+# camera setting  ----------------------------------------------- #
+show_collision_area = 0
+show_absolute_vector = 0
 
 # game stats -------------------------------------------------- #
 CURSOR_WIDTH = 32
@@ -54,7 +54,10 @@ ARROW_DAMAGE = 42
 ARROW_KNOCKBACK = 200
 ARROW_PENETRATION = 1
 
+SHACKLESHOT_CD = FPS * 3
 POWERSHOT_CD = FPS * 3
+WINDRUN_CD = FPS * 3
+FOCUSFIRE_CD = FPS * 3
 
 # creep stats --------------------------------------------------- #
 # __init__(self, health, movement_speed, damage, forswing, backswing)
@@ -63,9 +66,9 @@ CREEP_HEIGHT = 60
 CREEP_COLLISION_WIDTH = 40
 CREEP_COLLISION_HEIGHT = 40
 CREEP_HEALTH = 550
-CREEP_MOVEMENT_SPEED = 315 # 315
+CREEP_MOVEMENT_SPEED = 31 # 315
 CREEP_DAMAGE = 19
-CREEP_ATTACK_INTERVAL = FPS/10
+CREEP_ATTACK_INTERVAL = FPS
 
 
 

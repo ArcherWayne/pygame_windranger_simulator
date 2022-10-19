@@ -70,9 +70,9 @@ class MAINGAME:
 	# init finish ---------------------------------------------------------------------------------------- # 
 
 	def generate_trees(self):
-		for i in range(20):
-			random_x = randint(1000,2000)
-			random_y = randint(1000,2000)
+		for i in range(30):
+			random_x = randint(500,5000)
+			random_y = randint(500,5000)
 			TREE((random_x,random_y),self.camera_group)
 
 
@@ -126,8 +126,20 @@ class MAINGAME:
 
 				# keyboard action --------------------------------------------------------------------------- #
 				if event.type == pygame.KEYDOWN:
+					# use skill ----------------------------------------------- #
+					if event.key == pygame.K_1:
+						self.hero.use_skill_shackleshot()
+
 					if event.key == pygame.K_2:
 						self.hero.use_skill_powershot(self.mouse_pos)
+
+					if event.key == pygame.K_3:
+						self.hero.use_skill_windrun()
+
+					if event.key == pygame.K_4:
+						self.hero.use_skill_focusfire()
+					# use skill end ------------------------------------------- #
+					
 
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
