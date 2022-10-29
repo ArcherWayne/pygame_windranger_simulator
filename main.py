@@ -23,6 +23,8 @@ class MAINGAME:
 	def __init__(self):
 		## pygame setup
 
+		self.stat_manager = STAT_MANAGER()
+
 		pygame.init()
 		self.screen = pygame.display.set_mode(WINDOW_SIZE)
 		pygame.display.set_caption('windranger_simulator')
