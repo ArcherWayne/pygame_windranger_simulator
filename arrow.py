@@ -3,10 +3,11 @@ from setting import *
 from debug import debug
 
 class ARROW(pygame.sprite.Sprite):
-	def __init__(self, groups, direction, speed, damage, hero_pos, creep_group):
+	def __init__(self, groups, direction, hero_pos, creep_group, stats_manager):
 		super().__init__(groups)
 
 		self.type = 'arrow'
+		self.stats_manager = stats_manager
 
 		# movement 
 		self.direction = direction
@@ -24,10 +25,10 @@ class ARROW(pygame.sprite.Sprite):
 		self.pos.x = hero_pos.x
 		self.pos.y = hero_pos.y
 
-		self.image = pygame.Surface((ARROW_WIDTH, ARROW_HEIGHT)).convert_alpha()
+		self.image = pygame.Surface((self.stats_manager.arrow_width, self.stats_manager.arrow_height)).convert_alpha()
 		self.image.fill(RED)
 		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
-		self.rect = pygame.Rect(0, 0, ARROW_COLLISION_WIDTH, ARROW_COLLISION_HEIGHT)
+		self.rect = pygame.Rect(0, 0, self.stats_manager.arrow_collision_width, self.stats_manager.arrow_collision_height)
 
 		self.old_rect = self.rect.copy()
 
@@ -48,7 +49,7 @@ class ARROW(pygame.sprite.Sprite):
 				if creep not in self.penetrated_creeps:
 					creep.got_hit(self.damage, self)
 					self.penetrated_creeps.append(creep)
-					self.penetration -= 1
+					self.arrow_penetration -= 1
 
 	def kill_when_more_than_10s(self):
 		self.time_10s += 1

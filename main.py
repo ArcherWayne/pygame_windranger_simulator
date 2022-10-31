@@ -23,7 +23,7 @@ class MAINGAME:
 	def __init__(self):
 		## pygame setup
 
-		self.stat_manager = STAT_MANAGER()
+		self.stats_manager = STAT_MANAGER()
 
 		pygame.init()
 		self.screen = pygame.display.set_mode(WINDOW_SIZE)
@@ -46,7 +46,7 @@ class MAINGAME:
 
 # class setup
 		# class = Class()
-		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group)
+		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group, self.stats_manager)
 
 
 		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group)

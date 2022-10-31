@@ -82,14 +82,22 @@ COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 
 class STAT_MANAGER:
 	def __init__(self) -> None:
-
+		# NOTE: 仔细思考一下, 数值可能还是得赋给类, 然后让类不断获取更新的值
 		# hero init stats -------------------------------------- #
 		self.hero_width = 60
 		self.hero_height = 60
 		self.hero_collision_width = 20
 		self.hero_collision_height = 20
-		self.hero_health = 524
-		self.hero_mana = 345
+
+		self.hero_max_health = 524
+		self.hero_current_health = 524
+		self.hero_current_health_percentage = round(\
+			self.hero_current_health / self.hero_max_health)
+		self.hero_max_mana = 345
+		self.hero_current_mana = 345
+		self.hero_current_mana_percentage = round(\
+			self.hero_current_mana / self.hero_max_mana)
+
 		self.hero_movement_speed = 290
 		self.hero_attack_interval = FPS / 3
 
@@ -105,7 +113,7 @@ class STAT_MANAGER:
 		self.arrow_speed = 600
 		self.arrow_damage = 42
 		self.arrow_knockback = 200
-		self.penetration = 1
+		self.arrow_penetration = 1
 
 		# skill init stats ------------------------------------- #
 
@@ -123,3 +131,6 @@ class STAT_MANAGER:
 		self.creep_movement_speed = 31 # 315
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS
+
+	def update_stats(self):
+		pass

@@ -4,7 +4,7 @@ from setting import *
 from debug import debug
 
 class HERO(pygame.sprite.Sprite): # my code
-	def __init__(self, groups, creep_group, camera_group, arrow_group) -> None:
+	def __init__(self, groups, creep_group, camera_group, arrow_group, stats_manager) -> None:
 		super().__init__(groups)
 		# type
 		self.type = 'hero'
@@ -14,6 +14,7 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.creep_group = creep_group
 		self.camera_group = camera_group
 		self.arrow_group = arrow_group
+		self.stats_manager = stats_manager
 
 		# position
 		self.pos = pygame.math.Vector2()
@@ -24,22 +25,22 @@ class HERO(pygame.sprite.Sprite): # my code
 		# self.image = pygame.transform.scale(pygame.image.load("assets/graphics/windranger/windranger_idle_animation1.png").convert_alpha(), (HERO_WIDTH, HERO_HEIGHT))
 		windranger_idle_animation1 = pygame.image.load('assets/graphics/windranger/windranger_idle_animation1.png').convert_alpha()
 		self.image = pygame.transform.scale(windranger_idle_animation1\
-			, (HERO_WIDTH, HERO_HEIGHT))
+			, (self.stats_manager.hero_width, self.stats_manager.hero_height))
 		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
-		self.rect = pygame.Rect(0, 0, HERO_COLLISION_WIDTH, HERO_COLLISION_HEIGHT)
+		self.rect = pygame.Rect(0, 0, self.stats_manager.hero_collision_width, self.stats_manager.hero_collision_height)
 		self.old_rect = self.rect.copy()
 
 		# movement
 		self.direction = pygame.math.Vector2()
-		self.movement_speed = HERO_MOVEMENT_SPEED
+		# self.movement_speed = HERO_MOVEMENT_SPEED
 
 		# stat
-		self.max_health = HERO_HEALTH
-		self.current_health = HERO_HEALTH
-		self.max_mana = HERO_MANA
-		self.current_mana = HERO_MANA
+		# self.max_health = HERO_HEALTH
+		# self.current_health = HERO_HEALTH
+		# self.max_mana = HERO_MANA
+		# self.current_mana = HERO_MANA
 
-		self.attack_interval = HERO_ATTACK_INTERVAL
+		# self.attack_interval = HERO_ATTACK_INTERVAL
 
 		# cooldown frames
 		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
@@ -81,7 +82,7 @@ class HERO(pygame.sprite.Sprite): # my code
 			aim_direction = pygame.math.Vector2()
 			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
 			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
-			ARROW([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.pos, self.creep_group)
+			ARROW([self.camera_group, self.arrow_group], aim_direction, self.pos, self.creep_group, self.stats_manager)
 
 			self.shoot_arrow_cooldown_frame += 1
 
@@ -97,7 +98,7 @@ class HERO(pygame.sprite.Sprite): # my code
 			aim_direction = pygame.math.Vector2()
 			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
 			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
-			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, ARROW_SPEED, ARROW_DAMAGE, self.pos, self.creep_group)
+			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, self.stats_manager.arrow_speed, self.stats_manager.arrow_damage, self.pos, self.creep_group)
 			
 			self.skill_powershot_cooldown_frame += 1
 
@@ -128,13 +129,14 @@ class HERO(pygame.sprite.Sprite): # my code
 	
 	def got_hit(self):
 		if self.hit_cooldown_frame == 0:
-			self.current_health -= CREEP_DAMAGE
+			# self.current_health -= CREEP_DAMAGE
+			self.stats_manager.hero_current_health -= self.stats_manager.creep_damage
 			
 			self.hit_cooldown_frame += 1
 
 
 	def check_health(self):
-		if self.current_health <= 0:
+		if self.stats_manager.hero_current_health <= 0:
 			self.kill()
 
 
@@ -170,10 +172,11 @@ class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
 
 
 class SKILL_POWERSHOT(ARROW):
-	def __init__(self, groups, direction, speed, damage, hero_pos, creep_group):
-		super().__init__(groups, direction, speed, damage, hero_pos, creep_group)
+	def __init__(self, groups, direction, hero_pos, creep_group, stats_manager):
+		super().__init__(groups, direction, hero_pos, creep_group, stats_manager)
 
 		self.type = 'arrow'
+		self.stats_manager = stats_manager
 
 		# movement 
 		self.direction = direction
@@ -181,10 +184,10 @@ class SKILL_POWERSHOT(ARROW):
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
 
-		self.movement_speed = speed * 3
-		self.damage = damage * 10
-		self.knockback = ARROW_KNOCKBACK * 3
-		self.penetration = ARROW_PENETRATION * 10
+		self.movement_speed = self.stats_manager.arrow_speed * 3
+		self.damage = self.stats_manager.arrow_damage * 10
+		self.knockback = self.stats_manager.arrow_knockback * 3
+		self.penetration = self.stats_manager.arrow_penetration * 10
 		self.start_pos = hero_pos
 
 		self.pos = pygame.math.Vector2()
