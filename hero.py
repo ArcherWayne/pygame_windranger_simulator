@@ -9,7 +9,7 @@ class HERO(pygame.sprite.Sprite): # my code
 		# type
 		self.type = 'hero'
 
-		# group setting, the imported group is the same reference as the outside group, not the copy of it 
+		# group setting, the imported group is the same reference as the outside group, not the copy of it
 
 		self.creep_group = creep_group
 		self.camera_group = camera_group
@@ -32,15 +32,15 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# movement
 		self.direction = pygame.math.Vector2()
-		# self.movement_speed = HERO_MOVEMENT_SPEED
+		self.movement_speed = self.stats_manager.hero_movement_speed
 
 		# stat
-		# self.max_health = HERO_HEALTH
-		# self.current_health = HERO_HEALTH
-		# self.max_mana = HERO_MANA
-		# self.current_mana = HERO_MANA
+		self.max_health = self.stats_manager.hero_max_health
+		self.current_health = self.stats_manager.hero_current_health
+		self.max_mana = self.stats_manager.hero_max_mana
+		self.current_mana = self.stats_manager.hero_current_mana
 
-		# self.attack_interval = HERO_ATTACK_INTERVAL
+		self.attack_interval = self.stats_manager.hero_attack_interval
 
 		# cooldown frames
 		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
@@ -98,8 +98,8 @@ class HERO(pygame.sprite.Sprite): # my code
 			aim_direction = pygame.math.Vector2()
 			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
 			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
-			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, self.stats_manager.arrow_speed, self.stats_manager.arrow_damage, self.pos, self.creep_group)
-			
+			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, self.pos, self.creep_group, self.stats_manager)
+			# groups, direction, hero_pos, creep_group, stats_manager
 			self.skill_powershot_cooldown_frame += 1
 
 	def use_skill_windrun(self):
@@ -157,12 +157,15 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.check_health()
 
 		# update cooldowns
+		## 主动攻击间隔
 		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, self.attack_interval)
-		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, CREEP_ATTACK_INTERVAL)
-		self.skill_shackleshot_cooldown_frame = self.update_cooldowns(self.skill_shackleshot_cooldown_frame, SHACKLESHOT_CD)
-		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, POWERSHOT_CD)
-		self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, WINDRUN_CD)
-		self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, FOCUSFIRE_CD)
+		## 被攻击间隔
+		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, self.stats_manager.creep_attack_interval)
+		## 技能cd
+		self.skill_shackleshot_cooldown_frame = self.update_cooldowns(self.skill_shackleshot_cooldown_frame, self.stats_manager.shackleshot_cd)
+		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, self.stats_manager.powershot_cd)
+		self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, self.stats_manager.windrun_cd)
+		self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, self.stats_manager.focusfire_cd)
 
 class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
 	def __init__(self, groups):
@@ -187,17 +190,17 @@ class SKILL_POWERSHOT(ARROW):
 		self.movement_speed = self.stats_manager.arrow_speed * 3
 		self.damage = self.stats_manager.arrow_damage * 10
 		self.knockback = self.stats_manager.arrow_knockback * 3
-		self.penetration = self.stats_manager.arrow_penetration * 10
+		self.arrow_penetration = self.stats_manager.arrow_penetration * 10
 		self.start_pos = hero_pos
 
 		self.pos = pygame.math.Vector2()
 		self.pos.x = hero_pos.x
 		self.pos.y = hero_pos.y
 
-		self.image = pygame.Surface((ARROW_WIDTH * 3, ARROW_HEIGHT * 3)).convert_alpha()
+		self.image = pygame.Surface((self.stats_manager.arrow_width * 3, self.stats_manager.arrow_height * 3)).convert_alpha()
 		self.image.fill(RED)
 		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
-		self.rect = pygame.Rect(0, 0, ARROW_COLLISION_WIDTH, ARROW_COLLISION_HEIGHT)
+		self.rect = pygame.Rect(0, 0, self.stats_manager.arrow_collision_width, self.stats_manager.arrow_collision_height)
 
 		self.old_rect = self.rect.copy()
 

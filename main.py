@@ -1,5 +1,4 @@
 # module importing
-from ctypes.wintypes import HMODULE
 import pygame, sys, time
 from setting import *
 
@@ -36,7 +35,7 @@ class MAINGAME:
 		self.clock = pygame.time.Clock()
 
 # group setup ----------------------------------------------------------------------------------------------- #
-		self.camera_group = CameraGroup()
+		self.camera_group = CameraGroup(self.stats_manager)
 
 		self.hero_group = pygame.sprite.GroupSingle()
 		self.creep_group = pygame.sprite.Group()
@@ -93,7 +92,7 @@ class MAINGAME:
 
 				if event.type == self.creep_enemy_timer:
 					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, \
-						self.hero, self.hero.arrow_group, self.camera_group))
+						self.hero, self.hero.arrow_group, self.camera_group, self.stats_manager))
 
 				# mouse action ------------------------------------------------------------------ #
 				if event.type == pygame.MOUSEMOTION:

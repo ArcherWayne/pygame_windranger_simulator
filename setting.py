@@ -88,7 +88,7 @@ class STAT_MANAGER:
 		self.hero_height = 60
 		self.hero_collision_width = 20
 		self.hero_collision_height = 20
-
+ 
 		self.hero_max_health = 524
 		self.hero_current_health = 524
 		self.hero_current_health_percentage = round(\
@@ -127,7 +127,16 @@ class STAT_MANAGER:
 		self.creep_height = 60
 		self.creep_collision_width = 40
 		self.creep_collision_height = 40
-		self.creep_health = 550
+
+		self.creep_max_health = 550
+		self.creep_current_health = 550
+		self.creep_current_health_percentage = round(\
+			self.creep_current_health / self.creep_max_health)
+		# self.creep_max_mana = 345
+		# self.creep_current_mana = 345
+		# self.creep_current_mana_percentage = round(\
+		# 	self.creep_current_mana / self.creep_max_mana)
+
 		self.creep_movement_speed = 31 # 315
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS

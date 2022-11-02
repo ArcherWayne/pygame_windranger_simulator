@@ -15,10 +15,11 @@ class ARROW(pygame.sprite.Sprite):
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
 
-		self.movement_speed = speed
-		self.damage = damage
-		self.knockback = ARROW_KNOCKBACK
-		self.penetration = ARROW_PENETRATION
+		self.movement_speed = self.stats_manager.arrow_speed
+		self.damage = self.stats_manager.arrow_damage
+		self.knockback = self.stats_manager.arrow_knockback
+		self.arrow_penetration = self.stats_manager.arrow_penetration
+		
 		self.start_pos = hero_pos
 
 		self.pos = pygame.math.Vector2()
@@ -57,7 +58,7 @@ class ARROW(pygame.sprite.Sprite):
 			self.kill()
 
 	def kill_when_penetrated(self):
-		if self.penetration <= 0:
+		if self.arrow_penetration <= 0:
 			self.kill()
 
 
