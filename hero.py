@@ -32,15 +32,17 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# movement
 		self.direction = pygame.math.Vector2()
-		self.movement_speed = self.stats_manager.hero_movement_speed
 
 		# stat
-		self.max_health = self.stats_manager.hero_max_health
-		self.current_health = self.stats_manager.hero_current_health
-		self.max_mana = self.stats_manager.hero_max_mana
-		self.current_mana = self.stats_manager.hero_current_mana
 
-		self.attack_interval = self.stats_manager.hero_attack_interval
+		# FIXME: 将此处修改为stats_manager的数值
+		# self.movement_speed = self.stats_manager.hero_movement_speed
+		# self.max_health = self.stats_manager.hero_max_health
+		# self.current_health = self.stats_manager.hero_current_health
+		# self.max_mana = self.stats_manager.hero_max_mana
+		# self.current_mana = self.stats_manager.hero_current_mana
+		# self.attack_interval = self.stats_manager.hero_attack_interval
+
 
 		# cooldown frames
 		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
@@ -71,9 +73,9 @@ class HERO(pygame.sprite.Sprite): # my code
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
 
-		self.pos.x += self.direction.x * self.movement_speed * self.dt
+		self.pos.x += self.direction.x * self.stats_manager.hero_movement_speed * self.dt
 		self.rect.x = round(self.pos.x)
-		self.pos.y += self.direction.y * self.movement_speed * self.dt
+		self.pos.y += self.direction.y * self.stats_manager.hero_movement_speed * self.dt
 		self.rect.y = round(self.pos.y)
 
 
@@ -106,7 +108,7 @@ class HERO(pygame.sprite.Sprite): # my code
 		if self.skill_windrun_cooldown_frame == 0:
 			print("use_skill_windrun")
 
-			self.movement_speed = self.movement_speed * 3
+			self.stats_manager.hero_movement_speed = self.stats_manager.hero_movement_speed * 3
 
 			self.skill_windrun_cooldown_frame += 1
 
@@ -114,7 +116,7 @@ class HERO(pygame.sprite.Sprite): # my code
 		if self.skill_focusfire_cooldown_frame == 0:
 			print("use_skill_focusfire")
 
-			self.attack_interval = round(self.attack_interval / 3)
+			self.stats_manager.hero_attack_interval = round(self.stats_manager.hero_attack_interval / 3)
 
 			self.skill_focusfire_cooldown_frame += 1
 
@@ -129,9 +131,9 @@ class HERO(pygame.sprite.Sprite): # my code
 	
 	def got_hit(self):
 		if self.hit_cooldown_frame == 0:
-			# self.current_health -= CREEP_DAMAGE
 			self.stats_manager.hero_current_health -= self.stats_manager.creep_damage
-			
+
+			# cooldown_frame += 1 就开始倒计时 读cd
 			self.hit_cooldown_frame += 1
 
 
@@ -175,6 +177,7 @@ class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
 
 
 class SKILL_POWERSHOT(ARROW):
+	# FIXME: 重写此类
 	def __init__(self, groups, direction, hero_pos, creep_group, stats_manager):
 		super().__init__(groups, direction, hero_pos, creep_group, stats_manager)
 

@@ -5,7 +5,7 @@ from PIL import Image
 
 
 class UIGroup(pygame.sprite.Group):
-	def __init__(self, hero_group, creep_group, arrow_group):
+	def __init__(self, hero_group, creep_group, arrow_group, stats_manager):
 		super().__init__()
 
 		self.display_surf = pygame.display.get_surface()

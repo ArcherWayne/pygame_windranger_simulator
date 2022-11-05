@@ -137,7 +137,7 @@ class STAT_MANAGER:
 		# self.creep_current_mana_percentage = round(\
 		# 	self.creep_current_mana / self.creep_max_mana)
 
-		self.creep_movement_speed = 31 # 315
+		self.creep_movement_speed = 315 # 315
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS
 
