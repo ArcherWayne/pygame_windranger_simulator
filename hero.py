@@ -160,7 +160,7 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		# update cooldowns
 		## 主动攻击间隔
-		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, self.attack_interval)
+		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, self.stats_manager.hero_attack_interval)
 		## 被攻击间隔
 		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, self.stats_manager.creep_attack_interval)
 		## 技能cd

@@ -18,12 +18,14 @@ class UIGroup(pygame.sprite.Group):
 
 		self.windows_size = WINDOW_SIZE
 
+		self.stats_manager = stats_manager
+
 		# health_mana_bar_size
 		self.hp_mn_bar_size = (self.windows_size[0]*3/14, self.windows_size[1]*6/80)
 		self.hp_mn_bar_midtop = (self.windows_size[0]/2, self.windows_size[1]*73/80)
 
-		self.health_percentage = 100
-		self.mana_percentage = 100
+		# self.health_percentage = 100
+		# self.mana_percentage = 100
 
 		self.hp_mn_bar_background_surf = pygame.Surface(self.hp_mn_bar_size)
 		self.hp_mn_bar_background_surf.fill(BLACK)
@@ -101,13 +103,13 @@ class UIGroup(pygame.sprite.Group):
 	def draw_health_mana_bar(self):
 		self.display_surf.blit(self.hp_mn_bar_background_surf, self.hp_mn_bar_background_rect)
 
-		self.hp_bar_surf = pygame.Surface((round(self.hp_bar_size[0]*self.health_percentage), self.hp_bar_size[1]))
+		self.hp_bar_surf = pygame.Surface((round(self.hp_bar_size[0]*self.stats_manager.hero_current_health_percentage), self.hp_bar_size[1]))
 		self.hp_bar_surf.fill(RED)
 		self.hp_bar_rect = self.hp_bar_surf.get_rect(topleft = \
 			(self.hp_mn_bar_background_rect.topleft[0] - 2, self.hp_mn_bar_background_rect.topleft[1] - 2))
 		self.display_surf.blit(self.hp_bar_surf, self.hp_bar_rect)
 
-		self.mn_bar_surf = pygame.Surface((round(self.hp_bar_size[0]*self.mana_percentage), self.hp_bar_size[1]))
+		self.mn_bar_surf = pygame.Surface((round(self.hp_bar_size[0]*self.stats_manager.hero_current_mana_percentage), self.hp_bar_size[1]))
 		self.mn_bar_surf.fill(BLUE)
 		self.mn_bar_rect = self.mn_bar_surf.get_rect(topleft = \
 			(self.hp_mn_bar_background_rect.topleft[0] - 2, self.hp_mn_bar_background_rect.topleft[1] + 0.5*self.hp_mn_bar_size[1] - 2))
@@ -139,17 +141,19 @@ class UIGroup(pygame.sprite.Group):
 		for rect in self.item_background_rect_list:
 			self.display_surf.blit(self.item_background_surf, rect)
 
+
 	def draw_mugshot(self):
 		self.display_surf.blit(self.wr_mugshot_surf, self.wr_mugshot_rect)
 
 
 	def update(self): 
-		if self.hero.current_health > 0 and self.hero.current_mana > 0:
-			self.health_percentage = self.hero.current_health / self.hero.max_health
-			self.mana_percentage = self.hero.current_mana / self.hero.max_mana
-		else: 
-			self.health_percentage = 0
-			self.mana_percentage = 0
+		pass
+		# if self.hero.current_health > 0 and self.hero.current_mana > 0:
+		# 	self.health_percentage = self.hero.current_health / self.hero.max_health
+		# 	self.mana_percentage = self.hero.current_mana / self.hero.max_mana
+		# else: 
+		# 	self.health_percentage = 0
+		# 	self.mana_percentage = 0
 
 	def ui_draw(self):
 		self.draw_health_mana_bar()

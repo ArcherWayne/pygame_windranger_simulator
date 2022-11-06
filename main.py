@@ -48,7 +48,7 @@ class MAINGAME:
 		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group, self.stats_manager)
 
 
-		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group)
+		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group, self.stats_manager)
 
 
 # user event setting
@@ -150,7 +150,7 @@ class MAINGAME:
 				if mouse_pressed_list[2]:
 					self.hero.shoot_arrow(self.mouse_pos)
 
-
+				self.stats_manager.update()
 				self.screen.fill(BLACK)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
@@ -167,6 +167,7 @@ class MAINGAME:
 				debug(len(self.camera_group.sprites()), y = 30, info_name='camera_group')
 				debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
 				debug(str(time.time()-self.start_time), y = 70)
+				debug(self.stats_manager.hero_current_health_percentage, y = 110, info_name='hero_current_health_percentage')
 
 				self.frames += 1
 				debug(str(self.frames), y = 90)

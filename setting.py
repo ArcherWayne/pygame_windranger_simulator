@@ -40,46 +40,7 @@ GREEN = (0, 255, 0)
 ORANGE = (255, 165, 0)
 COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 
-# stats manager init -------------------------------------------------------------------------------- #
-
-# # hero stats  ------------------------------------------------- #
-# # __init__(self, name, health, movement_speed, damage, forswing, backswing, flag_moving)
-# HERO_WIDTH = 60
-# HERO_HEIGHT = 60
-# HERO_COLLISION_WIDTH = 20
-# HERO_COLLISION_HEIGHT = 20
-# HERO_HEALTH = 524
-# HERO_MANA = 345
-# HERO_MOVEMENT_SPEED = 290 # 每秒移动的像素
-# HERO_ATTACK_INTERVAL = FPS/3
-
-# # ARROW stats  ------------------------------------------------- #
-# ARROW_WIDTH = 10
-# ARROW_HEIGHT = 10
-# ARROW_COLLISION_WIDTH = 10
-# ARROW_COLLISION_HEIGHT = 10
-# ARROW_SPEED = 600
-# ARROW_DAMAGE = 42
-# ARROW_KNOCKBACK = 200
-# ARROW_PENETRATION = 1
-
-# SHACKLESHOT_CD = FPS * 3
-# POWERSHOT_CD = FPS * 3
-# WINDRUN_CD = FPS * 3
-# FOCUSFIRE_CD = FPS * 3
-
-# # creep stats --------------------------------------------------- #
-# # __init__(self, health, movement_speed, damage, forswing, backswing)
-# CREEP_WIDTH = 60
-# CREEP_HEIGHT = 60
-# CREEP_COLLISION_WIDTH = 40
-# CREEP_COLLISION_HEIGHT = 40
-# CREEP_HEALTH = 550
-# CREEP_MOVEMENT_SPEED = 31 # 315
-# CREEP_DAMAGE = 19
-# CREEP_ATTACK_INTERVAL = FPS
-
-
+# stats manager -------------------------------------------------------------------------------- #
 class STAT_MANAGER:
 	def __init__(self) -> None:
 		# NOTE: 仔细思考一下, 数值可能还是得赋给类, 然后让类不断获取更新的值
@@ -91,12 +52,12 @@ class STAT_MANAGER:
  
 		self.hero_max_health = 524
 		self.hero_current_health = 524
-		self.hero_current_health_percentage = round(\
-			self.hero_current_health / self.hero_max_health)
+		self.hero_current_health_percentage = \
+			self.hero_current_health / self.hero_max_health
 		self.hero_max_mana = 345
 		self.hero_current_mana = 345
-		self.hero_current_mana_percentage = round(\
-			self.hero_current_mana / self.hero_max_mana)
+		self.hero_current_mana_percentage = \
+			self.hero_current_mana / self.hero_max_mana
 
 		self.hero_movement_speed = 290
 		self.hero_attack_interval = FPS / 3
@@ -116,10 +77,16 @@ class STAT_MANAGER:
 		self.arrow_penetration = 1
 
 		# skill init stats ------------------------------------- #
-
+		## shackleshot
 		self.shackleshot_cd = FPS * 3
+		
+		## powershot
 		self.powershot_cd = FPS * 3
+		
+		## windrun
 		self.windrun_cd = FPS * 3
+		
+		## focusfire
 		self.focusfire_cd = FPS * 3
 
 		# creep init stats ------------------------------------- #
@@ -141,5 +108,9 @@ class STAT_MANAGER:
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS
 
-	def update_stats(self):
-		pass
+	def update(self):
+		self.hero_current_health_percentage = \
+			self.hero_current_health / self.hero_max_health
+
+		self.hero_current_mana_percentage = \
+			self.hero_current_mana / self.hero_max_mana
