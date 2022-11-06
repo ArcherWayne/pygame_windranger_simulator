@@ -83,7 +83,7 @@ class MAINGAME:
 			# delta time    ------------------------------------------------------------------------------------- #
 			dt = time.time() - self.last_time
 			self.last_time = time.time()
-			
+
 			# event loop    ------------------------------------------------------------------------------------- #
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE):
