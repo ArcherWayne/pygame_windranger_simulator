@@ -8,7 +8,7 @@ from debug import debug
 from special_effects import DAMAGE_NUMBERS
 
 class CREEP(pygame.sprite.Sprite):
-	def __init__(self, groups, creep_group, hero, arrow_group, camera_group) -> None:
+	def __init__(self, groups, creep_group, hero, arrow_group, camera_group, stats_manager) -> None:
 		super().__init__(groups)
 		# type
 		self.type = 'creep'
@@ -18,9 +18,10 @@ class CREEP(pygame.sprite.Sprite):
 		self.creep_group = creep_group
 		self.arrow_group = arrow_group
 		self.camera_group = camera_group
+		self.stats_manager = stats_manager
 
 		# stats
-		self.health = CREEP_HEALTH
+		self.health = self.stats_manager.creep_max_health
 
 		# position
 		init_distance_with_hero = 500
@@ -37,7 +38,7 @@ class CREEP(pygame.sprite.Sprite):
 
 		# movement
 		self.direction = pygame.math.Vector2()
-		self.movement_speed = CREEP_MOVEMENT_SPEED
+		self.movement_speed = self.stats_manager.creep_movement_speed
 
 		self.knockback_direction = pygame.math.Vector2()
 		self.knockback_acceleration = 0
@@ -48,9 +49,9 @@ class CREEP(pygame.sprite.Sprite):
 
 		creep_idle_animation = pygame.image.load('assets/graphics/creeps/creep_idle_animation.png').convert_alpha()
 		self.image = pygame.transform.scale(clip(creep_idle_animation, 0, 0, 96, 96)\
-			, (CREEP_WIDTH, CREEP_HEIGHT))
+			, (self.stats_manager.creep_width, self.stats_manager.creep_height))
 
-		self.rect = pygame.Rect(0, 0, CREEP_COLLISION_WIDTH, CREEP_COLLISION_HEIGHT)
+		self.rect = pygame.Rect(0, 0, self.stats_manager.creep_collision_width, self.stats_manager.creep_collision_height)
 		self.rect.center = self.pos
 		self.old_rect = self.rect.copy()
 

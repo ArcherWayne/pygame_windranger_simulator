@@ -1,5 +1,4 @@
 # module importing
-from ctypes.wintypes import HMODULE
 import pygame, sys, time
 from setting import *
 
@@ -23,6 +22,8 @@ class MAINGAME:
 	def __init__(self):
 		## pygame setup
 
+		self.stats_manager = STAT_MANAGER()
+
 		pygame.init()
 		self.screen = pygame.display.set_mode(WINDOW_SIZE)
 		pygame.display.set_caption('windranger_simulator')
@@ -34,7 +35,7 @@ class MAINGAME:
 		self.clock = pygame.time.Clock()
 
 # group setup ----------------------------------------------------------------------------------------------- #
-		self.camera_group = CameraGroup()
+		self.camera_group = CameraGroup(self.stats_manager)
 
 		self.hero_group = pygame.sprite.GroupSingle()
 		self.creep_group = pygame.sprite.Group()
@@ -44,10 +45,10 @@ class MAINGAME:
 
 # class setup
 		# class = Class()
-		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group)
+		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group, self.stats_manager)
 
 
-		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group)
+		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group, self.stats_manager)
 
 
 # user event setting
@@ -91,7 +92,7 @@ class MAINGAME:
 
 				if event.type == self.creep_enemy_timer:
 					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, \
-						self.hero, self.hero.arrow_group, self.camera_group))
+						self.hero, self.hero.arrow_group, self.camera_group, self.stats_manager))
 
 				# mouse action ------------------------------------------------------------------ #
 				if event.type == pygame.MOUSEMOTION:
@@ -149,7 +150,7 @@ class MAINGAME:
 				if mouse_pressed_list[2]:
 					self.hero.shoot_arrow(self.mouse_pos)
 
-
+				self.stats_manager.update()
 				self.screen.fill(BLACK)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
@@ -166,6 +167,7 @@ class MAINGAME:
 				debug(len(self.camera_group.sprites()), y = 30, info_name='camera_group')
 				debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
 				debug(str(time.time()-self.start_time), y = 70)
+				debug(self.stats_manager.hero_current_health_percentage, y = 110, info_name='hero_current_health_percentage')
 
 				self.frames += 1
 				debug(str(self.frames), y = 90)
