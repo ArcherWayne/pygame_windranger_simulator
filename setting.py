@@ -60,6 +60,7 @@ class STAT_MANAGER:
 			self.hero_current_mana / self.hero_max_mana
 
 		self.hero_movement_speed = 290
+		self.hero_base_movement_speed = 290 # FIXME: 修改为公式计算
 		self.hero_attack_interval = FPS / 3
 
 		self.hero_strength = 0
@@ -85,9 +86,13 @@ class STAT_MANAGER:
 		
 		## windrun
 		self.windrun_cd = FPS * 3
+		self.windrun_duration = FPS * 6
+		self.windrun_multi = 3
 		
 		## focusfire
 		self.focusfire_cd = FPS * 3
+		self.focusfire_duration = FPS * 12
+		self.focusfire_multi = 3
 
 		# creep init stats ------------------------------------- #
 		self.creep_width = 60
@@ -114,3 +119,6 @@ class STAT_MANAGER:
 
 		self.hero_current_mana_percentage = \
 			self.hero_current_mana / self.hero_max_mana
+
+		# old frames go down here
+		self.old_hero_max_health = self.hero_max_health

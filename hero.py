@@ -33,17 +33,6 @@ class HERO(pygame.sprite.Sprite): # my code
 		# movement
 		self.direction = pygame.math.Vector2()
 
-		# stat
-
-		# FIXME: 将此处修改为stats_manager的数值
-		# self.movement_speed = self.stats_manager.hero_movement_speed
-		# self.max_health = self.stats_manager.hero_max_health
-		# self.current_health = self.stats_manager.hero_current_health
-		# self.max_mana = self.stats_manager.hero_max_mana
-		# self.current_mana = self.stats_manager.hero_current_mana
-		# self.attack_interval = self.stats_manager.hero_attack_interval
-
-
 		# cooldown frames
 		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
 		self.shoot_arrow_cooldown_frame = 0 # attack cd
@@ -52,6 +41,11 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.skill_powershot_cooldown_frame = 0 # powershot cd
 		self.skill_windrun_cooldown_frame = 0
 		self.skill_focusfire_cooldown_frame = 0
+
+		# count down frames
+		self.skill_windrun_countdown_frame = 0
+		self.skill_focusfire_countdown_frame = 0
+		
 
 
 	def keyboard_movement(self):
@@ -107,17 +101,18 @@ class HERO(pygame.sprite.Sprite): # my code
 	def use_skill_windrun(self):
 		if self.skill_windrun_cooldown_frame == 0:
 			print("use_skill_windrun")
+			self.stats_manager.hero_movement_speed = self.stats_manager.hero_movement_speed *\
+				self.stats_manager.windrun_multi 
 
-			self.stats_manager.hero_movement_speed = self.stats_manager.hero_movement_speed * 3
-
+			self.skill_windrun_countdown_frame += 1 
 			self.skill_windrun_cooldown_frame += 1
 
 	def use_skill_focusfire(self):
 		if self.skill_focusfire_cooldown_frame == 0:
 			print("use_skill_focusfire")
 
-			self.stats_manager.hero_attack_interval = round(self.stats_manager.hero_attack_interval / 3)
-
+			self.stats_manager.hero_attack_interval = round(self.stats_manager.hero_attack_interval / self.stats_manager.focusfire_multi)
+			self.skill_focusfire_countdown_frame += 1 
 			self.skill_focusfire_cooldown_frame += 1
 
 	# use skills end ------------------------------------------ # 
@@ -168,6 +163,9 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, self.stats_manager.powershot_cd)
 		self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, self.stats_manager.windrun_cd)
 		self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, self.stats_manager.focusfire_cd)
+		## 技能持续时间
+		self.skill_windrun_countdown_frame = self.update_cooldowns(self.skill_windrun_countdown_frame, self.stats_manager.windrun_duration)
+		self.skill_focusfire_countdown_frame = self.update_cooldowns(self.skill_focusfire_countdown_frame, self.stats_manager.focusfire_duration)
 
 class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
 	def __init__(self, groups):
