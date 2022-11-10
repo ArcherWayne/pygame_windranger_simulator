@@ -11,14 +11,15 @@ WINDOW_SIZE = (1400, 800)
 WIN_WIDTH = WINDOW_SIZE[0]
 WIN_HEIGHT = WINDOW_SIZE[1]
 screen = pygame.display.set_mode(WINDOW_SIZE)
-map = Image.open('assets/graphics/map/map.png')
-MAP_WIDTH = map.width       #图片的宽
-MAP_HEIGHT = map.height      #图片的高
-map.close()
+# map = Image.open('assets/graphics/map/dotamap1_25clip.png')
+# # map = Image.open('assets/graphics/map/map.png')
+# # MAP_WIDTH = map.width       #图片的宽
+# # MAP_HEIGHT = map.height      #图片的高
+# map.close()
 
 dota2_actual_map_size = (11000, 11000)
-# MAP_WIDTH = dota2_actual_map_size[0]      #图片的宽
-# MAP_HEIGHT = dota2_actual_map_size[1]      #图片的高
+MAP_WIDTH = dota2_actual_map_size[0]      #图片的宽
+MAP_HEIGHT = dota2_actual_map_size[1]      #图片的高
 
 MAP_SIZE = (MAP_WIDTH, MAP_HEIGHT)
 
@@ -59,8 +60,7 @@ class STAT_MANAGER:
 		self.hero_current_mana_percentage = \
 			self.hero_current_mana / self.hero_max_mana
 
-		self.hero_movement_speed = 290
-		self.hero_base_movement_speed = 290 # FIXME: 修改为公式计算
+		self.hero_movement_speed = 290 # FIXME: 修改为公式计算
 		self.hero_attack_interval = FPS / 3
 
 		self.hero_strength = 0
@@ -85,14 +85,16 @@ class STAT_MANAGER:
 		self.powershot_cd = FPS * 3
 		
 		## windrun
-		self.windrun_cd = FPS * 3
-		self.windrun_duration = FPS * 6
-		self.windrun_multi = 3
+		self.windrun_cd = FPS * 6
+		self.windrun_duration = FPS * 3
+		self.windrun_boost = 0.3
+		self.windrun_active = 0
 		
 		## focusfire
 		self.focusfire_cd = FPS * 3
 		self.focusfire_duration = FPS * 12
-		self.focusfire_multi = 3
+		self.focusfire_boost = 2
+		self.focusfire_active = 0
 
 		# creep init stats ------------------------------------- #
 		self.creep_width = 60
@@ -114,11 +116,27 @@ class STAT_MANAGER:
 		self.creep_attack_interval = FPS
 
 	def update(self):
+		# hero stats update ------------------------------------- #
+		# health and mana percentage 
 		self.hero_current_health_percentage = \
 			self.hero_current_health / self.hero_max_health
 
 		self.hero_current_mana_percentage = \
 			self.hero_current_mana / self.hero_max_mana
 
+		# hero attack speed 
+		self.hero_attack_interval_base = self.hero_attack_interval
+
+		# hero movement speed 
+		self.hero_movement_speed_base = hero_movement_speed
+		self.hero_movement_speed_boost = (self.windrun_active * self.windrun_boost) 
+		self.hero_movement_speed = self.hero_movement_speed_base * (1 + self.hero_movement_speed_boost)
+
+
 		# old frames go down here
 		self.old_hero_max_health = self.hero_max_health
+
+
+		# creep stats update ------------------------------------- #
+
+		# arrow stats update ------------------------------------- #

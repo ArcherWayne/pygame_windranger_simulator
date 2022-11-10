@@ -101,8 +101,7 @@ class HERO(pygame.sprite.Sprite): # my code
 	def use_skill_windrun(self):
 		if self.skill_windrun_cooldown_frame == 0:
 			print("use_skill_windrun")
-			self.stats_manager.hero_movement_speed = self.stats_manager.hero_movement_speed *\
-				self.stats_manager.windrun_multi 
+
 
 			self.skill_windrun_countdown_frame += 1 
 			self.skill_windrun_cooldown_frame += 1
@@ -152,6 +151,11 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.keyboard_movement()
 		self.check_collision_with_creeps()
 		self.check_health()
+
+		if self.skill_windrun_countdown_frame:
+			self.stats_manager.windrun_active = 1
+		else:
+			self.stats_manager.windrun_active = 0
 
 		# update cooldowns
 		## 主动攻击间隔

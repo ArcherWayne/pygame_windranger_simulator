@@ -16,7 +16,7 @@ class CameraGroup(pygame.sprite.Group):
 		self.half_h = self.display_surf.get_size()[1] // 2
 
 		# ground
-		self.ground_surf = pygame.transform.scale((pygame.image.load('assets/graphics/map/map.png').convert_alpha()), (MAP_SIZE))
+		self.ground_surf = pygame.transform.scale((pygame.image.load('assets/graphics/map/dotamap1_25clip.png').convert_alpha()), (MAP_SIZE))
 		self.ground_rect = self.ground_surf.get_rect(topleft = (0,0))
 
 	def center_target_camera(self, target): # 以target作为camera的中心， 求解offset距离
