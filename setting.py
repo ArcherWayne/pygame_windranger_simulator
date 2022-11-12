@@ -87,13 +87,13 @@ class STAT_MANAGER:
 		## windrun
 		self.windrun_cd = FPS * 6
 		self.windrun_duration = FPS * 3
-		self.windrun_boost = 0.3
+		self.windrun_boost = 2
 		self.windrun_active = 0
 		
 		## focusfire
 		self.focusfire_cd = FPS * 3
 		self.focusfire_duration = FPS * 12
-		self.focusfire_boost = 2
+		self.focusfire_boost = 10
 		self.focusfire_active = 0
 
 		# creep init stats ------------------------------------- #
@@ -125,10 +125,12 @@ class STAT_MANAGER:
 			self.hero_current_mana / self.hero_max_mana
 
 		# hero attack speed 
-		self.hero_attack_interval_base = self.hero_attack_interval
+		self.hero_attack_interval_base =  2
+		self.hero_attack_interval_boost = (self.focusfire_active * self.focusfire_boost)
+		self.hero_attack_interval = FPS / round(self.hero_attack_interval_base + self.hero_attack_interval_boost)
 
 		# hero movement speed 
-		self.hero_movement_speed_base = hero_movement_speed
+		self.hero_movement_speed_base = 290
 		self.hero_movement_speed_boost = (self.windrun_active * self.windrun_boost) 
 		self.hero_movement_speed = self.hero_movement_speed_base * (1 + self.hero_movement_speed_boost)
 

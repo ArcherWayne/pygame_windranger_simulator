@@ -110,7 +110,7 @@ class HERO(pygame.sprite.Sprite): # my code
 		if self.skill_focusfire_cooldown_frame == 0:
 			print("use_skill_focusfire")
 
-			self.stats_manager.hero_attack_interval = round(self.stats_manager.hero_attack_interval / self.stats_manager.focusfire_multi)
+			# self.stats_manager.hero_attack_interval = round(self.stats_manager.hero_attack_interval / self.stats_manager.focusfire_multi)
 			self.skill_focusfire_countdown_frame += 1 
 			self.skill_focusfire_cooldown_frame += 1
 
@@ -156,6 +156,11 @@ class HERO(pygame.sprite.Sprite): # my code
 			self.stats_manager.windrun_active = 1
 		else:
 			self.stats_manager.windrun_active = 0
+
+		if self.skill_focusfire_countdown_frame:
+			self.stats_manager.focusfire_active = 1
+		else:
+			self.stats_manager.focusfire_active = 0
 
 		# update cooldowns
 		## 主动攻击间隔
