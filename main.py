@@ -164,13 +164,15 @@ class MAINGAME:
 
 				# debug space
 				# debug(self.creep_group.sprites())
-				debug(len(self.camera_group.sprites()), y = 30, info_name='camera_group')
-				debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
-				debug(str(time.time()-self.start_time), y = 70)
-				debug(self.stats_manager.hero_current_health_percentage, y = 110, info_name='hero_current_health_percentage')
+				# debug(len(self.camera_group.sprites()), y = 30, info_name='camera_group')
+				# debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
+				# debug(str(time.time()-self.start_time), y = 70)
+				# debug(self.stats_manager.hero_current_health_percentage, y = 110, info_name='hero_current_health_percentage')
 
-				self.frames += 1
-				debug(str(self.frames), y = 90)
+				# self.frames += 1
+				# debug(str(self.frames), y = 90)
+				debug(self.stats_manager.skill_windrun_active, info_name='windrun_active=')
+				debug(self.stats_manager.skill_focusfire_active, y = 30, info_name='focusfire_active=')
 
 				pygame.display.update()
 

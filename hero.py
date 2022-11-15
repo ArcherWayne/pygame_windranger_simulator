@@ -33,18 +33,18 @@ class HERO(pygame.sprite.Sprite): # my code
 		# movement
 		self.direction = pygame.math.Vector2()
 
-		# cooldown frames
-		self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
-		self.shoot_arrow_cooldown_frame = 0 # attack cd
+		# # cooldown frames
+		# self.hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
+		# self.shoot_arrow_cooldown_frame = 0 # attack cd
 
-		self.skill_shackleshot_cooldown_frame = 0 # shackleshot cd
-		self.skill_powershot_cooldown_frame = 0 # powershot cd
-		self.skill_windrun_cooldown_frame = 0
-		self.skill_focusfire_cooldown_frame = 0
+		# self.skill_shackleshot_cooldown_frame = 0 # shackleshot cd
+		# self.skill_powershot_cooldown_frame = 0 # powershot cd
+		# self.skill_windrun_cooldown_frame = 0
+		# self.skill_focusfire_cooldown_frame = 0
 
-		# count down frames
-		self.skill_windrun_countdown_frame = 0
-		self.skill_focusfire_countdown_frame = 0
+		# # count down frames
+		# self.skill_windrun_countdown_frame = 0
+		# self.skill_focusfire_countdown_frame = 0
 		
 
 
@@ -74,13 +74,13 @@ class HERO(pygame.sprite.Sprite): # my code
 
 
 	def shoot_arrow(self, mouse_pos):
-		if self.shoot_arrow_cooldown_frame == 0:
+		if self.stats_manager.hero_shoot_arrow_cooldown_frame == 0:
 			aim_direction = pygame.math.Vector2()
 			aim_direction.x = mouse_pos[0] - WIN_WIDTH/2
 			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
 			ARROW([self.camera_group, self.arrow_group], aim_direction, self.pos, self.creep_group, self.stats_manager)
 
-			self.shoot_arrow_cooldown_frame += 1
+			self.stats_manager.hero_shoot_arrow_cooldown_frame += 1
 
 	# use skills ---------------------------------------------- # 
 	def use_skill_shackleshot(self):
@@ -88,7 +88,7 @@ class HERO(pygame.sprite.Sprite): # my code
 
 
 	def use_skill_powershot(self, mouse_pos):
-		if self.skill_powershot_cooldown_frame == 0:
+		if self.stats_manager.skill_powershot_cooldown_frame == 0:
 			print("use_skill_powershot")
 
 			aim_direction = pygame.math.Vector2()
@@ -96,23 +96,21 @@ class HERO(pygame.sprite.Sprite): # my code
 			aim_direction.y = mouse_pos[1] - WIN_HEIGHT/2
 			SKILL_POWERSHOT([self.camera_group, self.arrow_group], aim_direction, self.pos, self.creep_group, self.stats_manager)
 			# groups, direction, hero_pos, creep_group, stats_manager
-			self.skill_powershot_cooldown_frame += 1
+			self.stats_manager.skill_powershot_cooldown_frame += 1
 
 	def use_skill_windrun(self):
-		if self.skill_windrun_cooldown_frame == 0:
+		if self.stats_manager.skill_windrun_cooldown_frame == 0:
 			print("use_skill_windrun")
 
-
-			self.skill_windrun_countdown_frame += 1 
-			self.skill_windrun_cooldown_frame += 1
+			self.stats_manager.skill_windrun_countdown_frame += 1 
+			self.stats_manager.skill_windrun_cooldown_frame += 1
 
 	def use_skill_focusfire(self):
-		if self.skill_focusfire_cooldown_frame == 0:
+		if self.stats_manager.skill_focusfire_cooldown_frame == 0:
 			print("use_skill_focusfire")
 
-			# self.stats_manager.hero_attack_interval = round(self.stats_manager.hero_attack_interval / self.stats_manager.focusfire_multi)
-			self.skill_focusfire_countdown_frame += 1 
-			self.skill_focusfire_cooldown_frame += 1
+			self.stats_manager.skill_focusfire_countdown_frame += 1 
+			self.stats_manager.skill_focusfire_cooldown_frame += 1
 
 	# use skills end ------------------------------------------ # 
 
@@ -124,11 +122,11 @@ class HERO(pygame.sprite.Sprite): # my code
 
 	
 	def got_hit(self):
-		if self.hit_cooldown_frame == 0:
+		if self.stats_manager.hero_hit_cooldown_frame == 0:
 			self.stats_manager.hero_current_health -= self.stats_manager.creep_damage
 
 			# cooldown_frame += 1 就开始倒计时 读cd
-			self.hit_cooldown_frame += 1
+			self.stats_manager.hero_hit_cooldown_frame += 1
 
 
 	def check_health(self):
@@ -136,13 +134,13 @@ class HERO(pygame.sprite.Sprite): # my code
 			self.kill()
 
 
-	def update_cooldowns(self, cooldown_frame, cooldown_interval):
-		if cooldown_frame > 0:
-			cooldown_frame += 1
-		if cooldown_frame > cooldown_interval:
-			cooldown_frame = 0
+	# def update_cooldowns(self, cooldown_frame, cooldown_interval):
+	# 	if cooldown_frame > 0:
+	# 		cooldown_frame += 1
+	# 	if cooldown_frame > cooldown_interval:
+	# 		cooldown_frame = 0
 
-		return cooldown_frame
+	# 	return cooldown_frame
 
 	def update(self, dt):
 		self.dt = dt
@@ -152,29 +150,29 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.check_collision_with_creeps()
 		self.check_health()
 
-		if self.skill_windrun_countdown_frame:
-			self.stats_manager.windrun_active = 1
-		else:
-			self.stats_manager.windrun_active = 0
+		# if self.skill_windrun_countdown_frame:
+		# 	self.stats_manager.windrun_active = 1
+		# else:
+		# 	self.stats_manager.windrun_active = 0
 
-		if self.skill_focusfire_countdown_frame:
-			self.stats_manager.focusfire_active = 1
-		else:
-			self.stats_manager.focusfire_active = 0
+		# if self.skill_focusfire_countdown_frame:
+		# 	self.stats_manager.focusfire_active = 1
+		# else:
+		# 	self.stats_manager.focusfire_active = 0
 
-		# update cooldowns
-		## 主动攻击间隔
-		self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, self.stats_manager.hero_attack_interval)
-		## 被攻击间隔
-		self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, self.stats_manager.creep_attack_interval)
-		## 技能cd
-		self.skill_shackleshot_cooldown_frame = self.update_cooldowns(self.skill_shackleshot_cooldown_frame, self.stats_manager.shackleshot_cd)
-		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, self.stats_manager.powershot_cd)
-		self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, self.stats_manager.windrun_cd)
-		self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, self.stats_manager.focusfire_cd)
-		## 技能持续时间
-		self.skill_windrun_countdown_frame = self.update_cooldowns(self.skill_windrun_countdown_frame, self.stats_manager.windrun_duration)
-		self.skill_focusfire_countdown_frame = self.update_cooldowns(self.skill_focusfire_countdown_frame, self.stats_manager.focusfire_duration)
+		# # update cooldowns
+		# ## 主动攻击间隔
+		# self.shoot_arrow_cooldown_frame = self.update_cooldowns(self.shoot_arrow_cooldown_frame, self.stats_manager.hero_attack_interval)
+		# ## 被攻击间隔
+		# self.hit_cooldown_frame = self.update_cooldowns(self.hit_cooldown_frame, self.stats_manager.creep_attack_interval)
+		# ## 技能cd
+		# self.skill_shackleshot_cooldown_frame = self.update_cooldowns(self.skill_shackleshot_cooldown_frame, self.stats_manager.shackleshot_cd)
+		# self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, self.stats_manager.powershot_cd)
+		# self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, self.stats_manager.windrun_cd)
+		# self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, self.stats_manager.focusfire_cd)
+		# ## 技能持续时间
+		# self.skill_windrun_countdown_frame = self.update_cooldowns(self.skill_windrun_countdown_frame, self.stats_manager.windrun_duration)
+		# self.skill_focusfire_countdown_frame = self.update_cooldowns(self.skill_focusfire_countdown_frame, self.stats_manager.focusfire_duration)
 
 class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
 	def __init__(self, groups):

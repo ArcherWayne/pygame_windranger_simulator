@@ -79,22 +79,35 @@ class STAT_MANAGER:
 
 		# skill init stats ------------------------------------- #
 		## shackleshot
-		self.shackleshot_cd = FPS * 3
+		self.skill_shackleshot_cd = FPS * 3
 		
 		## powershot
-		self.powershot_cd = FPS * 3
+		self.skill_powershot_cd = FPS * 3
 		
 		## windrun
-		self.windrun_cd = FPS * 6
-		self.windrun_duration = FPS * 3
-		self.windrun_boost = 2
-		self.windrun_active = 0
+		self.skill_windrun_cd = FPS * 6
+		self.skill_windrun_duration = FPS * 3
+		self.skill_windrun_boost = 2
+		self.skill_windrun_active = 0
 		
 		## focusfire
-		self.focusfire_cd = FPS * 3
-		self.focusfire_duration = FPS * 12
-		self.focusfire_boost = 10
-		self.focusfire_active = 0
+		self.skill_focusfire_cd = FPS * 3
+		self.skill_focusfire_duration = FPS * 12
+		self.skill_focusfire_boost = 10
+		self.skill_focusfire_active = 0
+
+		### cooldown frames 冷却时间
+		self.hero_hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
+		self.hero_shoot_arrow_cooldown_frame = 0 # attack cd
+
+		self.skill_shackleshot_cooldown_frame = 0 # shackleshot cd
+		self.skill_powershot_cooldown_frame = 0 # powershot cd
+		self.skill_windrun_cooldown_frame = 0
+		self.skill_focusfire_cooldown_frame = 0
+
+		### count down frames 持续时间
+		self.skill_windrun_countdown_frame = 0
+		self.skill_focusfire_countdown_frame = 0
 
 		# creep init stats ------------------------------------- #
 		self.creep_width = 60
@@ -111,11 +124,32 @@ class STAT_MANAGER:
 		# self.creep_current_mana_percentage = round(\
 		# 	self.creep_current_mana / self.creep_max_mana)
 
-		self.creep_movement_speed = 315 # 315
+		self.creep_movement_speed = 31 # 315
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS
 
+	def update_cooldowns(self, cooldown_frame, cooldown_interval):
+		if cooldown_frame > 0:
+			cooldown_frame += 1
+		if cooldown_frame > cooldown_interval:
+			cooldown_frame = 0
+
+		return cooldown_frame
+
+	def check_active(self):
+		if self.skill_windrun_countdown_frame:
+			self.skill_windrun_active = 1
+		else: 
+			self. skill_windrun_active = 0
+
+		if self.skill_focusfire_countdown_frame:
+			self.skill_focusfire_active = 1
+		else: 
+			self. skill_focusfire_active = 0
+
+
 	def update(self):
+		self.check_active()
 		# hero stats update ------------------------------------- #
 		# health and mana percentage 
 		self.hero_current_health_percentage = \
@@ -126,14 +160,28 @@ class STAT_MANAGER:
 
 		# hero attack speed 
 		self.hero_attack_interval_base =  2
-		self.hero_attack_interval_boost = (self.focusfire_active * self.focusfire_boost)
+		self.hero_attack_interval_boost = (self.skill_focusfire_active * self.skill_focusfire_boost)
 		self.hero_attack_interval = FPS / round(self.hero_attack_interval_base + self.hero_attack_interval_boost)
 
 		# hero movement speed 
 		self.hero_movement_speed_base = 290
-		self.hero_movement_speed_boost = (self.windrun_active * self.windrun_boost) 
+		self.hero_movement_speed_boost = (self.skill_windrun_active * self.skill_windrun_boost) 
 		self.hero_movement_speed = self.hero_movement_speed_base * (1 + self.hero_movement_speed_boost)
 
+
+		# update cooldowns
+		## 主动攻击间隔
+		self.hero_shoot_arrow_cooldown_frame = self.update_cooldowns(self.hero_shoot_arrow_cooldown_frame, self.hero_attack_interval)
+		## 被攻击间隔
+		self.hero_hit_cooldown_frame = self.update_cooldowns(self.hero_hit_cooldown_frame, self.creep_attack_interval)
+		## 技能cd
+		self.skill_shackleshot_cooldown_frame = self.update_cooldowns(self.skill_shackleshot_cooldown_frame, self.skill_shackleshot_cd)
+		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, self.skill_powershot_cd)
+		self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, self.skill_windrun_cd)
+		self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, self.skill_focusfire_cd)
+		## 技能持续时间
+		self.skill_windrun_countdown_frame = self.update_cooldowns(self.skill_windrun_countdown_frame, self.skill_windrun_duration)
+		self.skill_focusfire_countdown_frame = self.update_cooldowns(self.skill_focusfire_countdown_frame, self.skill_focusfire_duration)
 
 		# old frames go down here
 		self.old_hero_max_health = self.hero_max_health
