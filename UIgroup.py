@@ -135,18 +135,52 @@ class UIGroup(pygame.sprite.Group):
 			self.display_surf.blit(self.skill_focusfire_icon_image, self.skill_background_rect_list[4])
 
 	def draw_skills_cooldown(self):
-		# NOTE: 重写这里, 变成通用的cd显示函数
-		if self.stats_manager.skill_windrun_cooldown_frame:
-			cooldwon_size_ratio = (1-self.stats_manager.skill_windrun_cooldown_frame/self.stats_manager.skill_windrun_cd)
-			cooldown_size_width = self.skill_background_length
-			cooldown_size_height = round(cooldwon_size_ratio*self.skill_background_length)
 
-			self.windrun_cooldown_surface = pygame.Surface((cooldown_size_width, cooldown_size_height))
+		if self.stats_manager.skill_powershot_cooldown_frame:
+			skill_powershot_cooldwon_size_ratio = (1-self.stats_manager.skill_powershot_cooldown_frame/self.stats_manager.skill_powershot_cd)
+			skill_powershot_cooldown_size_width = self.skill_background_length
+			skill_powershot_cooldown_size_height = round(skill_powershot_cooldwon_size_ratio*self.skill_background_length)
+
+			self.powershot_cooldown_surface = pygame.Surface((skill_powershot_cooldown_size_width, skill_powershot_cooldown_size_height))
+			self.powershot_cooldown_surface.fill(BLACK)
+			self.powershot_cooldown_surface.set_alpha(100+155*skill_powershot_cooldwon_size_ratio)
+			self.powershot_cooldown_rect = self.powershot_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[1].bottomleft)
+			self.display_surf.blit(self.powershot_cooldown_surface, self.powershot_cooldown_rect)
+
+
+		if self.stats_manager.skill_windrun_cooldown_frame:
+			skill_windrun_cooldwon_size_ratio = (1-self.stats_manager.skill_windrun_cooldown_frame/self.stats_manager.skill_windrun_cd)
+			skill_windrun_cooldown_size_width = self.skill_background_length
+			skill_windrun_cooldown_size_height = round(skill_windrun_cooldwon_size_ratio*self.skill_background_length)
+
+			self.windrun_cooldown_surface = pygame.Surface((skill_windrun_cooldown_size_width, skill_windrun_cooldown_size_height))
 			self.windrun_cooldown_surface.fill(BLACK)
-			self.windrun_cooldown_surface.set_alpha(100+155*cooldwon_size_ratio)
+			self.windrun_cooldown_surface.set_alpha(100+155*skill_windrun_cooldwon_size_ratio)
 			self.windrun_cooldown_rect = self.windrun_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[2].bottomleft)
 			self.display_surf.blit(self.windrun_cooldown_surface, self.windrun_cooldown_rect)
 
+		if self.stats_manager.skill_focusfire_cooldown_frame:
+			if self.skill_number == 4:
+				skill_focusfire_cooldwon_size_ratio = (1-self.stats_manager.skill_focusfire_cooldown_frame/self.stats_manager.skill_focusfire_cd)
+				skill_focusfire_cooldown_size_width = self.skill_background_length
+				skill_focusfire_cooldown_size_height = round(skill_focusfire_cooldwon_size_ratio*self.skill_background_length)
+
+				self.focusfire_cooldown_surface = pygame.Surface((skill_focusfire_cooldown_size_width, skill_focusfire_cooldown_size_height))
+				self.focusfire_cooldown_surface.fill(BLACK)
+				self.focusfire_cooldown_surface.set_alpha(100+155*skill_focusfire_cooldwon_size_ratio)
+				self.focusfire_cooldown_rect = self.focusfire_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[3].bottomleft)
+				self.display_surf.blit(self.focusfire_cooldown_surface, self.focusfire_cooldown_rect)
+
+			elif self.skill_number == 5:
+				skill_focusfire_cooldwon_size_ratio = (1-self.stats_manager.skill_focusfire_cooldown_frame/self.stats_manager.skill_focusfire_cd)
+				skill_focusfire_cooldown_size_width = self.skill_background_length
+				skill_focusfire_cooldown_size_height = round(skill_focusfire_cooldwon_size_ratio*self.skill_background_length)
+
+				self.focusfire_cooldown_surface = pygame.Surface((skill_focusfire_cooldown_size_width, skill_focusfire_cooldown_size_height))
+				self.focusfire_cooldown_surface.fill(BLACK)
+				self.focusfire_cooldown_surface.set_alpha(100+155*skill_focusfire_cooldwon_size_ratio)
+				self.focusfire_cooldown_rect = self.focusfire_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[4].bottomleft)
+				self.display_surf.blit(self.focusfire_cooldown_surface, self.focusfire_cooldown_rect)
 		
 
 	def draw_items(self):

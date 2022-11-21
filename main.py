@@ -1,3 +1,5 @@
+print("game start!")
+
 # module importing
 import pygame, sys, time
 from setting import *
