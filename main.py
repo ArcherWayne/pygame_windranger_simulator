@@ -16,8 +16,6 @@ from tree import TREE
 from creep import CREEP
 from cursor import CURSOR
 
-# from hero import PLAYER # debug use
-
 class MAINGAME:
 	def __init__(self):
 		## pygame setup
@@ -83,6 +81,7 @@ class MAINGAME:
 			# delta time    ------------------------------------------------------------------------------------- #
 			dt = time.time() - self.last_time
 			self.last_time = time.time()
+			self.frames += 1
 
 			# event loop    ------------------------------------------------------------------------------------- #
 			for event in pygame.event.get():
@@ -163,16 +162,11 @@ class MAINGAME:
 				self.cursor.draw()
 
 				# debug space
-				# debug(self.creep_group.sprites())
-				# debug(len(self.camera_group.sprites()), y = 30, info_name='camera_group')
-				# debug(len(self.arrow_group.sprites()), y = 50, info_name='len(arrow_group)')
-				# debug(str(time.time()-self.start_time), y = 70)
-				# debug(self.stats_manager.hero_current_health_percentage, y = 110, info_name='hero_current_health_percentage')
 
-				# self.frames += 1
-				# debug(str(self.frames), y = 90)
-				debug(self.stats_manager.skill_windrun_active, info_name='windrun_active=')
-				debug(self.stats_manager.skill_focusfire_active, y = 30, info_name='focusfire_active=')
+				debug(self.stats_manager.skill_windrun_cooldown_frame, y = 10, info_name='3cd')
+				debug(self.stats_manager.skill_windrun_countdown_frame, y = 30, info_name='3ct')
+				debug(self.stats_manager.skill_focusfire_cooldown_frame, y = 50, info_name='4cd')
+				debug(self.stats_manager.skill_focusfire_countdown_frame, y = 70, info_name='4ct')
 
 				pygame.display.update()
 

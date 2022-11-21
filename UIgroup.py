@@ -116,7 +116,6 @@ class UIGroup(pygame.sprite.Group):
 		self.display_surf.blit(self.mn_bar_surf, self.mn_bar_rect)
 
 
-
 	def draw_skills(self):
 		for i in range(self.skill_number):
 			self.display_surf.blit(self.sklll_background_surf, self.skill_background_rect_list[i])
@@ -135,6 +134,20 @@ class UIGroup(pygame.sprite.Group):
 			self.display_surf.blit(self.skill_galeforce_icon_image, self.skill_background_rect_list[3])
 			self.display_surf.blit(self.skill_focusfire_icon_image, self.skill_background_rect_list[4])
 
+	def draw_skills_cooldown(self):
+		# NOTE: 重写这里, 变成通用的cd显示函数
+		if self.stats_manager.skill_windrun_cooldown_frame:
+			cooldwon_size_ratio = (1-self.stats_manager.skill_windrun_cooldown_frame/self.stats_manager.skill_windrun_cd)
+			cooldown_size_width = self.skill_background_length
+			cooldown_size_height = round(cooldwon_size_ratio*self.skill_background_length)
+
+			self.windrun_cooldown_surface = pygame.Surface((cooldown_size_width, cooldown_size_height))
+			self.windrun_cooldown_surface.fill(BLACK)
+			self.windrun_cooldown_surface.set_alpha(100+155*cooldwon_size_ratio)
+			self.windrun_cooldown_rect = self.windrun_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[2].bottomleft)
+			self.display_surf.blit(self.windrun_cooldown_surface, self.windrun_cooldown_rect)
+
+		
 
 	def draw_items(self):
 		# 目前只画了background
@@ -148,15 +161,11 @@ class UIGroup(pygame.sprite.Group):
 
 	def update(self): 
 		pass
-		# if self.hero.current_health > 0 and self.hero.current_mana > 0:
-		# 	self.health_percentage = self.hero.current_health / self.hero.max_health
-		# 	self.mana_percentage = self.hero.current_mana / self.hero.max_mana
-		# else: 
-		# 	self.health_percentage = 0
-		# 	self.mana_percentage = 0
+
 
 	def ui_draw(self):
 		self.draw_health_mana_bar()
 		self.draw_skills()
+		self.draw_skills_cooldown()
 		self.draw_items()
 		self.draw_mugshot()
