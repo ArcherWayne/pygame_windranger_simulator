@@ -135,7 +135,6 @@ class UIGroup(pygame.sprite.Group):
 			self.display_surf.blit(self.skill_focusfire_icon_image, self.skill_background_rect_list[4])
 
 	def draw_skills_cooldown(self):
-
 		if self.stats_manager.skill_powershot_cooldown_frame:
 			skill_powershot_cooldwon_size_ratio = (1-self.stats_manager.skill_powershot_cooldown_frame/self.stats_manager.skill_powershot_cd)
 			skill_powershot_cooldown_size_width = self.skill_background_length
@@ -184,10 +183,20 @@ class UIGroup(pygame.sprite.Group):
 		
 
 	def draw_items(self):
-		# 目前只画了background
+		# FIXME: 目前只画了background
 		for rect in self.item_background_rect_list:
 			self.display_surf.blit(self.item_background_surf, rect)
 
+
+	def draw_hero_level(self):
+		self.hero_level_surf = FONT.render("lvl="+str(self.stats_manager.hero_level), True, WHITE)
+		self.hero_level_rect = self.hero_level_surf.get_rect(bottomright = self.wr_mugshot_rect.bottomright)
+
+		self.display_surf.blit(self.hero_level_surf, self.hero_level_rect)
+
+
+	def draw_skill_level(self):
+		pass
 
 	def draw_mugshot(self):
 		self.display_surf.blit(self.wr_mugshot_surf, self.wr_mugshot_rect)
@@ -201,5 +210,7 @@ class UIGroup(pygame.sprite.Group):
 		self.draw_health_mana_bar()
 		self.draw_skills()
 		self.draw_skills_cooldown()
+		self.draw_skill_level()
 		self.draw_items()
 		self.draw_mugshot()
+		self.draw_hero_level()

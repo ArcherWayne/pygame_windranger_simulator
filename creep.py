@@ -119,6 +119,9 @@ class CREEP(pygame.sprite.Sprite):
 		if self.health <= 0:
 			self.kill()
 
+			# FIXME: 修改为击杀后掉落, 拾起后才能获得经验.
+			self.stats_manager.hero_experience += 10
+
 	def update(self, dt):
 		self.check_health()
 

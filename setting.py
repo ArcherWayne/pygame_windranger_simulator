@@ -64,6 +64,13 @@ class STAT_MANAGER:
 		self.hero_movement_speed = 290 # FIXME: 修改为公式计算
 		self.hero_attack_interval = FPS / 3
 
+		self.hero_level = 1
+		self.hero_experience = 0
+		self.hero_epxerience_to_level_up = []
+
+		for i in range(100):
+			self.hero_epxerience_to_level_up.append(10*i)
+
 		self.hero_strength = 0
 		self.hero_agility = 0
 		self.hero_intelligence = 0
@@ -90,12 +97,24 @@ class STAT_MANAGER:
 		self.skill_windrun_duration = FPS * 3
 		self.skill_windrun_boost = 2
 		self.skill_windrun_active = 0
+
+		## gale force
+		self.skill_galeforce_cd = FPS * 6
+		self.skill_galeforce_duration = FPS * 3
 		
 		## focusfire
-		self.skill_focusfire_cd = FPS * 3
-		self.skill_focusfire_duration = FPS * 12
+		self.skill_focusfire_cd = FPS * 6
+		self.skill_focusfire_duration = FPS * 1
 		self.skill_focusfire_boost = 10
 		self.skill_focusfire_active = 0
+
+		## skill_levels 
+		self.skill_shackleshot_level = 0
+		self.skill_powershot_level = 0
+		self.skill_windrun_level = 0
+		self.skill_galeforce_level = 0
+		self.skill_focusfire_level = 0
+
 
 		### cooldown frames 冷却时间
 		self.hero_hit_cooldown_frame = 0 # 英雄接触到小兵的帧读数
@@ -148,9 +167,15 @@ class STAT_MANAGER:
 		else: 
 			self. skill_focusfire_active = 0
 
+	def check_levelup(self):
+		if self.hero_experience >= self.hero_epxerience_to_level_up[self.hero_level]:
+			self.hero_level += 1
+			self.hero_experience = 0
+
 
 	def update(self):
 		self.check_active()
+		self.check_levelup()
 		# hero stats update ------------------------------------- #
 		# health and mana percentage 
 		self.hero_current_health_percentage = \
