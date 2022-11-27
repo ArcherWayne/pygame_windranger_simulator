@@ -25,6 +25,7 @@ class MAINGAME:
 		self.stats_manager = STAT_MANAGER()
 
 		pygame.init()
+		print("pygame initialized!")
 		self.screen = pygame.display.set_mode(WINDOW_SIZE)
 		pygame.display.set_caption('windranger_simulator')
 		pygame.display.set_icon(pygame.image.load('assets/dota2.png'))
@@ -36,18 +37,14 @@ class MAINGAME:
 
 # group setup ----------------------------------------------------------------------------------------------- #
 		self.camera_group = CameraGroup(self.stats_manager)
-
 		self.hero_group = pygame.sprite.GroupSingle()
 		self.creep_group = pygame.sprite.Group()
 		self.tree_group = pygame.sprite.Group()
-
 		self.arrow_group = pygame.sprite.Group()
 
 # class setup
 		# class = Class()
 		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group, self.stats_manager)
-
-
 		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group, self.stats_manager)
 
 
@@ -175,7 +172,6 @@ class MAINGAME:
 
 if __name__ == "__main__":
 	main_game = MAINGAME()
-
 
 	# init functions
 	main_game.generate_trees()

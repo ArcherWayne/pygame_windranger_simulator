@@ -1,10 +1,11 @@
 import pygame
 from PIL import Image
+from attribute_items import ATTRIBUTE_ITEMS
 
 pygame.init()
 
 # game manager init -------------------------------------------------------------------------------- #
-FONT = pygame.font.Font('assets/font/HuaGuangGangTieZhiHei-KeBianTi-2.ttf', 30)
+FONT = pygame.font.Font('assets/font/HuaGuangGangTieZhiHei-KeBianTi-2.ttf', 20)
 
 # map setting ------------------------------------------------- #
 WINDOW_SIZE = (1400, 800)
@@ -45,8 +46,10 @@ COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 # stats manager -------------------------------------------------------------------------------- #
 class STAT_MANAGER:
 	def __init__(self) -> None:
-		# NOTE: 仔细思考一下, 数值可能还是得赋给类, 然后让类不断获取更新的值
-		# hero init stats -------------------------------------- #
+		# imported ----------------------------------------------------------------------- #
+		self.attri_item = ATTRIBUTE_ITEMS
+		
+		# hero init stats ---------------------------------------------------------------- #
 		self.hero_width = 60
 		self.hero_height = 60
 		self.hero_collision_width = 20
@@ -61,21 +64,26 @@ class STAT_MANAGER:
 		self.hero_current_mana_percentage = \
 			self.hero_current_mana / self.hero_max_mana
 
-		self.hero_movement_speed = 290 # FIXME: 修改为公式计算
+		self.hero_movement_speed = 290
 		self.hero_attack_interval = FPS / 3
 
 		self.hero_level = 1
 		self.hero_experience = 0
 		self.hero_epxerience_to_level_up = []
 
+		self.hero_total_skill_points = self.hero_level
+		self.hero_used_skill_points = 0
+		self.hero_unused_skill_points = self.hero_total_skill_points - self.hero_used_skill_points
+
 		for i in range(100):
 			self.hero_epxerience_to_level_up.append(10*i)
 
+		# hero attributes
 		self.hero_strength = 0
 		self.hero_agility = 0
 		self.hero_intelligence = 0
 
-		# arrow init stats ------------------------------------- #
+		# arrow init stats ------------------------------------------------------------- #
 		self.arrow_width = 10
 		self.arrow_height = 10
 		self.arrow_collision_width = 10
@@ -85,7 +93,7 @@ class STAT_MANAGER:
 		self.arrow_knockback = 200
 		self.arrow_penetration = 1
 
-		# skill init stats ------------------------------------- #
+		# skill init stats ---------------------------------------------------------------- #
 		## shackleshot
 		self.skill_shackleshot_cd = FPS * 3
 		
@@ -129,7 +137,7 @@ class STAT_MANAGER:
 		self.skill_windrun_countdown_frame = 0
 		self.skill_focusfire_countdown_frame = 0
 
-		# creep init stats ------------------------------------- #
+		# creep init stats ---------------------------------------------------------------- #
 		self.creep_width = 60
 		self.creep_height = 60
 		self.creep_collision_width = 40
@@ -147,6 +155,9 @@ class STAT_MANAGER:
 		self.creep_movement_speed = 31 # 315
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS
+
+		
+		
 
 	def update_cooldowns(self, cooldown_frame, cooldown_interval):
 		if cooldown_frame > 0:
@@ -177,35 +188,44 @@ class STAT_MANAGER:
 		self.check_active()
 		self.check_levelup()
 		# hero stats update ------------------------------------- #
-		# health and mana percentage 
+		##
+
+		## health and mana percentage 
 		self.hero_current_health_percentage = \
 			self.hero_current_health / self.hero_max_health
 
 		self.hero_current_mana_percentage = \
 			self.hero_current_mana / self.hero_max_mana
 
-		# hero attack speed 
+
+
+		## hero attack speed 
 		self.hero_attack_interval_base =  2
 		self.hero_attack_interval_boost = (self.skill_focusfire_active * self.skill_focusfire_boost)
 		self.hero_attack_interval = FPS / round(self.hero_attack_interval_base + self.hero_attack_interval_boost)
 
-		# hero movement speed 
+		## hero movement speed 
 		self.hero_movement_speed_base = 290
 		self.hero_movement_speed_boost = (self.skill_windrun_active * self.skill_windrun_boost) 
 		self.hero_movement_speed = self.hero_movement_speed_base * (1 + self.hero_movement_speed_boost)
 
 
-		# update cooldowns
-		## 主动攻击间隔
+		## hero skill points
+		self.hero_total_skill_points = self.hero_level
+		self.hero_unused_skill_points = self.hero_total_skill_points - self.hero_used_skill_points
+
+
+		## update cooldowns
+		### 主动攻击间隔
 		self.hero_shoot_arrow_cooldown_frame = self.update_cooldowns(self.hero_shoot_arrow_cooldown_frame, self.hero_attack_interval)
-		## 被攻击间隔
+		###被攻击间隔
 		self.hero_hit_cooldown_frame = self.update_cooldowns(self.hero_hit_cooldown_frame, self.creep_attack_interval)
-		## 技能cd
+		### 技能cd
 		self.skill_shackleshot_cooldown_frame = self.update_cooldowns(self.skill_shackleshot_cooldown_frame, self.skill_shackleshot_cd)
 		self.skill_powershot_cooldown_frame = self.update_cooldowns(self.skill_powershot_cooldown_frame, self.skill_powershot_cd)
 		self.skill_windrun_cooldown_frame = self.update_cooldowns(self.skill_windrun_cooldown_frame, self.skill_windrun_cd)
 		self.skill_focusfire_cooldown_frame = self.update_cooldowns(self.skill_focusfire_cooldown_frame, self.skill_focusfire_cd)
-		## 技能持续时间
+		### 技能持续时间
 		self.skill_windrun_countdown_frame = self.update_cooldowns(self.skill_windrun_countdown_frame, self.skill_windrun_duration)
 		self.skill_focusfire_countdown_frame = self.update_cooldowns(self.skill_focusfire_countdown_frame, self.skill_focusfire_duration)
 
