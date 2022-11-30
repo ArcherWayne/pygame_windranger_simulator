@@ -1,6 +1,6 @@
 import pygame
 from PIL import Image
-from attribute_items import ATTRIBUTE_ITEMS
+from item import ATTRIBUTE_ITEM
 
 pygame.init()
 
@@ -47,7 +47,7 @@ COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 class STAT_MANAGER:
 	def __init__(self) -> None:
 		# imported ----------------------------------------------------------------------- #
-		self.attri_item = ATTRIBUTE_ITEMS
+		self.a_i = ATTRIBUTE_ITEM()
 		
 		# hero init stats ---------------------------------------------------------------- #
 		self.hero_width = 60
@@ -197,6 +197,40 @@ class STAT_MANAGER:
 		self.hero_current_mana_percentage = \
 			self.hero_current_mana / self.hero_max_mana
 
+		# hero attributes 
+		self.hero_strength = \
+			self.a_i.branch*self.a_i.branch_number + \
+			self.a_i.circlet*self.a_i.circlet_number + \
+			self.a_i.crown*self.a_i.crown_number + \
+			self.a_i.orb*self.a_i.orb_number + \
+			self.a_i.apex*self.a_i.apex_number + \
+			self.a_i.gauntlet*self.a_i.gauntlet_number + \
+			self.a_i.belt*self.a_i.belt_number + \
+			self.a_i.axe*self.a_i.axe_number + \
+			self.a_i.reaver*self.a_i.reaver_number
+
+		self.hero_agility = \
+			self.a_i.branch*self.a_i.branch_number + \
+			self.a_i.circlet*self.a_i.circlet_number + \
+			self.a_i.crown*self.a_i.crown_number + \
+			self.a_i.orb*self.a_i.orb_number + \
+			self.a_i.apex*self.a_i.apex_number + \
+			self.a_i.slippers*self.a_i.slippers_number + \
+			self.a_i.band*self.a_i.band_number + \
+			self.a_i.blade*self.a_i.blade_number + \
+			self.a_i.eaglesong*self.a_i.eaglesong_number
+
+		self.hero_intelligence = \
+			self.a_i.branch*self.a_i.branch_number + \
+			self.a_i.circlet*self.a_i.circlet_number + \
+			self.a_i.crown*self.a_i.crown_number + \
+			self.a_i.orb*self.a_i.orb_number + \
+			self.a_i.apex*self.a_i.apex_number + \
+			self.a_i.mantle*self.a_i.mantle_number + \
+			self.a_i.robe*self.a_i.robe_number + \
+			self.a_i.staff*self.a_i.staff_number + \
+			self.a_i.mystic*self.a_i.mystic_number
+
 
 
 		## hero attack speed 
@@ -230,7 +264,7 @@ class STAT_MANAGER:
 		self.skill_focusfire_countdown_frame = self.update_cooldowns(self.skill_focusfire_countdown_frame, self.skill_focusfire_duration)
 
 		# old frames go down here
-		self.old_hero_max_health = self.hero_max_health
+		# self.old_hero_max_health = self.hero_max_health
 
 
 		# creep stats update ------------------------------------- #

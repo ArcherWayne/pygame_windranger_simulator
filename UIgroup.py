@@ -106,16 +106,34 @@ class UIGroup(pygame.sprite.Group):
 		self.hp_bar_surf = pygame.Surface((round(self.hp_bar_size[0]*self.stats_manager.hero_current_health_percentage), self.hp_bar_size[1]))
 		self.hp_bar_surf.fill(RED)
 		self.hp_bar_rect = self.hp_bar_surf.get_rect(topleft = \
-			(self.hp_mn_bar_background_rect.topleft[0] - 2, self.hp_mn_bar_background_rect.topleft[1] - 2))
+			(self.hp_mn_bar_background_rect.topleft[0]+2, self.hp_mn_bar_background_rect.topleft[1]+2))
 		self.display_surf.blit(self.hp_bar_surf, self.hp_bar_rect)
 
 		self.mn_bar_surf = pygame.Surface((round(self.hp_bar_size[0]*self.stats_manager.hero_current_mana_percentage), self.hp_bar_size[1]))
 		self.mn_bar_surf.fill(BLUE)
 		self.mn_bar_rect = self.mn_bar_surf.get_rect(topleft = \
-			(self.hp_mn_bar_background_rect.topleft[0] - 2, self.hp_mn_bar_background_rect.topleft[1] + 0.5*self.hp_mn_bar_size[1] - 2))
+			(self.hp_mn_bar_background_rect.topleft[0]+2, self.hp_mn_bar_background_rect.topleft[1] + 0.5*self.hp_mn_bar_size[1]+2))
 		self.display_surf.blit(self.mn_bar_surf, self.mn_bar_rect)
 
 
+	def draw_health_mana_number(self):
+		self.hero_hpnumber_surf = FONT.render(
+			str(self.stats_manager.hero_current_health)+'/'+str(self.stats_manager.hero_max_health), 
+			True, WHITE)
+		self.hero_hpnumber_rect = self.hero_hpnumber_surf.get_rect(center = \
+			(self.hp_mn_bar_background_rect.centerx,self.hp_bar_rect.centery))
+
+		self.display_surf.blit(self.hero_hpnumber_surf, self.hero_hpnumber_rect)
+
+		self.hero_mnnumber_surf = FONT.render(
+			str(self.stats_manager.hero_current_mana)+'/'+str(self.stats_manager.hero_max_mana), 
+			True, WHITE)
+		self.hero_mnnumber_rect = self.hero_mnnumber_surf.get_rect(center = \
+			(self.hp_mn_bar_background_rect.centerx,self.mn_bar_rect.centery))
+
+		self.display_surf.blit(self.hero_mnnumber_surf, self.hero_mnnumber_rect)
+
+ 
 	def draw_skills(self):
 		for i in range(self.skill_number):
 			self.display_surf.blit(self.sklll_background_surf, self.skill_background_rect_list[i])
@@ -133,6 +151,7 @@ class UIGroup(pygame.sprite.Group):
 			self.display_surf.blit(self.skill_windrun_icon_image, self.skill_background_rect_list[2])
 			self.display_surf.blit(self.skill_galeforce_icon_image, self.skill_background_rect_list[3])
 			self.display_surf.blit(self.skill_focusfire_icon_image, self.skill_background_rect_list[4])
+
 
 	def draw_skills_cooldown(self):
 		if self.stats_manager.skill_powershot_cooldown_frame:
@@ -195,9 +214,6 @@ class UIGroup(pygame.sprite.Group):
 		self.display_surf.blit(self.hero_level_surf, self.hero_level_rect)
 
 
-	def draw_skill_level(self):
-		pass
-
 	def draw_mugshot(self):
 		self.display_surf.blit(self.wr_mugshot_surf, self.wr_mugshot_rect)
 
@@ -208,9 +224,9 @@ class UIGroup(pygame.sprite.Group):
 
 	def ui_draw(self):
 		self.draw_health_mana_bar()
+		self.draw_health_mana_number()
 		self.draw_skills()
 		self.draw_skills_cooldown()
-		self.draw_skill_level()
 		self.draw_items()
 		self.draw_mugshot()
 		self.draw_hero_level()
