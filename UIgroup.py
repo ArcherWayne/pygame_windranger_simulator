@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 from setting import *
 from PIL import Image
 
@@ -214,13 +214,24 @@ class UIGroup(pygame.sprite.Group):
 		self.display_surf.blit(self.hero_level_surf, self.hero_level_rect)
 
 
+	def draw_hero_attribute(self):
+		self.hero_strength_surf = FONT.render(str(self.stats_manager.hero_strength), True, RED) 
+		self.hero_agility_surf = FONT.render(str(self.stats_manager.hero_agility), True, GREEN) 
+		self.hero_intelligence_surf = FONT.render(str(self.stats_manager.hero_intelligence), True, BLUE) 
+
+		self.hero_strength_rect = self.hero_strength_surf.get_rect(center=self.item_background_rect_list[6].center)
+		self.hero_agility_rect = self.hero_agility_surf.get_rect(center=self.item_background_rect_list[7].center)
+		self.hero_intelligence_rect = self.hero_intelligence_surf.get_rect(center=self.item_background_rect_list[8].center)
+
+		self.display_surf.blit(self.hero_strength_surf, self.hero_strength_rect)
+		self.display_surf.blit(self.hero_agility_surf, self.hero_agility_rect)
+		self.display_surf.blit(self.hero_intelligence_surf, self.hero_intelligence_rect)
+
 	def draw_mugshot(self):
 		self.display_surf.blit(self.wr_mugshot_surf, self.wr_mugshot_rect)
 
-
 	def update(self): 
 		pass
-
 
 	def ui_draw(self):
 		self.draw_health_mana_bar()
@@ -228,5 +239,6 @@ class UIGroup(pygame.sprite.Group):
 		self.draw_skills()
 		self.draw_skills_cooldown()
 		self.draw_items()
+		self.draw_hero_attribute()
 		self.draw_mugshot()
 		self.draw_hero_level()
