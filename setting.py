@@ -1,6 +1,5 @@
 import pygame
 from PIL import Image
-from item import ATTRIBUTE_ITEM
 
 pygame.init()
 
@@ -23,6 +22,8 @@ MAP_WIDTH = dota2_actual_map_size[0]      #图片的宽
 MAP_HEIGHT = dota2_actual_map_size[1]      #图片的高
 
 MAP_SIZE = (MAP_WIDTH, MAP_HEIGHT)
+
+ITEM_SIZE = (75, 55)
 
 # camera debug setting  ----------------------------------------------- #
 show_collision_area = 0
@@ -47,7 +48,6 @@ COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 class STAT_MANAGER:
 	def __init__(self) -> None:
 		# imported ----------------------------------------------------------------------- #
-		self.a_i = ATTRIBUTE_ITEM()
 		
 		# hero init stats ---------------------------------------------------------------- #
 		self.hero_width = 60
@@ -82,6 +82,59 @@ class STAT_MANAGER:
 		self.hero_strength = 0
 		self.hero_agility = 0
 		self.hero_intelligence = 0
+
+
+		# attribute items -------------------------------------------------------------- #
+		# tri
+		self.branch = 1
+		self.circlet = 2
+		self.crown = 4
+		self.orb = 10
+		self.apex = 70
+
+		# str
+		self.gauntlets = 3
+		self.belt = 6
+		self.axe = 10
+		self.reaver = 25
+
+		# agi
+		self.slippers = 3
+		self.band = 6
+		self.blade = 10
+		self.eaglesong = 25
+
+		# int
+		self.mantle = 3
+		self.robe = 6
+		self.staff = 10
+		self.mystic = 25
+
+		# number ----------------------------- #
+		# tri
+		self.branch_number = 0
+		self.circlet_number = 0
+		self.crown_number = 0
+		self.orb_number = 0
+		self.apex_number = 0
+
+		# str
+		self.gauntlets_number = 0
+		self.belt_number = 0
+		self.axe_number = 0
+		self.reaver_number = 0
+
+		# agi
+		self.slippers_number = 0
+		self.band_number = 0
+		self.blade_number = 0
+		self.eaglesong_number = 0
+
+		# int
+		self.mantle_number = 0
+		self.robe_number = 0
+		self.staff_number = 0
+		self.mystic_number = 0
 
 		# arrow init stats ------------------------------------------------------------- #
 		self.arrow_width = 10
@@ -199,37 +252,37 @@ class STAT_MANAGER:
 
 		# hero attributes 
 		self.hero_strength = \
-			self.a_i.branch*self.a_i.branch_number + \
-			self.a_i.circlet*self.a_i.circlet_number + \
-			self.a_i.crown*self.a_i.crown_number + \
-			self.a_i.orb*self.a_i.orb_number + \
-			self.a_i.apex*self.a_i.apex_number + \
-			self.a_i.gauntlet*self.a_i.gauntlet_number + \
-			self.a_i.belt*self.a_i.belt_number + \
-			self.a_i.axe*self.a_i.axe_number + \
-			self.a_i.reaver*self.a_i.reaver_number
+			self.branch*self.branch_number + \
+			self.circlet*self.circlet_number + \
+			self.crown*self.crown_number + \
+			self.orb*self.orb_number + \
+			self.apex*self.apex_number + \
+			self.gauntlets*self.gauntlets_number + \
+			self.belt*self.belt_number + \
+			self.axe*self.axe_number + \
+			self.reaver*self.reaver_number
 
 		self.hero_agility = \
-			self.a_i.branch*self.a_i.branch_number + \
-			self.a_i.circlet*self.a_i.circlet_number + \
-			self.a_i.crown*self.a_i.crown_number + \
-			self.a_i.orb*self.a_i.orb_number + \
-			self.a_i.apex*self.a_i.apex_number + \
-			self.a_i.slippers*self.a_i.slippers_number + \
-			self.a_i.band*self.a_i.band_number + \
-			self.a_i.blade*self.a_i.blade_number + \
-			self.a_i.eaglesong*self.a_i.eaglesong_number
+			self.branch*self.branch_number + \
+			self.circlet*self.circlet_number + \
+			self.crown*self.crown_number + \
+			self.orb*self.orb_number + \
+			self.apex*self.apex_number + \
+			self.slippers*self.slippers_number + \
+			self.band*self.band_number + \
+			self.blade*self.blade_number + \
+			self.eaglesong*self.eaglesong_number
 
 		self.hero_intelligence = \
-			self.a_i.branch*self.a_i.branch_number + \
-			self.a_i.circlet*self.a_i.circlet_number + \
-			self.a_i.crown*self.a_i.crown_number + \
-			self.a_i.orb*self.a_i.orb_number + \
-			self.a_i.apex*self.a_i.apex_number + \
-			self.a_i.mantle*self.a_i.mantle_number + \
-			self.a_i.robe*self.a_i.robe_number + \
-			self.a_i.staff*self.a_i.staff_number + \
-			self.a_i.mystic*self.a_i.mystic_number
+			self.branch*self.branch_number + \
+			self.circlet*self.circlet_number + \
+			self.crown*self.crown_number + \
+			self.orb*self.orb_number + \
+			self.apex*self.apex_number + \
+			self.mantle*self.mantle_number + \
+			self.robe*self.robe_number + \
+			self.staff*self.staff_number + \
+			self.mystic*self.mystic_number
 
 
 

@@ -41,6 +41,7 @@ class MAINGAME:
 		self.creep_group = pygame.sprite.Group()
 		self.tree_group = pygame.sprite.Group()
 		self.arrow_group = pygame.sprite.Group()
+		self.attri_item_group = pygame.sprite.Group()
 
 # class setup
 		# class = Class()
@@ -90,7 +91,7 @@ class MAINGAME:
 
 				if event.type == self.creep_enemy_timer:
 					self.camera_group.add(CREEP([self.camera_group, self.creep_group], self.creep_group, \
-						self.hero, self.hero.arrow_group, self.camera_group, self.stats_manager))
+						self.hero, self.hero.arrow_group, self.camera_group, self.attri_item_group,self.stats_manager))
 
 				# mouse action ------------------------------------------------------------------ #
 				if event.type == pygame.MOUSEMOTION:

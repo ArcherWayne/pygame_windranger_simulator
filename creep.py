@@ -1,14 +1,15 @@
 import pygame
 import math
-from random import random
+from random import random, choice
 from clip import clip
 from setting import *
 from debug import debug
 
 from special_effects import DAMAGE_NUMBERS
+from item import ATTRIBUTE_ITEM_SPRITE
 
 class CREEP(pygame.sprite.Sprite):
-	def __init__(self, groups, creep_group, hero, arrow_group, camera_group, stats_manager) -> None:
+	def __init__(self, groups, creep_group, hero, arrow_group, camera_group, attri_item_group, stats_manager) -> None:
 		super().__init__(groups)
 		# type
 		self.type = 'creep'
@@ -19,6 +20,7 @@ class CREEP(pygame.sprite.Sprite):
 		self.arrow_group = arrow_group
 		self.camera_group = camera_group
 		self.stats_manager = stats_manager
+		self.attri_item_group = attri_item_group
 
 		# stats
 		self.health = self.stats_manager.creep_max_health
@@ -115,8 +117,18 @@ class CREEP(pygame.sprite.Sprite):
 		self.knockback_acceleration -= 2*self.knockback_acceleration/FPS
 		
 
+	def drop_item(self):
+		item_list = ['branch', 'circlet', 'crown', 'orb', 'apex', \
+			'gauntlets', 'belt', 'axe', 'reaver',\
+			'slippers', 'band', 'blade', 'eaglesong',\
+			'mantle', 'robe', 'staff', 'mystic']
+		drop_item = choice(item_list)
+		self.camera_group.add(ATTRIBUTE_ITEM_SPRITE([self.camera_group, self.attri_item_group],\
+			 drop_item, self.pos, self.hero, self.stats_manager))
+
 	def check_health(self):
 		if self.health <= 0:
+			self.drop_item()
 			self.kill()
 
 			# FIXME: 修改为击杀后掉落, 拾起后才能获得经验.
