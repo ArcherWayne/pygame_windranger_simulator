@@ -6,6 +6,10 @@ pygame.init()
 # game manager init -------------------------------------------------------------------------------- #
 FONT = pygame.font.Font('assets/font/HuaGuangGangTieZhiHei-KeBianTi-2.ttf', 20)
 
+def makesizefont(fontsize):
+	return pygame.font.Font('assets/font/HuaGuangGangTieZhiHei-KeBianTi-2.ttf', fontsize)
+	
+
 # map setting ------------------------------------------------- #
 WINDOW_SIZE = (1400, 800)
 WIN_WIDTH = WINDOW_SIZE[0]
@@ -47,22 +51,38 @@ COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 # stats manager -------------------------------------------------------------------------------- #
 class STAT_MANAGER:
 	def __init__(self) -> None:
-		# imported ----------------------------------------------------------------------- #
 		
+		# hero attributes -------------------------------------------------------------- #
+		self.hero_base_strength = 18
+		self.hero_base_agility = 17
+		self.hero_base_intelligence = 18
+		self.hero_strength = self.hero_base_strength
+		self.hero_agility = self.hero_base_agility
+		self.hero_intelligence = self.hero_base_intelligence
+
 		# hero init stats ---------------------------------------------------------------- #
 		self.hero_width = 60
 		self.hero_height = 60
 		self.hero_collision_width = 20
 		self.hero_collision_height = 20
  
+		self.hero_base_health = 506
 		self.hero_max_health = 524
 		self.hero_current_health = 524
 		self.hero_current_health_percentage = \
 			self.hero_current_health / self.hero_max_health
+
+		self.hero_base_mana = 327
 		self.hero_max_mana = 345
 		self.hero_current_mana = 345
 		self.hero_current_mana_percentage = \
 			self.hero_current_mana / self.hero_max_mana
+
+		self.hero_health_recover_per_sec = 1+self.hero_strength * 0.01
+		self.hero_health_recover_per_fps = self.hero_health_recover_per_sec / FPS
+
+		self.hero_mana_recover_per_sec = 1+self.hero_intelligence * 0.1
+		self.hero_mana_recover_per_fps = self.hero_mana_recover_per_sec / FPS
 
 		self.hero_movement_speed = 290
 		self.hero_attack_interval = FPS / 3
@@ -78,10 +98,7 @@ class STAT_MANAGER:
 		for i in range(100):
 			self.hero_epxerience_to_level_up.append(10*i)
 
-		# hero attributes
-		self.hero_strength = 0
-		self.hero_agility = 0
-		self.hero_intelligence = 0
+
 
 
 		# attribute items -------------------------------------------------------------- #
@@ -200,10 +217,7 @@ class STAT_MANAGER:
 		self.creep_current_health = 550
 		self.creep_current_health_percentage = round(\
 			self.creep_current_health / self.creep_max_health)
-		# self.creep_max_mana = 345
-		# self.creep_current_mana = 345
-		# self.creep_current_mana_percentage = round(\
-		# 	self.creep_current_mana / self.creep_max_mana)
+
 
 		self.creep_movement_speed = 31 # 315
 		self.creep_damage = 19
@@ -236,22 +250,21 @@ class STAT_MANAGER:
 			self.hero_level += 1
 			self.hero_experience = 0
 
+	###########################################################
+	##  ####  ##      ##       ###      ##      ##      #######
+	##  ####  ##  ##  ##  ####  ##  ##  ####  ####  ###########
+	##  ####  ##      ##  ####  ##  ##  ####  ####      #######
+	##  ####  ##  ######  ####  ##      ####  ####  ###########
+	##        ##  ######       ###  ##  ####  ####      #######
+	###########################################################
 
 	def update(self):
 		self.check_active()
 		self.check_levelup()
 		# hero stats update ------------------------------------- #
-		##
 
-		## health and mana percentage 
-		self.hero_current_health_percentage = \
-			self.hero_current_health / self.hero_max_health
-
-		self.hero_current_mana_percentage = \
-			self.hero_current_mana / self.hero_max_mana
-
-		# hero attributes 
-		self.hero_strength = \
+		## hero attributes 
+		self.hero_strength = self.hero_base_strength +\
 			self.branch*self.branch_number + \
 			self.circlet*self.circlet_number + \
 			self.crown*self.crown_number + \
@@ -262,7 +275,7 @@ class STAT_MANAGER:
 			self.axe*self.axe_number + \
 			self.reaver*self.reaver_number
 
-		self.hero_agility = \
+		self.hero_agility = self.hero_base_agility +\
 			self.branch*self.branch_number + \
 			self.circlet*self.circlet_number + \
 			self.crown*self.crown_number + \
@@ -273,7 +286,7 @@ class STAT_MANAGER:
 			self.blade*self.blade_number + \
 			self.eaglesong*self.eaglesong_number
 
-		self.hero_intelligence = \
+		self.hero_intelligence = self.hero_base_intelligence +\
 			self.branch*self.branch_number + \
 			self.circlet*self.circlet_number + \
 			self.crown*self.crown_number + \
@@ -284,10 +297,41 @@ class STAT_MANAGER:
 			self.staff*self.staff_number + \
 			self.mystic*self.mystic_number
 
+		self.hero_total_attri_number = \
+			self.hero_strength +\
+			self.hero_agility +\
+			self.hero_intelligence
 
+		## health and mana
+		self.hero_health_recover_per_sec = 1+self.hero_strength * 0.01
+		self.hero_health_recover_per_fps = self.hero_health_recover_per_sec / FPS
+
+		self.hero_mana_recover_per_sec = 1+self.hero_intelligence * 0.1
+		self.hero_mana_recover_per_fps = self.hero_mana_recover_per_sec / FPS
+
+		self.hero_current_health_percentage = \
+			self.hero_current_health / self.hero_max_health
+
+		self.hero_current_mana_percentage = \
+			self.hero_current_mana / self.hero_max_mana
+
+		self.hero_max_health = self.hero_base_health + self.hero_strength
+		self.hero_max_mana = self.hero_base_mana + self.hero_intelligence
+
+		self.hero_current_health = self.hero_max_health * self.hero_current_health_percentage
+		self.hero_current_mana = self.hero_max_mana * self.hero_current_mana_percentage
+
+		self.hero_current_health += self.hero_health_recover_per_fps
+		self.hero_current_mana += self.hero_mana_recover_per_fps
+
+		if self.hero_current_health > self.hero_max_health:
+			self.hero_current_health = self.hero_max_health
+			
+		if self.hero_current_mana > self.hero_max_mana:
+			self.hero_current_mana = self.hero_max_mana
 
 		## hero attack speed 
-		self.hero_attack_interval_base =  2
+		self.hero_attack_interval_base = 2
 		self.hero_attack_interval_boost = (self.skill_focusfire_active * self.skill_focusfire_boost)
 		self.hero_attack_interval = FPS / round(self.hero_attack_interval_base + self.hero_attack_interval_boost)
 

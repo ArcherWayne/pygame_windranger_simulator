@@ -99,7 +99,6 @@ class UIGroup(pygame.sprite.Group):
 				(self.skill_background_topleft_1[0] + i*(self.hp_bar_length_dived_by_skill_number), self.skill_background_topleft_1[1])))
 
 
-
 	def draw_health_mana_bar(self):
 		self.display_surf.blit(self.hp_mn_bar_background_surf, self.hp_mn_bar_background_rect)
 
@@ -118,8 +117,9 @@ class UIGroup(pygame.sprite.Group):
 
 	def draw_health_mana_number(self):
 		self.hero_hpnumber_surf = FONT.render(
-			str(self.stats_manager.hero_current_health)+'/'+str(self.stats_manager.hero_max_health), 
-			True, WHITE)
+			str(int(self.stats_manager.hero_current_health))+'/'+str(int(self.stats_manager.hero_max_health)), 
+			True, WHITE
+			)
 		self.hero_hpnumber_rect = self.hero_hpnumber_surf.get_rect(center = \
 			(self.hp_mn_bar_background_rect.centerx,self.hp_bar_rect.centery))
 
@@ -127,13 +127,39 @@ class UIGroup(pygame.sprite.Group):
 
 		self.hero_mnnumber_surf = FONT.render(
 			str(self.stats_manager.hero_current_mana)+'/'+str(self.stats_manager.hero_max_mana), 
-			True, WHITE)
+			True, WHITE
+			)
 		self.hero_mnnumber_rect = self.hero_mnnumber_surf.get_rect(center = \
 			(self.hp_mn_bar_background_rect.centerx,self.mn_bar_rect.centery))
 
 		self.display_surf.blit(self.hero_mnnumber_surf, self.hero_mnnumber_rect)
 
- 
+
+	def draw_health_mana_recover(self):
+		font_1 = makesizefont(14)
+		hp_recover_str = ("%.2f" % self.stats_manager.hero_health_recover_per_sec)
+		self.hero_hprecovernumber_surf = font_1.render(
+			# str(int(self.stats_manager.hero_health_recover_per_sec)), True, WHITE
+			"+"+hp_recover_str, True, WHITE
+		)
+		self.hero_hprecovernumber_rect = self.hero_hprecovernumber_surf.get_rect(
+			midright = (self.hp_mn_bar_background_rect.right - 4, \
+				self.hp_mn_bar_background_rect.topright[1]+0.25*self.hp_mn_bar_background_rect.height)
+		)
+		self.display_surf.blit(self.hero_hprecovernumber_surf, self.hero_hprecovernumber_rect)
+
+		mn_recover_str = ("%.2f" % self.stats_manager.hero_mana_recover_per_sec)
+		self.hero_mnrecovernumber_surf = font_1.render(
+			# str(int(self.stats_manager.hero_mana_recover_per_sec)), True, WHITE
+			"+"+mn_recover_str, True, WHITE
+		)
+		self.hero_mnrecovernumber_rect = self.hero_mnrecovernumber_surf.get_rect(
+			midright = (self.hp_mn_bar_background_rect.right - 4, \
+				self.hp_mn_bar_background_rect.topright[1]+0.75*self.hp_mn_bar_background_rect.height)
+			
+		)
+		self.display_surf.blit(self.hero_mnrecovernumber_surf, self.hero_mnrecovernumber_rect)
+
 	def draw_skills(self):
 		for i in range(self.skill_number):
 			self.display_surf.blit(self.sklll_background_surf, self.skill_background_rect_list[i])
@@ -215,6 +241,26 @@ class UIGroup(pygame.sprite.Group):
 
 
 	def draw_hero_attribute(self):
+		str_ratio = self.stats_manager.hero_strength/self.stats_manager.hero_total_attri_number
+		agi_ratio = self.stats_manager.hero_agility/self.stats_manager.hero_total_attri_number
+		int_ratio = self.stats_manager.hero_intelligence/self.stats_manager.hero_total_attri_number
+
+		self.hero_strength_background_surf = pygame.Surface((self.item_background_surf_size[0], int(str_ratio * self.item_background_surf_size[1])))
+		self.hero_agility_background_surf = pygame.Surface((self.item_background_surf_size[0], int(agi_ratio * self.item_background_surf_size[1]))) 
+		self.hero_intelligence_background_surf = pygame.Surface((self.item_background_surf_size[0], int(int_ratio * self.item_background_surf_size[1])))
+
+		self.hero_strength_background_surf.fill(('#5c0701'))
+		self.hero_agility_background_surf.fill(('#0a5c01'))
+		self.hero_intelligence_background_surf.fill(('#041361'))
+
+		self.hero_strength_background_rect = self.hero_strength_background_surf.get_rect(bottomleft = self.item_background_rect_list[6].bottomleft)	
+		self.hero_agility_background_rect = self.hero_agility_background_surf.get_rect(bottomleft = self.item_background_rect_list[7].bottomleft)	
+		self.hero_intelligence_background_rect = self.hero_intelligence_background_surf.get_rect(bottomleft = self.item_background_rect_list[8].bottomleft)	
+
+		self.display_surf.blit(self.hero_strength_background_surf, self.hero_strength_background_rect)
+		self.display_surf.blit(self.hero_agility_background_surf, self.hero_agility_background_rect)
+		self.display_surf.blit(self.hero_intelligence_background_surf, self.hero_intelligence_background_rect)
+
 		self.hero_strength_surf = FONT.render(str(self.stats_manager.hero_strength), True, RED) 
 		self.hero_agility_surf = FONT.render(str(self.stats_manager.hero_agility), True, GREEN) 
 		self.hero_intelligence_surf = FONT.render(str(self.stats_manager.hero_intelligence), True, BLUE) 
@@ -236,6 +282,7 @@ class UIGroup(pygame.sprite.Group):
 	def ui_draw(self):
 		self.draw_health_mana_bar()
 		self.draw_health_mana_number()
+		self.draw_health_mana_recover()
 		self.draw_skills()
 		self.draw_skills_cooldown()
 		self.draw_items()

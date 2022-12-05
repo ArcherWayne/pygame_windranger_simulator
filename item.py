@@ -3,7 +3,7 @@ from setting import ITEM_SIZE
 
 
 class ATTRIBUTE_ITEM_SPRITE(pygame.sprite.Sprite):
-	def __init__(self, groups, item, drop_pos, hero,stats_manager):
+	def __init__(self, groups, item, drop_pos, hero, stats_manager):
 		super().__init__(*groups)
 
 		self.type = 'attri_item'
@@ -91,33 +91,34 @@ class ATTRIBUTE_ITEM_SPRITE(pygame.sprite.Sprite):
 
 
 	def check_collision_with_hero(self):
-		col = pygame.sprite.collide_rect(self.rect, self.hero.rect)
+		col = pygame.sprite.collide_rect(self, self.hero)
+		# col = pygame.sprite.spritecollide(self.hero, group, dokill, collided = None)
 		if col == True:
 			match self.item:
-				case 'branch': self.stats_manager += 1
-				case 'circlet': self.stats_manager += 1
-				case 'crown': self.stats_manager += 1
-				case 'orb': self.stats_manager += 1
-				case 'apex': self.stats_manager += 1
+				case 'branch': self.stats_manager.branch_number += 1
+				case 'circlet': self.stats_manager.circlet_number += 1
+				case 'crown': self.stats_manager.crown_number += 1
+				case 'orb': self.stats_manager.orb_number += 1
+				case 'apex': self.stats_manager.apex_number += 1
 
-				case 'gauntlets': self.stats_manager += 1
-				case 'belt': self.stats_manager += 1
-				case 'axe': self.stats_manager += 1
-				case 'reaver': self.stats_manager += 1
+				case 'gauntlets': self.stats_manager.gauntlets_number += 1
+				case 'belt': self.stats_manager.belt_number += 1
+				case 'axe': self.stats_manager.axe_number += 1
+				case 'reaver': self.stats_manager.reaver_number += 1
 
-				case 'slippers': self.stats_manager += 1
-				case 'band': self.stats_manager += 1
-				case 'blade': self.stats_manager += 1
-				case 'eaglesong': self.stats_manager += 1
+				case 'slippers': self.stats_manager.slippers_number += 1
+				case 'band': self.stats_manager.band_number += 1
+				case 'blade': self.stats_manager.blade_number += 1
+				case 'eaglesong': self.stats_manager.eaglesong_number += 1
 
-				case 'mantle': self.stats_manager += 1
-				case 'robe': self.stats_manager += 1
-				case 'staff': self.stats_manager += 1
-				case 'mystic': self.stats_manager += 1
+				case 'mantle': self.stats_manager.mantle_number += 1
+				case 'robe': self.stats_manager.robe_number += 1
+				case 'staff': self.stats_manager.staff_number += 1
+				case 'mystic': self.stats_manager.mystic_number += 1
 
 			self.kill()
 
 
 	def update(self, dt):
-		# self.check_collision_with_hero()
+		self.check_collision_with_hero()
 		pass
