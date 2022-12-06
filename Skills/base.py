@@ -50,11 +50,13 @@ class Base_Skill():
             if self.cooldown_frame > 0:
                 self.cooldown_frame += 1
             if self.cooldown_frame > self.cooldown * FPS:
-                self.cooldown_frame = 0
                 if self.charge_count < self.charge_limit:
+                    self.cooldown_frame = 1
+                    self.cooldown = 1
                     self.charge_count += 1
                 else:
                     self.cooldown = 0
+                    self.cooldown_frame = 0
         else:
             if self.cooldown_frame > 0:
                 self.cooldown_frame += 1
