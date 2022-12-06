@@ -7,7 +7,7 @@ class Skill_Galeforce(Base_Skill):
 
 	def active(self):
 		for sprite in self.creep_group.sprites():
-			sprite.health = -1
+			sprite.set_knockback_wa_acceleration(500)
 
 	def destroy(self):
 		return super().destroy()

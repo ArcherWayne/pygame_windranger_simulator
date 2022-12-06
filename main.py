@@ -134,10 +134,10 @@ class MAINGAME:
 						self.hero.use_skill_windrun()
 
 					if event.key == pygame.K_4:
-						self.hero.use_skill_focusfire()
+						self.hero.use_skill('Gale Force')
 
 					if event.key == pygame.K_5:
-						self.hero.use_skill('Gale Force')
+						self.hero.use_skill_focusfire()
 					# use skill end ------------------------------------------- #
 					
 
