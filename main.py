@@ -18,6 +18,7 @@ from Units.tree import TREE
 from Units.creep import CREEP
 from Units.cursor import CURSOR
 
+from Skills.pool import skill_pool
 class MAINGAME:
 	def __init__(self):
 		## pygame setup
@@ -47,6 +48,7 @@ class MAINGAME:
 		# class = Class()
 		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group, self.stats_manager)
 		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group, self.stats_manager)
+		self.hero.install_skills()
 
 
 # user event setting
@@ -138,6 +140,9 @@ class MAINGAME:
 
 					if event.key == pygame.K_4:
 						self.hero.use_skill_focusfire()
+
+					if event.key == pygame.K_5:
+						self.hero.use_skill('Gale Froce')
 					# use skill end ------------------------------------------- #
 					
 
@@ -150,6 +155,7 @@ class MAINGAME:
 					self.hero.shoot_arrow(self.mouse_pos)
 
 				self.stats_manager.update()
+				skill_pool.update()
 				self.screen.fill(BLACK)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)

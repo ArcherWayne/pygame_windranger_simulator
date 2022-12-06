@@ -1,6 +1,8 @@
 import pygame
 from Units.arrow import ARROW
 from Config.setting import *
+from Skills.base import Base_Skill
+from Skills.pool import skill_pool
 
 class HERO(pygame.sprite.Sprite): # my code
 	def __init__(self, groups, creep_group, camera_group, arrow_group, stats_manager) -> None:
@@ -126,6 +128,17 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.keyboard_movement()
 		self.check_collision_with_creeps()
 		self.check_health()
+
+	def install_skills(self):
+		# add skill galeforce
+		skill_galeforce = Base_Skill(['Gale Froce', '风行者这下牛逼了', 5, 2])
+		skill_pool.append(skill_galeforce, self)
+
+	def use_skill(self, name):
+		skill = skill_pool.get_skill_by_name(name)
+		if skill is not None:
+			skill.use()
+		pass
 
 
 class SKILL_SHACKLESHOT(pygame.sprite.Sprite):

@@ -1,5 +1,5 @@
-# from Config.setting import FPS
-FPS = 120
+from Config.setting import FPS
+# FPS = 120
 
 # 默认技能信息
 # 只会录入下表中的技能信息
@@ -7,9 +7,9 @@ FPS = 120
 default_skill_info = {
     "name": 'Skill Name',
     "desc": 'description',
-    "is_active": True, # 主动技能
     "cooldown": 0,
     "duration": 0,
+    "is_active": True, # 主动技能
     "is_charge": False, # 充能技能
     "charge_limit": 0, # 充能上限
     "is_stackable": False, # 可叠加
@@ -52,47 +52,49 @@ class Base_Skill():
             if self.cooldown_frame > self.cooldown * FPS:
                 if self.charge_count < self.charge_limit:
                     self.cooldown_frame = 1
-                    self.cooldown = 1
                     self.charge_count += 1
                 else:
-                    self.cooldown = 0
                     self.cooldown_frame = 0
         else:
             if self.cooldown_frame > 0:
                 self.cooldown_frame += 1
             if self.cooldown_frame > self.cooldown * FPS:
                 self.cooldown_frame = 0
-                self.cooldown = 0
         # update duration
         if self.duration_frame > 0:
             self.duration_frame += 1
         if self.duration_frame > self.duration * FPS:
             self.duration_frame = 0
-            self.duration = 0
             self.actived = False
             self.destroy()
 
     # 使用技能
     def use(self):
         if self.is_charge:
-            if  self.charge_count > 0 and self.cooldown == 0:
+            if  self.charge_count > 0 and self.cooldown_frame == 0:
                 self.actived = True
-                self.active()
+                self.cooldown_frame += 1
+                self.duration_frame += 1
                 self.charge_count -= 1
-        elif self.cooldown == 0:
+                self.active()
+            else:
+                print('skill [{}] is not ready!'.format(self.name))
+        elif self.cooldown_frame == 0:
             self.actived = True
+            self.cooldown_frame += 1
+            self.duration_frame += 1
             self.active()
+        else:
+            print('skill [{}] is not ready!'.format(self.name))
 
     # 一般情况下,重写以下两个方法即可,不用重写use()
     # 技能实际效果
     def active(self):
         print('skill {} actived!'.format(self.name))
-        pass
 
     # 技能效果结束
     def destroy(self):
         print('skill {} destroyed!'.format(self.name))
-        pass
 
 # 测试代码
 def run1():
@@ -101,4 +103,4 @@ def run1():
     base_skill.use()
     pass
 
-run1()
+# run1()
