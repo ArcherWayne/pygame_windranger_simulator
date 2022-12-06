@@ -139,7 +139,7 @@ class MAINGAME:
 					if event.key == pygame.K_4:
 						self.hero.use_skill_focusfire()
 					# use skill end ------------------------------------------- #
-					
+
 
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
