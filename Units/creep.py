@@ -1,12 +1,11 @@
 import pygame
 import math
 from random import random, choice
-from clip import clip
-from setting import *
-from debug import debug
+from Functions.clip import clip
+from Config.setting import *
 
-from special_effects import DAMAGE_NUMBERS
-from item import ATTRIBUTE_ITEM_SPRITE
+from Effects.special_effects import DAMAGE_NUMBERS
+from Items.item import ATTRIBUTE_ITEM_SPRITE
 
 class CREEP(pygame.sprite.Sprite):
 	def __init__(self, groups, creep_group, hero, arrow_group, camera_group, attri_item_group, stats_manager) -> None:

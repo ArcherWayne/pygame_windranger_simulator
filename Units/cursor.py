@@ -1,5 +1,5 @@
 import pygame
-from setting import *
+from Config.setting import *
 
 class CURSOR(pygame.sprite.Sprite):
     def __init__(self):

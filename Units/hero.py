@@ -1,7 +1,6 @@
 import pygame
-from arrow import ARROW
-from setting import *
-from debug import debug
+from Units.arrow import ARROW
+from Config.setting import *
 
 class HERO(pygame.sprite.Sprite): # my code
 	def __init__(self, groups, creep_group, camera_group, arrow_group, stats_manager) -> None:

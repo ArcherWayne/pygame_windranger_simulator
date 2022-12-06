@@ -1,5 +1,5 @@
 import pygame
-from setting import *
+from Config.setting import *
 from PIL import Image
 
 

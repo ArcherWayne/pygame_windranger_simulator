@@ -1,5 +1,5 @@
 import pygame
-from setting import ITEM_SIZE
+from Config.setting import ITEM_SIZE
 
 
 class ATTRIBUTE_ITEM_SPRITE(pygame.sprite.Sprite):

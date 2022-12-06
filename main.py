@@ -2,21 +2,21 @@ print("game start!")
 
 # module importing
 import pygame, sys, time
-from setting import *
+from Config.setting import *
 
 # function importing
 from debug import debug
-from me_camera_base_camera import CameraGroup
+from Camera.me_camera_base_camera import CameraGroup
 # from special_effects import DAMAGE_NUMBERS
-from UIgroup import UIGroup
+from UI.UIgroup import UIGroup
 from random import randint
 
 
 # entity importing
-from hero import HERO
-from tree import TREE
-from creep import CREEP
-from cursor import CURSOR
+from Units.hero import HERO
+from Units.tree import TREE
+from Units.creep import CREEP
+from Units.cursor import CURSOR
 
 class MAINGAME:
 	def __init__(self):

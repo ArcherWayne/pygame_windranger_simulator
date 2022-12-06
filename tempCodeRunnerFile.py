@@ -1,2 +1,0 @@
-
-				self.screen.fill(BLACK)
