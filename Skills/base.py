@@ -72,8 +72,8 @@ class Base_Skill():
 
     # 使用技能
     def use(self):
-        if self.is_charge and self.charge_count > 0:
-            if self.cooldown == 0:
+        if self.is_charge:
+            if  self.charge_count > 0 and self.cooldown == 0:
                 self.actived = True
                 self.active()
                 self.charge_count -= 1
