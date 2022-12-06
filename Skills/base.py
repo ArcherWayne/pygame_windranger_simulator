@@ -81,12 +81,13 @@ class Base_Skill():
             self.actived = True
             self.active()
 
+    # 一般情况下,重写以下两个方法即可,不用重写use()
     # 技能实际效果
-    # 一般情况下,重写该方法即可,不用重写use()
     def active(self):
         print('skill {} actived!'.format(self.name))
         pass
 
+    # 技能效果结束
     def destroy(self):
         print('skill {} destroyed!'.format(self.name))
         pass
