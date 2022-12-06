@@ -67,27 +67,28 @@ class Base_Skill():
         if self.duration_frame > self.duration * FPS:
             self.duration_frame = 0
             self.duration = 0
+            self.actived = False
             self.destroy()
 
     # 使用技能
     def use(self):
         if self.is_charge and self.charge_count > 0:
             if self.cooldown == 0:
+                self.actived = True
                 self.active()
                 self.charge_count -= 1
         elif self.cooldown == 0:
+            self.actived = True
             self.active()
 
     # 技能实际效果
     # 一般情况下,重写该方法即可,不用重写use()
     def active(self):
         print('skill {} actived!'.format(self.name))
-        self.actived = True
         pass
 
     def destroy(self):
         print('skill {} destroyed!'.format(self.name))
-        self.actived = False
         pass
 
 # 测试代码
