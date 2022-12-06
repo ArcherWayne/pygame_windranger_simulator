@@ -1,8 +1,11 @@
 import pygame
-from Units.arrow import ARROW
+
 from Config.setting import *
-from Skills.base import Base_Skill
+# from Skills.base import Base_Skill
 from Skills.pool import skill_pool
+from Skills.skill_galeforce import Skill_Galeforce
+from Units.arrow import ARROW
+
 
 class HERO(pygame.sprite.Sprite): # my code
 	def __init__(self, groups, creep_group, camera_group, arrow_group, stats_manager) -> None:
@@ -131,7 +134,7 @@ class HERO(pygame.sprite.Sprite): # my code
 
 	def install_skills(self):
 		# add skill galeforce
-		skill_galeforce = Base_Skill(['Gale Froce', '风行者这下牛逼了', 5, 2])
+		skill_galeforce = Skill_Galeforce(['Gale Force', '风行者这下牛逼了', 5, 2], self.creep_group)
 		skill_pool.append(skill_galeforce, self)
 
 	def use_skill(self, name):

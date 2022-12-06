@@ -219,7 +219,7 @@ class STAT_MANAGER:
 			self.creep_current_health / self.creep_max_health)
 
 
-		self.creep_movement_speed = 31 # 315
+		self.creep_movement_speed = 315 # 315
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS
 
@@ -306,7 +306,7 @@ class STAT_MANAGER:
 		self.hero_health_recover_per_sec = 1+self.hero_strength * 0.01
 		self.hero_health_recover_per_fps = self.hero_health_recover_per_sec / FPS
 
-		self.hero_mana_recover_per_sec = 1+self.hero_intelligence * 0.1
+		self.hero_mana_recover_per_sec = 1+self.hero_intelligence * 0.01
 		self.hero_mana_recover_per_fps = self.hero_mana_recover_per_sec / FPS
 
 		self.hero_current_health_percentage = \

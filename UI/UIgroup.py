@@ -14,7 +14,7 @@ class UIGroup(pygame.sprite.Group):
 		self.creep_group = creep_group
 		self.arrow_group = arrow_group
 
-		self.skill_number = 4
+		self.skill_number = 5
 
 		self.windows_size = WINDOW_SIZE
 
