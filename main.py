@@ -2,21 +2,23 @@ print("game start!")
 
 # module importing
 import pygame, sys, time
-from setting import *
+from Config.setting import *
 
 # function importing
 from debug import debug
-from me_camera_base_camera import CameraGroup
-# from special_effects import DAMAGE_NUMBERS
-from UIgroup import UIGroup
+from Camera.me_camera_base_camera import CameraGroup
+from UI.UIgroup import UIGroup
 from random import randint
 
 
 # entity importing
-from hero import HERO
-from tree import TREE
-from creep import CREEP
-from cursor import CURSOR
+from Units.hero import HERO
+from Units.tree import TREE
+from Units.creep import CREEP
+from Units.cursor import CURSOR
+
+# skill pool
+from Skills.pool import skill_pool
 
 class MAINGAME:
 	def __init__(self):
@@ -30,9 +32,6 @@ class MAINGAME:
 		pygame.display.set_caption('windranger_simulator')
 		pygame.display.set_icon(pygame.image.load('assets/dota2.png'))
 		pygame.mouse.set_visible(False)
-		# background_surface = pygame.transform.scale(
-		#     pygame.image.load('assets/background/ground.png').convert(), (setting.WIN_WIDTH, setting.WIN_HEIGTH))
-		# background_rect = background_surface.get_rect(center=(setting.WIN_WIDTH / 2, setting.WIN_HEIGTH / 2))
 		self.clock = pygame.time.Clock()
 
 # group setup ----------------------------------------------------------------------------------------------- #
@@ -42,28 +41,26 @@ class MAINGAME:
 		self.tree_group = pygame.sprite.Group()
 		self.arrow_group = pygame.sprite.Group()
 		self.attri_item_group = pygame.sprite.Group()
+		self.cursor = CURSOR()
+
 
 # class setup
-		# class = Class()
 		self.hero = HERO([self.camera_group, self.hero_group], self.creep_group, self.camera_group, self.arrow_group, self.stats_manager)
 		self.ui_group = UIGroup(self.hero_group, self.camera_group, self.arrow_group, self.stats_manager)
+		self.hero.install_skills()
 
 
 # user event setting
 		self.creep_enemy_timer = pygame.USEREVENT + 1
-		pygame.time.set_timer(self.creep_enemy_timer, 1000)
+		pygame.time.set_timer(self.creep_enemy_timer, 100)
+
 
 # attribute setup
-		self.cursor = CURSOR()
 		self.mouse_pos = (0, 0)
 		self.last_time = time.time()
 		self.start_time = time.time()
 		self.frames = 0
 		self.game_active = True
-
-		# hold to shoot mechanics
-		# self.isshooting = 0
-		# self.holding_frame = HERO_ATTACK_INTERVAL - 1
 
 
 	# init finish ---------------------------------------------------------------------------------------- # 
@@ -137,6 +134,9 @@ class MAINGAME:
 						self.hero.use_skill_windrun()
 
 					if event.key == pygame.K_4:
+						self.hero.use_skill('Gale Force')
+
+					if event.key == pygame.K_5:
 						self.hero.use_skill_focusfire()
 					# use skill end ------------------------------------------- #
 
@@ -150,6 +150,7 @@ class MAINGAME:
 					self.hero.shoot_arrow(self.mouse_pos)
 
 				self.stats_manager.update()
+				skill_pool.update()
 				self.screen.fill(BLACK)
 				self.camera_group.update(dt)
 				self.camera_group.custom_draw(self.hero)
@@ -162,12 +163,6 @@ class MAINGAME:
 				self.cursor.draw()
 
 				# debug space
-
-				debug(self.stats_manager.skill_windrun_cooldown_frame, y = 10, info_name='3cd')
-				debug(self.stats_manager.skill_windrun_countdown_frame, y = 30, info_name='3ct')
-				debug(self.stats_manager.skill_focusfire_cooldown_frame, y = 50, info_name='4cd')
-				debug(self.stats_manager.skill_focusfire_countdown_frame, y = 70, info_name='4ct')
-
 				pygame.display.update()
 
 

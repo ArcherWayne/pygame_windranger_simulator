@@ -1,7 +1,7 @@
 import pygame
-from setting import *
+from Config.setting import *
 from PIL import Image
-
+from Skills.pool import skill_pool
 
 
 class UIGroup(pygame.sprite.Group):
@@ -14,7 +14,7 @@ class UIGroup(pygame.sprite.Group):
 		self.creep_group = creep_group
 		self.arrow_group = arrow_group
 
-		self.skill_number = 4
+		self.skill_number = 5
 
 		self.windows_size = WINDOW_SIZE
 
@@ -216,16 +216,29 @@ class UIGroup(pygame.sprite.Group):
 				self.display_surf.blit(self.focusfire_cooldown_surface, self.focusfire_cooldown_rect)
 
 			elif self.skill_number == 5:
-				skill_focusfire_cooldwon_size_ratio = (1-self.stats_manager.skill_focusfire_cooldown_frame/self.stats_manager.skill_focusfire_cd)
+				skill_focusfire_cooldown_size_ratio = (1-self.stats_manager.skill_focusfire_cooldown_frame/self.stats_manager.skill_focusfire_cd)
 				skill_focusfire_cooldown_size_width = self.skill_background_length
-				skill_focusfire_cooldown_size_height = round(skill_focusfire_cooldwon_size_ratio*self.skill_background_length)
+				skill_focusfire_cooldown_size_height = round(skill_focusfire_cooldown_size_ratio*self.skill_background_length)
 
 				self.focusfire_cooldown_surface = pygame.Surface((skill_focusfire_cooldown_size_width, skill_focusfire_cooldown_size_height))
 				self.focusfire_cooldown_surface.fill(BLACK)
-				self.focusfire_cooldown_surface.set_alpha(100+155*skill_focusfire_cooldwon_size_ratio)
+				self.focusfire_cooldown_surface.set_alpha(100+155*skill_focusfire_cooldown_size_ratio)
 				self.focusfire_cooldown_rect = self.focusfire_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[4].bottomleft)
 				self.display_surf.blit(self.focusfire_cooldown_surface, self.focusfire_cooldown_rect)
 		
+
+		skill_galeforce = skill_pool.get_skill_by_name('Gale Force')
+		if skill_galeforce != None:
+			if skill_galeforce.cooldown_frame:
+				skill_galeforce_cooldown_size_ratio = (1-skill_galeforce.cooldown_frame/(skill_galeforce.cooldown*FPS))
+				skill_galeforce_cooldown_size_width = self.skill_background_length
+				skill_galeforce_cooldown_size_height = round(skill_galeforce_cooldown_size_ratio*self.skill_background_length)
+
+				self.galeforce_cooldown_surface = pygame.Surface((skill_galeforce_cooldown_size_width, skill_galeforce_cooldown_size_height))
+				self.galeforce_cooldown_surface.fill(BLACK)
+				self.galeforce_cooldown_surface.set_alpha(100+155*skill_galeforce_cooldown_size_ratio)
+				self.galeforce_cooldown_rect = self.galeforce_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[3].bottomleft)
+				self.display_surf.blit(self.galeforce_cooldown_surface, self.galeforce_cooldown_rect)
 
 	def draw_items(self):
 		# FIXME: 目前只画了background

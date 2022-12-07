@@ -1,6 +1,6 @@
 import pygame
 from random import random
-from setting import *
+from Config.setting import *
 
 class DAMAGE_NUMBERS(pygame.sprite.Sprite):
 

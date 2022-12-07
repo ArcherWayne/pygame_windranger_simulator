@@ -1,12 +1,11 @@
 import pygame
 import math
 from random import random, choice
-from clip import clip
-from setting import *
-from debug import debug
+from Functions.clip import clip
+from Config.setting import *
 
-from special_effects import DAMAGE_NUMBERS
-from item import ATTRIBUTE_ITEM_SPRITE
+from Effects.special_effects import DAMAGE_NUMBERS
+from Items.item import ATTRIBUTE_ITEM_SPRITE
 
 class CREEP(pygame.sprite.Sprite):
 	def __init__(self, groups, creep_group, hero, arrow_group, camera_group, attri_item_group, stats_manager) -> None:
@@ -44,6 +43,7 @@ class CREEP(pygame.sprite.Sprite):
 
 		self.knockback_direction = pygame.math.Vector2()
 		self.knockback_acceleration = 0
+		self.knockback_wa_acceleration = 0
 
 		# graphics
 		# self.image = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
@@ -115,7 +115,20 @@ class CREEP(pygame.sprite.Sprite):
 		self.pos.y += self.knockback_direction.y * self.knockback_acceleration * self.dt
 
 		self.knockback_acceleration -= 2*self.knockback_acceleration/FPS
+
+	def set_knockback_wa_acceleration(self, knockback_wa_acceleration):
+		self.knockback_wa_acceleration = knockback_wa_acceleration
+
+	def knockback_without_arrow(self):
+		if self.knockback_wa_acceleration < 0:
+			self.knockback_wa_acceleration = 0
+
+		self.knockback_wa_direction = -self.direction.normalize()
 		
+		self.pos.x += self.knockback_wa_direction.x * self.knockback_wa_acceleration * self.dt
+		self.pos.y += self.knockback_wa_direction.y * self.knockback_wa_acceleration * self.dt
+
+		self.knockback_wa_acceleration -= self.knockback_wa_acceleration/FPS
 
 	def drop_item(self):
 		item_list = ['branch', 'circlet', 'crown', 'orb', 'apex', \
@@ -134,6 +147,16 @@ class CREEP(pygame.sprite.Sprite):
 			# FIXME: 修改为击杀后掉落, 拾起后才能获得经验.
 			self.stats_manager.hero_experience += 10
 
+
+	def movement(self):
+		self.pos.x += self.direction.x * self.movement_speed * self.dt
+		self.rect.x = round(self.pos.x)
+		self.collision('horizontal')
+		self.pos.y += self.direction.y * self.movement_speed * self.dt
+		self.rect.y = round(self.pos.y)
+		self.collision('vertical')
+
+
 	def update(self, dt):
 		self.check_health()
 
@@ -148,12 +171,7 @@ class CREEP(pygame.sprite.Sprite):
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
 
+		self.knockback_without_arrow()
 		self.KNOCKBACK()
-
-		self.pos.x += self.direction.x * self.movement_speed * self.dt
-		self.rect.x = round(self.pos.x)
-		self.collision('horizontal')
-		self.pos.y += self.direction.y * self.movement_speed * self.dt
-		self.rect.y = round(self.pos.y)
-		self.collision('vertical')
+		self.movement()
 

@@ -1,6 +1,5 @@
 import pygame
-from setting import *
-from debug import debug
+from Config.setting import *
 
 class ARROW(pygame.sprite.Sprite):
 	def __init__(self, groups, direction, hero_pos, creep_group, stats_manager):

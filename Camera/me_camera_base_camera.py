@@ -1,5 +1,5 @@
 import pygame, sys
-from setting import *
+from Config.setting import *
 # from random import randint
 # from debug import debug
 
