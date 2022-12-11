@@ -134,7 +134,7 @@ class HERO(pygame.sprite.Sprite): # my code
 
 	def install_skills(self):
 		# add skill galeforce
-		skill_galeforce = Skill_Galeforce(['Gale Force', '', 4, 2], self.creep_group)
+		skill_galeforce = Skill_Galeforce(['Gale Force', '', 4, 2], self.stats_manager, self.creep_group)
 		skill_pool.append(skill_galeforce, self)
 
 	def use_skill(self, name):

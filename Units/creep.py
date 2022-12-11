@@ -45,6 +45,8 @@ class CREEP(pygame.sprite.Sprite):
 		self.knockback_acceleration = 0
 		self.knockback_wa_acceleration = 0
 
+		self.rooted_count = 0
+		self.rooted_time = 0
 		# graphics
 		# self.image = pygame.Surface((CREEP_WIDTH, CREEP_HEIGHT)).convert_alpha()
 		# self.image.fill(RED)
@@ -97,6 +99,7 @@ class CREEP(pygame.sprite.Sprite):
 						self.pos.y = self.rect.y
 						self.direction.y *= -1
 
+
 	def got_hit(self, arrow_damage, hit_arrow):
 		self.health -= arrow_damage
 		self.hit_arrow = hit_arrow
@@ -106,7 +109,8 @@ class CREEP(pygame.sprite.Sprite):
 
 		self.camera_group.add(DAMAGE_NUMBERS(self.camera_group, arrow_damage, self.pos, 0))
 
-	def KNOCKBACK(self):
+
+	def knockback(self):
 		if self.knockback_acceleration < 0:
 			self.knockback_acceleration = 0
 
@@ -116,8 +120,10 @@ class CREEP(pygame.sprite.Sprite):
 
 		self.knockback_acceleration -= 2*self.knockback_acceleration/FPS
 
+
 	def set_knockback_wa_acceleration(self, knockback_wa_acceleration):
 		self.knockback_wa_acceleration = knockback_wa_acceleration
+
 
 	def knockback_without_arrow(self):
 		if self.knockback_wa_acceleration < 0:
@@ -130,6 +136,19 @@ class CREEP(pygame.sprite.Sprite):
 
 		self.knockback_wa_acceleration -= self.knockback_wa_acceleration/FPS
 
+
+	def rooted(self, rooted_time):
+		self.rooted_count += 1
+		self.rooted_time = rooted_time
+
+
+	def rooted_update(self):
+		if self.rooted_count > 0:
+			self.rooted_count += 1
+		if self.rooted_count > self.rooted_time * FPS:
+			self.rooted_count = 0
+
+
 	def drop_item(self):
 		item_list = ['branch', 'circlet', 'crown', 'orb', 'apex', \
 			'gauntlets', 'belt', 'axe', 'reaver',\
@@ -138,6 +157,7 @@ class CREEP(pygame.sprite.Sprite):
 		drop_item = choice(item_list)
 		self.camera_group.add(ATTRIBUTE_ITEM_SPRITE([self.camera_group, self.attri_item_group],\
 			 drop_item, self.pos, self.hero, self.stats_manager))
+
 
 	def check_health(self):
 		if self.health <= 0:
@@ -164,14 +184,18 @@ class CREEP(pygame.sprite.Sprite):
 		self.dt = dt
 		self.old_rect = self.rect.copy()
 
-		# movement --------------------------------------------------------------------------- #
+		# solve direction relative to the hero at every frame
+		# unrelated to the movement
 		self.direction.x = self.hero.pos.x - self.pos.x
 		self.direction.y = self.hero.pos.y - self.pos.y
 
 		if self.direction.magnitude() != 0:
 			self.direction = self.direction.normalize()
 
-		self.knockback_without_arrow()
-		self.KNOCKBACK()
-		self.movement()
+		# movement functions ---------------------------------------------------------------------- #
+		self.rooted_update()
+		if self.rooted_count == 0:
+			self.knockback_without_arrow()
+			self.knockback()
+			self.movement()
 

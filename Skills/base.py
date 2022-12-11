@@ -19,10 +19,13 @@ default_skill_info = {
 
 # 基础技能类
 class Base_Skill():
-	def __init__(self, skill_info) -> None:
+	def __init__(self, skill_info, stats_manager) -> None:
 		self.cooldown_frame = 0
 		self.duration_frame = 0
 		self.actived = False
+
+		self.stats_manager = stats_manager
+
 		# 判断传入技能信息
 		# 键值对 -> 录入技能信息
 		if isinstance(skill_info, dict):

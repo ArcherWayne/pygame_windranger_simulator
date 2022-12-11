@@ -138,6 +138,11 @@ class MAINGAME:
 
 					if event.key == pygame.K_5:
 						self.hero.use_skill_focusfire()
+
+					if event.key == pygame.K_k:	# debug key
+						
+						for sprite in self.creep_group.sprites():
+							sprite.health = -1
 					# use skill end ------------------------------------------- #
 					
 
