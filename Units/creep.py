@@ -145,7 +145,7 @@ class CREEP(pygame.sprite.Sprite):
 	def rooted_update(self):
 		if self.rooted_count > 0:
 			self.rooted_count += 1
-		if self.rooted_count > self.rooted_time * FPS:
+		if self.rooted_count > self.rooted_time:
 			self.rooted_count = 0
 
 
@@ -198,4 +198,9 @@ class CREEP(pygame.sprite.Sprite):
 			self.knockback_without_arrow()
 			self.knockback()
 			self.movement()
+			
+		# draw rooted SFX ------------------------------------------------------------------------ #
+		# if self.rooted_count:
+		# 	self.image = pygame.transform.scale(# FIXME: 
+		# 	, (self.stats_manager.creep_width, self.stats_manager.creep_height))
 

@@ -159,13 +159,15 @@ class STAT_MANAGER:
 		self.arrow_collision_width = 10
 		self.arrow_collision_height = 10
 		self.arrow_speed = 600
-		self.arrow_damage = 42
+		self.arrow_base_damage = 42
+		self.arrow_damage = self.arrow_damage_base
 		self.arrow_knockback = 200
 		self.arrow_penetration = 1
 
 		# skill init stats ---------------------------------------------------------------- #
 		## shackleshot
 		self.skill_shackleshot_cd = FPS * 3
+		self.skill_shackleshot_duration = FPS * 1
 		
 		## powershot
 		self.skill_powershot_cd = FPS * 3
@@ -238,12 +240,12 @@ class STAT_MANAGER:
 		if self.skill_windrun_countdown_frame:
 			self.skill_windrun_active = 1
 		else: 
-			self. skill_windrun_active = 0
+			self.skill_windrun_active = 0
 
 		if self.skill_focusfire_countdown_frame:
 			self.skill_focusfire_active = 1
 		else: 
-			self. skill_focusfire_active = 0
+			self.skill_focusfire_active = 0
 
 	def check_levelup(self):
 		if self.hero_experience >= self.hero_epxerience_to_level_up[self.hero_level]:
@@ -367,3 +369,5 @@ class STAT_MANAGER:
 		# creep stats update ------------------------------------- #
 
 		# arrow stats update ------------------------------------- #
+		self.arrow_damage = self.arrow_base_damage + self.hero_agility
+

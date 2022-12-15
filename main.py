@@ -123,9 +123,13 @@ class MAINGAME:
 
 				# keyboard action --------------------------------------------------------------------------- #
 				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE:
+						pygame.quit()
+						sys.exit()
 					# use skill ----------------------------------------------- #
 					if event.key == pygame.K_1:
-						self.hero.use_skill_shackleshot()
+						# self.hero.use_skill_shackleshot()
+						self.hero.use_skill('Shackle Shot')
 
 					if event.key == pygame.K_2:
 						self.hero.use_skill_powershot(self.mouse_pos)
