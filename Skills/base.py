@@ -19,10 +19,13 @@ default_skill_info = {
 
 # 基础技能类
 class Base_Skill():
-	def __init__(self, skill_info) -> None:
+	def __init__(self, skill_info, stats_manager) -> None:
 		self.cooldown_frame = 0
 		self.duration_frame = 0
 		self.actived = False
+
+		self.stats_manager = stats_manager
+
 		# 判断传入技能信息
 		# 键值对 -> 录入技能信息
 		if isinstance(skill_info, dict):
@@ -69,6 +72,10 @@ class Base_Skill():
 			self.actived = False
 			self.destroy()
 
+	def update_skill_cd_duration(self, *new_cd, new_duration):
+		self.cooldown = new_cd
+		self.duration = new_duration
+
 	# 使用技能
 	def use(self):		# 从外部调用的use函数, 释放技能
 		if self.is_charge:
@@ -98,10 +105,10 @@ class Base_Skill():
 		print('skill {} destroyed!'.format(self.name))
 
 # 测试代码
-# def run1():
-# 	base_skill = Base_Skill([])
-# 	base_skill.print_skill_info()
-# 	base_skill.use()
-# 	pass
+def run1():
+	base_skill = Base_Skill([])
+	base_skill.print_skill_info()
+	base_skill.use()
+	pass
 
-# # run1()
+# run1()

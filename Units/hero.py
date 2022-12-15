@@ -4,6 +4,7 @@ from Config.setting import *
 # from Skills.base import Base_Skill
 from Skills.pool import skill_pool
 from Skills.skill_galeforce import Skill_Galeforce
+from Skills.skill_shackleshot import Skill_Shackleshot
 from Units.arrow import ARROW
 
 
@@ -134,8 +135,13 @@ class HERO(pygame.sprite.Sprite): # my code
 
 	def install_skills(self):
 		# add skill galeforce
-		skill_galeforce = Skill_Galeforce(['Gale Force', '', 4, 2], self.creep_group)
+		skill_galeforce = Skill_Galeforce(['Gale Force', '', self.stats_manager.skill_galeforce_cd], self.stats_manager, self.creep_group)
 		skill_pool.append(skill_galeforce, self)
+
+		# add skill shackleshot
+		skill_shackleshot = Skill_Shackleshot(['Shackle Shot', '', self.stats_manager.skill_shackleshot_cd, self.stats_manager.skill_shackleshot_duration], self.stats_manager, self.creep_group)
+		skill_pool.append(skill_shackleshot, self)
+
 
 	def use_skill(self, name):
 		skill = skill_pool.get_skill_by_name(name)
