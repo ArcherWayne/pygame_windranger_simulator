@@ -148,7 +148,7 @@ class MAINGAME:
 						for sprite in self.creep_group.sprites():
 							sprite.health = -1
 					# use skill end ------------------------------------------- #
-					
+
 
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
