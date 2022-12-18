@@ -160,14 +160,14 @@ class STAT_MANAGER:
 		self.arrow_collision_height = 10
 		self.arrow_speed = 600
 		self.arrow_base_damage = 42
-		self.arrow_damage = self.arrow_damage_base
+		self.arrow_damage = self.arrow_base_damage
 		self.arrow_knockback = 200
 		self.arrow_penetration = 1
 
 		# skill init stats ---------------------------------------------------------------- #
 		## shackleshot
-		self.skill_shackleshot_cd = FPS * 3
-		self.skill_shackleshot_duration = FPS * 1
+		self.skill_shackleshot_cd = 3
+		self.skill_shackleshot_duration = 1
 		
 		## powershot
 		self.skill_powershot_cd = FPS * 3
@@ -179,8 +179,8 @@ class STAT_MANAGER:
 		self.skill_windrun_active = 0
 
 		## gale force
-		self.skill_galeforce_cd = FPS * 6
-		self.skill_galeforce_duration = FPS * 3
+		self.skill_galeforce_cd = 6
+		self.skill_galeforce_duration = 3
 		
 		## focusfire
 		self.skill_focusfire_cd = FPS * 6
@@ -333,9 +333,11 @@ class STAT_MANAGER:
 			self.hero_current_mana = self.hero_max_mana
 
 		## hero attack speed 
-		self.hero_attack_interval_base = 2
-		self.hero_attack_interval_boost = (self.skill_focusfire_active * self.skill_focusfire_boost)
-		self.hero_attack_interval = FPS / round(self.hero_attack_interval_base + self.hero_attack_interval_boost)
+		self.hero_attack_interval_base = 3
+		self.hero_attack_interval_boost = (
+			self.skill_focusfire_active * self.skill_focusfire_boost + self.hero_agility * 0.001
+			)
+		self.hero_attack_interval = round(FPS / (self.hero_attack_interval_base + self.hero_attack_interval_boost))
 
 		## hero movement speed 
 		self.hero_movement_speed_base = 290
