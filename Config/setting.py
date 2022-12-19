@@ -160,7 +160,7 @@ class STAT_MANAGER:
 		self.arrow_collision_height = 10
 		self.arrow_speed = 600
 		self.arrow_base_damage = 42
-		self.arrow_damage = self.arrow_damage_base
+		self.arrow_damage = self.arrow_base_damage
 		self.arrow_knockback = 200
 		self.arrow_penetration = 1
 

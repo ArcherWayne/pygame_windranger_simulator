@@ -110,6 +110,8 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		if creep_sprites:
 			self.got_hit()
+			for creep in creep_sprites:
+				creep.set_knockback_wa_acceleration(500)
 
 	
 	def got_hit(self):

@@ -98,7 +98,7 @@ class CREEP(pygame.sprite.Sprite):
 						self.rect.bottom = sprite.rect.top
 						self.pos.y = self.rect.y
 						self.direction.y *= -1
-
+			
 
 	def got_hit(self, arrow_damage, hit_arrow):
 		self.health -= arrow_damage
@@ -135,7 +135,7 @@ class CREEP(pygame.sprite.Sprite):
 		self.pos.y += self.knockback_wa_direction.y * self.knockback_wa_acceleration * self.dt
 
 		self.knockback_wa_acceleration -= self.knockback_wa_acceleration/FPS
-
+		
 
 	def rooted(self, rooted_time):
 		self.rooted_count += 1
