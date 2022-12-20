@@ -239,6 +239,20 @@ class UIGroup(pygame.sprite.Group):
 				self.galeforce_cooldown_surface.set_alpha(100+155*skill_galeforce_cooldown_size_ratio)
 				self.galeforce_cooldown_rect = self.galeforce_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[3].bottomleft)
 				self.display_surf.blit(self.galeforce_cooldown_surface, self.galeforce_cooldown_rect)
+				
+
+		skill_shackleshot = skill_pool.get_skill_by_name('Shackle Shot')
+		if skill_shackleshot != None:
+			if skill_shackleshot.cooldown_frame:
+				skill_shackleshot_cooldown_size_ratio = (1-skill_shackleshot.cooldown_frame/(skill_shackleshot.cooldown*FPS))
+				skill_shackleshot_cooldown_size_width = self.skill_background_length
+				skill_shackleshot_cooldown_size_height = round(skill_shackleshot_cooldown_size_ratio*self.skill_background_length)
+
+				self.shackleshot_cooldown_surface = pygame.Surface((skill_shackleshot_cooldown_size_width, skill_shackleshot_cooldown_size_height))
+				self.shackleshot_cooldown_surface.fill(BLACK)
+				self.shackleshot_cooldown_surface.set_alpha(100+155*skill_shackleshot_cooldown_size_ratio)
+				self.shackleshot_cooldown_rect = self.shackleshot_cooldown_surface.get_rect(bottomleft=self.skill_background_rect_list[0].bottomleft)
+				self.display_surf.blit(self.shackleshot_cooldown_surface, self.shackleshot_cooldown_rect)
 
 	def draw_items(self):
 		# FIXME: 目前只画了background

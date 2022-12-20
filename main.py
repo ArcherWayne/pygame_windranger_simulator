@@ -172,6 +172,10 @@ class MAINGAME:
 				self.cursor.draw()
 
 				# debug space
+				debug(self.stats_manager.hero_attack_interval)
+				debug(self.stats_manager.hero_attack_interval_boost, y = 30)
+				debug(self.stats_manager.hero_agility, y = 50)
+
 				pygame.display.update()
 
 
