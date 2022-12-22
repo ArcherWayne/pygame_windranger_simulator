@@ -1,6 +1,7 @@
 import pygame
 
 from Config.setting import *
+from Functions.import_folder import import_folder
 # from Skills.base import Base_Skill
 from Skills.pool import skill_pool
 from Skills.skill_galeforce import Skill_Galeforce
@@ -27,11 +28,9 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.pos.y = WIN_HEIGHT/2 
 
 		# graphics
-		# self.image = pygame.transform.scale(pygame.image.load("assets/graphics/windranger/windranger_idle_animation1.png").convert_alpha(), (HERO_WIDTH, HERO_HEIGHT))
 		windranger_idle_animation1 = pygame.image.load('assets/graphics/windranger/windranger_idle_animation1.png').convert_alpha()
 		self.image = pygame.transform.scale(windranger_idle_animation1\
 			, (self.stats_manager.hero_width, self.stats_manager.hero_height))
-		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
 		self.rect = pygame.Rect(0, 0, self.stats_manager.hero_collision_width, self.stats_manager.hero_collision_height)
 		self.old_rect = self.rect.copy()
 
@@ -195,4 +194,15 @@ class SKILL_POWERSHOT(ARROW):
 		self.creep_group = creep_group
 
 
+class HERO_ANIMATION:
+	def __init__(self) -> None:
+		pass
 
+	def import_assets(self):
+		self.animation = {'idle_right':[]}
+
+		for animation in self.animation.keys():
+			full_path = 'assets/graphics/windranger/' + animation
+			self.animation[animation] = import_folder(full_path)
+
+	def 
