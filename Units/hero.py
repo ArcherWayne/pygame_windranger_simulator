@@ -33,9 +33,11 @@ class HERO(pygame.sprite.Sprite): # my code
 			, (self.stats_manager.hero_width, self.stats_manager.hero_height))
 		self.rect = pygame.Rect(0, 0, self.stats_manager.hero_collision_width, self.stats_manager.hero_collision_height)
 		self.old_rect = self.rect.copy()
+		self.hero_animation = HERO_ANIMATION()
 
 		# movement
 		self.direction = pygame.math.Vector2()
+		self.facing_direction = 'right'
 
 
 	def keyboard_movement(self):
@@ -88,12 +90,14 @@ class HERO(pygame.sprite.Sprite): # my code
 			# groups, direction, hero_pos, creep_group, stats_manager
 			self.stats_manager.skill_powershot_cooldown_frame += 1
 
+
 	def use_skill_windrun(self):
 		if self.stats_manager.skill_windrun_cooldown_frame == 0:
 			print("use_skill_windrun")
 
 			self.stats_manager.skill_windrun_countdown_frame += 1 
 			self.stats_manager.skill_windrun_cooldown_frame += 1
+
 
 	def use_skill_focusfire(self):
 		if self.stats_manager.skill_focusfire_cooldown_frame == 0:
@@ -126,11 +130,20 @@ class HERO(pygame.sprite.Sprite): # my code
 			self.kill()
 
 
+	def check_facing_direction(self):
+		pos_change = self.rect.x - self.old_rect.x
+		if pos_change < 0: # moved left
+			self.facing_direction = 'left'
+		elif pos_change > 0: # moved right
+			self.facing_direction = 'right'
+
+
 	def update(self, dt):
 		self.dt = dt
 		self.old_rect = self.rect.copy()
 
 		self.keyboard_movement()
+		self.check_facing_direction()
 		self.check_collision_with_creeps()
 		self.check_health()
 
@@ -197,12 +210,30 @@ class SKILL_POWERSHOT(ARROW):
 class HERO_ANIMATION:
 	def __init__(self) -> None:
 		pass
+		self.import_assets()
+		self.animation_status_list = ['idle_right', 'idle_left', 'run_right', 'run_left']
+		self.animation_status = self.animation_status_list[0]
+
+		self.frame_index = 0
 
 	def import_assets(self):
-		self.animation = {'idle_right':[]}
+		self.animation = {
+			'idle_right':[], 'idle_left':[], 'run_right':[], 'run_left':[]
+			}
 
 		for animation in self.animation.keys():
 			full_path = 'assets/graphics/windranger/' + animation
 			self.animation[animation] = import_folder(full_path)
 
-	def 
+	def	update(self):
+		pass 
+
+	def update_animation_status(self, direction):
+		pass
+		# 判断HERO类下面的self.direction.x 和 self.direction.y两个条件, 判断idle和run
+		
+
+	def get_animation_surf(self):
+		animation_surf = self.animation[self.animation_status][self.frame_index]
+
+		return animation_surf
