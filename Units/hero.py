@@ -33,11 +33,13 @@ class HERO(pygame.sprite.Sprite): # my code
 			, (self.stats_manager.hero_width, self.stats_manager.hero_height))
 		self.rect = pygame.Rect(0, 0, self.stats_manager.hero_collision_width, self.stats_manager.hero_collision_height)
 		self.old_rect = self.rect.copy()
-		self.hero_animation = HERO_ANIMATION()
+		self.hero_animation = HERO_ANIMATION() # animation
 
 		# movement
 		self.direction = pygame.math.Vector2()
 		self.facing_direction = 'right'
+		self.is_moving = False
+		
 
 
 	def keyboard_movement(self):
@@ -131,12 +133,17 @@ class HERO(pygame.sprite.Sprite): # my code
 
 
 	def check_facing_direction(self):
-		pos_change = self.rect.x - self.old_rect.x
-		if pos_change < 0: # moved left
+		# 设计成这样的: 面向方向决定self.facing_direction, 位置改变决定run或者idle
+		x_pos_change = self.rect.x - self.old_rect.x
+		if x_pos_change < 0: # moved left
 			self.facing_direction = 'left'
-		elif pos_change > 0: # moved right
+		elif x_pos_change > 0: # moved right
 			self.facing_direction = 'right'
 
+		if self.rect.topleft != self.old_rect.topleft:
+			self.is_moving = True
+		else:
+			self.is_moving = False
 
 	def update(self, dt):
 		self.dt = dt
@@ -225,13 +232,30 @@ class HERO_ANIMATION:
 			full_path = 'assets/graphics/windranger/' + animation
 			self.animation[animation] = import_folder(full_path)
 
+		self.animation_status = 'idle_right'
+
 	def	update(self):
 		pass 
 
-	def update_animation_status(self, direction):
-		pass
+	def update_animation_status(self, direction, is_moving):
+		direction = direction
+		is_moving = is_moving
 		# 判断HERO类下面的self.direction.x 和 self.direction.y两个条件, 判断idle和run
-		
+		if is_moving == False:
+			match direction:
+				case 'right': 
+					self.animation_status = 'idle_right'
+				case 'left':
+					self.animation_status = 'idle_left'
+
+		if is_moving == True:
+			match direction:
+				case 'right': 
+					self.animation_status = 'run_right'
+				case 'left':
+					self.animation_status = 'run_left'
+
+
 
 	def get_animation_surf(self):
 		animation_surf = self.animation[self.animation_status][self.frame_index]

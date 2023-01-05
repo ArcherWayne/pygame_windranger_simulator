@@ -177,6 +177,7 @@ class MAINGAME:
 				# debug(self.stats_manager.hero_agility, y = 50)
 
 				debug(self.hero.facing_direction)
+				debug(self.hero.is_moving, y = 30)
 				pygame.display.update()
 
 
