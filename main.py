@@ -178,6 +178,7 @@ class MAINGAME:
 
 				debug(self.hero.facing_direction)
 				debug(self.hero.is_moving, y = 30)
+				debug(self.hero.hero_animation.animation_status, y = 50)
 				pygame.display.update()
 
 

@@ -133,7 +133,6 @@ class HERO(pygame.sprite.Sprite): # my code
 
 
 	def check_facing_direction(self):
-		# 设计成这样的: 面向方向决定self.facing_direction, 位置改变决定run或者idle
 		x_pos_change = self.rect.x - self.old_rect.x
 		if x_pos_change < 0: # moved left
 			self.facing_direction = 'left'
@@ -145,6 +144,7 @@ class HERO(pygame.sprite.Sprite): # my code
 		else:
 			self.is_moving = False
 
+
 	def update(self, dt):
 		self.dt = dt
 		self.old_rect = self.rect.copy()
@@ -153,6 +153,9 @@ class HERO(pygame.sprite.Sprite): # my code
 		self.check_facing_direction()
 		self.check_collision_with_creeps()
 		self.check_health()
+
+		self.hero_animation.update()
+		self.hero_animation.update_animation_status(self.facing_direction, self.is_moving)
 
 	def install_skills(self):
 		# add skill galeforce
@@ -235,12 +238,14 @@ class HERO_ANIMATION:
 		self.animation_status = 'idle_right'
 
 	def	update(self):
-		pass 
+		# self.update_animation_status() 
+		pass
 
 	def update_animation_status(self, direction, is_moving):
+		# 这个要放在HERO类里面的update才行
 		direction = direction
 		is_moving = is_moving
-		# 判断HERO类下面的self.direction.x 和 self.direction.y两个条件, 判断idle和run
+
 		if is_moving == False:
 			match direction:
 				case 'right': 
