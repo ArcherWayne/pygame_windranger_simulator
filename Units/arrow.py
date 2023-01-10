@@ -15,9 +15,7 @@ class ARROW(pygame.sprite.Sprite):
 			self.direction = self.direction.normalize()
 
 		
-		# arrow and creep class dont need to change their stats in the stats manager
-		# instead they obtain the init stats from the stats manager
-		# then manage the stats in itself
+
 		self.movement_speed = self.stats_manager.arrow_speed
 		self.damage = self.stats_manager.arrow_damage
 		self.knockback = self.stats_manager.arrow_knockback
@@ -31,7 +29,6 @@ class ARROW(pygame.sprite.Sprite):
 
 		self.image = pygame.Surface((self.stats_manager.arrow_width, self.stats_manager.arrow_height)).convert_alpha()
 		self.image.fill(RED)
-		# self.rect = self.image.get_rect(center = (self.pos[0], self.pos[1]))
 		self.rect = pygame.Rect(0, 0, self.stats_manager.arrow_collision_width, self.stats_manager.arrow_collision_height)
 
 		self.old_rect = self.rect.copy()

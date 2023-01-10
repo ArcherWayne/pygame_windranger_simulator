@@ -139,10 +139,14 @@ class HERO(pygame.sprite.Sprite): # my code
 		elif x_pos_change > 0: # moved right
 			self.facing_direction = 'right'
 
-		if self.rect.topleft != self.old_rect.topleft:
-			self.is_moving = True
-		else:
+		# if self.rect.topleft != self.old_rect.topleft:
+		# 	self.is_moving = True
+		# else:
+		# 	self.is_moving = False
+		if self.direction.magnitude() == 0:
 			self.is_moving = False
+		else:
+			self.is_moving = True
 
 
 	def update(self, dt):
@@ -156,6 +160,7 @@ class HERO(pygame.sprite.Sprite): # my code
 
 		self.hero_animation.update()
 		self.hero_animation.update_animation_status(self.facing_direction, self.is_moving)
+		self.image = self.hero_animation.get_animation_surf(dt)
 
 	def install_skills(self):
 		# add skill galeforce
@@ -262,7 +267,11 @@ class HERO_ANIMATION:
 
 
 
-	def get_animation_surf(self):
-		animation_surf = self.animation[self.animation_status][self.frame_index]
+	def get_animation_surf(self, dt):
+		self.frame_index += 4 * dt
+		if self.frame_index >= len(self.animation[self.animation_status]):
+			self.frame_index = 0
+
+		animation_surf = self.animation[self.animation_status][int(self.frame_index)]
 
 		return animation_surf

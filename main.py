@@ -52,7 +52,7 @@ class MAINGAME:
 
 # user event setting
 		self.creep_enemy_timer = pygame.USEREVENT + 1
-		pygame.time.set_timer(self.creep_enemy_timer, 100)
+		pygame.time.set_timer(self.creep_enemy_timer, 1000)
 
 
 # attribute setup
@@ -153,6 +153,8 @@ class MAINGAME:
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
 
+				self.active_time = time.time() - self.start_time
+
 				# 按键长按管理部分 ----------------------------- #
 				mouse_pressed_list = pygame.mouse.get_pressed(num_buttons=3)
 				if mouse_pressed_list[2]:
@@ -172,13 +174,7 @@ class MAINGAME:
 				self.cursor.draw()
 
 				# debug space
-				# debug(self.stats_manager.hero_attack_interval)
-				# debug(self.stats_manager.hero_attack_interval_boost, y = 30)
-				# debug(self.stats_manager.hero_agility, y = 50)
-
-				debug(self.hero.facing_direction)
-				debug(self.hero.is_moving, y = 30)
-				debug(self.hero.hero_animation.animation_status, y = 50)
+				debug(self.active_time)
 				pygame.display.update()
 
 

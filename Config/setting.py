@@ -221,7 +221,7 @@ class STAT_MANAGER:
 			self.creep_current_health / self.creep_max_health)
 
 
-		self.creep_movement_speed = 315 # 315
+		self.creep_movement_speed = 31 # 315
 		self.creep_damage = 19
 		self.creep_attack_interval = FPS
 
