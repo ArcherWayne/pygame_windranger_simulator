@@ -1,4 +1,3 @@
-print("game start!")
 
 # module importing
 import pygame, sys, time
@@ -58,7 +57,6 @@ class MAINGAME:
 # attribute setup
 		self.mouse_pos = (0, 0)
 		self.last_time = time.time()
-		self.start_time = time.time()
 		self.frames = 0
 		self.game_active = True
 
@@ -153,8 +151,6 @@ class MAINGAME:
 			# game loop    ---------------------------------------------------------------------------------- #
 			if self.game_active:
 
-				self.active_time = time.time() - self.start_time
-
 				# 按键长按管理部分 ----------------------------- #
 				mouse_pressed_list = pygame.mouse.get_pressed(num_buttons=3)
 				if mouse_pressed_list[2]:
@@ -174,7 +170,6 @@ class MAINGAME:
 				self.cursor.draw()
 
 				# debug space
-				debug(self.active_time)
 				pygame.display.update()
 
 

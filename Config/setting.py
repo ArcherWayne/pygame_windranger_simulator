@@ -1,4 +1,4 @@
-import pygame
+import pygame, time
 from PIL import Image
 
 pygame.init()
@@ -51,6 +51,8 @@ COLOR_TRANSPARENT = (0, 0, 0, 0) # alpha = 0, total transparency
 # stats manager -------------------------------------------------------------------------------- #
 class STAT_MANAGER:
 	def __init__(self) -> None:
+		self.start_time = time.time()
+		self.active_time = 0
 		
 		# hero attributes -------------------------------------------------------------- #
 		self.hero_base_strength = 18
@@ -261,6 +263,7 @@ class STAT_MANAGER:
 	########################################################
 
 	def update(self):
+		self.active_time = time.time() - self.start_time
 		self.check_active()
 		self.check_levelup()
 		# hero stats update ------------------------------------- #

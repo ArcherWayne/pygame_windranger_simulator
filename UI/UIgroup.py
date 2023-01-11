@@ -302,6 +302,14 @@ class UIGroup(pygame.sprite.Group):
 
 	def draw_mugshot(self):
 		self.display_surf.blit(self.wr_mugshot_surf, self.wr_mugshot_rect)
+		
+	
+	def show_active_time(self):
+		active_time = "Time Survived = "+str(round(self.stats_manager.active_time))
+		active_time_surf = FONT.render((active_time), True, WHITE)
+		active_time_rect = active_time_surf.get_rect(midtop = (WIN_WIDTH/2, 30))
+		self.display_surf.blit(active_time_surf, active_time_rect)
+
 
 	def update(self): 
 		pass
@@ -316,3 +324,4 @@ class UIGroup(pygame.sprite.Group):
 		self.draw_hero_attribute()
 		self.draw_mugshot()
 		self.draw_hero_level()
+		self.show_active_time()
