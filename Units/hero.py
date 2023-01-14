@@ -179,11 +179,11 @@ class HERO(pygame.sprite.Sprite): # my code
 		pass
 
 
-class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
-	def __init__(self, groups):
-		super().__init__(groups)
+# class SKILL_SHACKLESHOT(pygame.sprite.Sprite):
+# 	def __init__(self, groups):
+# 		super().__init__(groups)
 
-		self.type = 'skill_shackleshot'
+# 		self.type = 'skill_shackleshot'
 
 
 class SKILL_POWERSHOT(ARROW):
